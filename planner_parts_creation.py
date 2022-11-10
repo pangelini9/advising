@@ -22,7 +22,7 @@ planner_parts_list.append(p_list)
 p_list = ["B" , "Additional Requirements", ""]
 planner_parts_list.append(p_list)
 
-p_list = ["C" , "Additional Requirements", "No more that two core courses might be passed with a grade equal to D"]
+p_list = ["C" , "Core Courses", "No more that two core courses might be passed with a grade equal to D"]
 planner_parts_list.append(p_list)
 
 p_list = ["D" , "Major Electives Courses", ""]

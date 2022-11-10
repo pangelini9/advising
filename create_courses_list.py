@@ -17,7 +17,7 @@ from courses import Course
 
 
 def return_class_objects():
-    with open('courses_list.json', 'r') as myfile:
+    with open('course_id_list.json', 'r') as myfile:
       general_courses = json.load(myfile)
       
     courses_obj = []
@@ -29,6 +29,20 @@ def return_class_objects():
         courses_obj.append(course)
     
     return courses_obj
+
+"""
+ADD KEYS TO COURSES
+with open('courses_list.json', 'r') as myfile:
+    general_courses = json.load(myfile)
+    
+for i in range(0, len(general_courses)):
+    curr_course = general_courses[i] 
+    curr_course[5] = i
+    i += 1
+    
+with open('course_id_list.json', 'w') as myFile:
+    json.dump(general_courses, myFile)
+"""
 
 """
 with open('courses_list.json', 'r') as myfile:
