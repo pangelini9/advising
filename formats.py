@@ -133,10 +133,17 @@ def legend_merge(row, arg):
     position = (("O" + str(row)) + (":") + ("P" + str(row)))
     worksheet.merge_range(position, arg, merge_format1)
 
-def legend_structure(name_list, row):
-    for i in range(0, len(name_list)):
-        position = int(row + i)
-        worksheet.write(position, 14, str(name_list[i]), border_left)
-        worksheet.write(position, 15, "", border_left)
-        i = +1
+def legend_structure(name_list, data_list, row):
+    if data_list == "":
+        for i in range(0, len(name_list)):
+            position = int(row + i)
+            worksheet.write(position, 14, str(name_list[i]), border_left)
+            worksheet.write(position, 15, "", border_left)
+            i = +1
+    else: 
+        for i in range(0, len(name_list)):
+            position = int(row + i)
+            worksheet.write(position, 14, str(name_list[i]), border_left)
+            worksheet.write(position, 15, str(data_list[i]), border_left)
+            i = +1
         

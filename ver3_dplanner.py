@@ -20,19 +20,6 @@ worksheet = formats.worksheet
 worksheet.set_column(0, 5, 11)
 worksheet.set_column(7, 12, 11) 
 worksheet.set_column(14, 14, 44)
-
-"""
-IMPORT THE FORMATS
-...
-"""
-with open('formats_list.json', 'r') as myfile:
-  format_list = json.load(myfile)
-
-for i in range(0, len(format_list)):
-    curr_format = format_list[i]
-    curr_format[0] = workbook.add_format(curr_format[1])
-    print(curr_format[0])
-
     
 
 """
@@ -74,12 +61,20 @@ courses_taken_obj = create_coursetaken_obj(curr_student, courses_taken_list, cou
 curr_student.change_courses(courses_taken_obj)
     #print(curr_student.get_coursesTaken())
 
-    
+#compute credits and standing for the student
+#curr_student.cumpute_gpa()
+curr_student.compute_credits_earned()
+curr_student.compute_credits_nxsem()
+curr_student.compute_credits_missing()
+curr_student.compute_cur_standing()
+curr_student.compute_nx_standing()
+
         
 """
 START THE PRINT
 
 """
+
 """
 DEFINE THE SECTIONS OF THE DEGREE PLANNER
 """
@@ -118,35 +113,36 @@ geneldf = "Sufficient to give a total of 120 credits"
 CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
 """   
 row = 4 #build legend
-arg = E
-formats.legend_merge(row, arg)
+arg = planner_elements.get("G")
+formats.legend_merge(row, arg[0])
 legend_list = ["Course not taken yet", "No more than two core courses can be passed with D", "Grade requirement not satisfied", "Courses that the student is taking the current semester"]
-formats.legend_structure(legend_list, row)
+formats.legend_structure(legend_list, "", row)
 
 
 legend_format = [formats.color_cell1, formats.color_cell2, formats.color_cell3, formats.color_cell4]
 for i in range(0, len(legend_format)):
     position = int(row + i)
-    worksheet.write(position, 15, "x", legend_format[i])
+    worksheet.write(position, 15, "", legend_format[i])
 
-"""
+
 row = 10 #build general information
-arg = F
-formats.legend_merge(row, arg)
+arg = planner_elements.get("H")
+formats.legend_merge(row, arg[0])
 worksheet.write(row, 15, "Total", formats.bold_left)
 worksheet.write(row, 14, "", formats.bold_left)
 info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+data_list = curr_student.create_info_list()
 row = 11
-formats.legend_structure(info_list, row)
+formats.legend_structure(info_list, data_list, row)
 
 
 row = 19 #build courses missing by section
-arg = G
-formats.legend_merge(row, arg)
+arg = planner_elements.get("I")
+formats.legend_merge(row, arg[0])
 worksheet.write(row, 15, "Total", formats.bold_left)
 worksheet.write(row, 14, "", formats.bold_left)
 missing_list = ["English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"]
 row = 20
-formats.legend_structure(missing_list, row)
-"""
+formats.legend_structure(missing_list, "", row)
+
 workbook.close()

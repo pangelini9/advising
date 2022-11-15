@@ -22,7 +22,12 @@ class Student:
         self.minor1 = minor1
         self.minor2 = minor2
         self.courses_done = []
-        self.total_credits = 0
+        self.credits_earned = 0
+        self.credits_nxsem = 0
+        self.credits_missing = 120
+        self.gpa = 0
+        self.curr_standing = ""
+        self.nx_standing = ""
         
     def get_name(self):
         return self.name
@@ -62,19 +67,54 @@ class Student:
         #do they compure it on the semester and then they do the total or it's
         #the average of the courses' grades?
     
-    def compute_cur_credits(self):
-        self.total_credits = 0
+    def compute_credits_earned(self):
+        if self.highschool == 1:
+            self.credits_earned = 30
+        else:
+                    self.credits_earned = 0
+        for i in self.courses_done:
+            grade = i.get_grade()
+            if grade != "":
+                course_credit = i.get_credits()
+                self.credits_earned += course_credit
+            
+    def compute_credits_nxsem(self):
+        if self.highschool == 1:
+            self.credits_nxsem = 30
+        else:
+             self.credits_nxsem = 0
         for i in self.courses_done:
             course_credit = i.get_credits()
-            self.total_credits += course_credit
-            
-    #def compute_cur_standing(self):
-        
-    #def compute_nx_credits(self):
-        
-    #def compute_nx_standing(self):
+            self.credits_nxsem += course_credit
     
-    #def compute_missing_credits(self):
+    #does not account for minors
+    def compute_credits_missing(self):
+        self.credits_missing = 120 - self.credits_nxsem 
+            
+    def compute_cur_standing(self):
+        if self.credits_earned >= 91:
+            self.curr_standing = "Senior"
+        elif self.credits_earned >= 61:
+            self.curr_standing = "Junior"
+        elif self.credits_earned >= 31:
+            self.curr_standing = "Sophomore"
+        else:
+            self.curr_standing = "Freshman"
+
+    def compute_nx_standing(self):
+        if self.credits_nxsem >= 91:
+            self.nx_standing = "Senior"
+        elif self.credits_nxsem >= 61:
+            self.nx_standing = "Junior"
+        elif self.credits_nxsem >= 31:
+            self.nx_standing = "Sophomore"
+        else:
+            self.nx_standing = "Freshman"
+            
+    def create_info_list(self):
+        #["GPA", "Credits(earned)", "Current Standing", "Credits following semester", "Standing following semester", "Credits missing"]
+        info_list = [self.gpa, self.credits_earned, self.curr_standing, self.credits_nxsem, self.nx_standing, self.credits_missing]
+        return info_list
         
 def create_student_list():
     with open('students_list.json', 'r') as myfile:
