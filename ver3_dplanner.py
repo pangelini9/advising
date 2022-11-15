@@ -53,6 +53,7 @@ IMPORT THE STUDENT
 """
 students_list = create_student_list()
 
+#changes the element major present in the student object as the major key into the major object
 for i in range(0, len(students_list)):
     curr_student = students_list[i]
     for j in range(0, len(majors_list)):
@@ -64,23 +65,14 @@ for i in range(0, len(students_list)):
             j +=1
     i += 1
 
+#change the list of courses taken by the student with a list of objects courses taken    
 for i in range(0, len(students_list)):
     curr_student = students_list[i]
     courses_taken_list = curr_student.get_coursesTaken()
-    for j in range(0, len(courses_taken_list)):
-        curr_course_taken = courses_taken_list[j]
-        
-"""
-for i in range(0, len(students_list)):
-    curr_student = students_list[i]
-    #courses_taken_list = []
-    courses_taken_list = curr_student.get_coursesTaken()
-    for i in courses_taken_list:
-        courses_taken_list.append(i)
-    courses_taken_obj_list = create_coursetaken_obj(courses_list, curr_student, courses_taken_list)
-    curr_student.change_courses(courses_taken_obj_list)
+    courses_taken_obj = create_coursetaken_obj(curr_student, courses_taken_list, courses_list)
+    curr_student.change_courses(courses_taken_obj)
+    #print(curr_student.get_coursesTaken())
     i += 1
-"""
 
 
     

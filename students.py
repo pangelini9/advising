@@ -44,13 +44,16 @@ class Student:
     def get_coursesTaken(self):
         return self.courses_done
     
+    #adds to the lit of courses the list for each course done by the student
     def add_course(self, course):
         self.courses_done.append(course)
     
+    #change major key into major object
     def change_major(self, majorobj):
         self.major = majorobj
         print(self.major)
         
+    #change list of courses into the list of objects of the class Courses_taken
     def change_courses(self, courses_taken_obj):
         self.courses_done = courses_taken_obj
 
@@ -80,8 +83,7 @@ def create_student_list():
         courses_t = curr_student[6]
         for course in courses_t:
             student.add_course(course)
-        cc = student.get_coursesTaken()
-        print(cc)
+        print(student.courses_done)
         student_obj.append(student)
         i = i+1
         return student_obj
