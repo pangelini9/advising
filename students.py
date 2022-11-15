@@ -6,7 +6,7 @@ Created on Fri Nov  4 16:15:21 2022
 """
 
 #from majors import Major
-#from courses import Course, Course_taken
+from courses import Course, Course_taken
 #NB: major = Major(...)
 #    def __init__(self, name, surname, highschool_credits, major, minor1, minor2, courses_done):
 
@@ -22,6 +22,7 @@ class Student:
         self.minor1 = minor1
         self.minor2 = minor2
         self.courses_done = []
+        self.total_credits = 0
         
     def get_name(self):
         return self.name
@@ -61,8 +62,12 @@ class Student:
         #do they compure it on the semester and then they do the total or it's
         #the average of the courses' grades?
     
-    #def compute_cur_credits(self):
-        
+    def compute_cur_credits(self):
+        self.total_credits = 0
+        for i in self.courses_done:
+            course_credit = i.get_credits()
+            self.total_credits += course_credit
+            
     #def compute_cur_standing(self):
         
     #def compute_nx_credits(self):
@@ -83,7 +88,7 @@ def create_student_list():
         courses_t = curr_student[6]
         for course in courses_t:
             student.add_course(course)
-        print(student.courses_done)
+        #print(student.courses_done)
         student_obj.append(student)
         i = i+1
         return student_obj

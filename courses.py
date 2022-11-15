@@ -49,11 +49,12 @@ class Course_taken:
         self.term = term
         self.c_type = c_type
         
-    def change_credits(self):
+    def get_credits(self):
+        creds = self.course.credits
         if self.c_type == 1:
-            self.course.credits = self.course.credits + 1
-    
-    #do I need get student/course?
+           creds += 1
+        return creds
+
     
     def get_section(self):
         return self.section
