@@ -7,9 +7,10 @@ Created on Sat Nov  5 16:58:52 2022
 import json
 import xlsxwriter
 from courses import Course, Course_taken
-from students import Student
-from majors import Major
-from create_courses_list import return_class_objects
+from students import Student, create_student_list
+from majors import Major, create_major_list
+from create_courses_list import create_course_obj, create_coursetaken_obj
+
 
 workbook = xlsxwriter.Workbook('planner.xlsx')
 worksheet = workbook.add_worksheet()
@@ -20,6 +21,7 @@ worksheet.set_column(14, 14, 44)
 
 """
 IMPORT THE FORMATS
+...
 """
 with open('formats_list.json', 'r') as myfile:
   format_list = json.load(myfile)
@@ -29,6 +31,7 @@ for i in range(0, len(format_list)):
     curr_format[0] = workbook.add_format(curr_format[1])
     i += 1
     
+
 """
 IMPORT THE PLANNER PARTS
 """
@@ -38,18 +41,50 @@ with open('planner_parts.json', 'r') as myfile:
 """
 IMPORT THE LIST OF ALL COURSES THE UNIVERSITY OFFERS
 """
-return_class_objects()
+courses_list = create_course_obj()
 
 """
 IMPORT THE MAJORS
 """
-#....
+majors_list = create_major_list()
 
 """
 IMPORT THE STUDENT
 """
-#....
+students_list = create_student_list()
 
+for i in range(0, len(students_list)):
+    curr_student = students_list[i]
+    for j in range(0, len(majors_list)):
+        curr_major = majors_list[j]
+        if curr_student.get_major() == curr_major.get_major_key():
+            curr_student.change_major(curr_major)
+            break
+        else:
+            j +=1
+    i += 1
+
+for i in range(0, len(students_list)):
+    curr_student = students_list[i]
+    courses_taken_list = curr_student.get_coursesTaken()
+    for j in range(0, len(courses_taken_list)):
+        curr_course_taken = courses_taken_list[j]
+        
+"""
+for i in range(0, len(students_list)):
+    curr_student = students_list[i]
+    #courses_taken_list = []
+    courses_taken_list = curr_student.get_coursesTaken()
+    for i in courses_taken_list:
+        courses_taken_list.append(i)
+    courses_taken_obj_list = create_coursetaken_obj(courses_list, curr_student, courses_taken_list)
+    curr_student.change_courses(courses_taken_obj_list)
+    i += 1
+"""
+
+
+    
+        
 """
 START THE PRINT
 """

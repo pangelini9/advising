@@ -1,5 +1,5 @@
 [["Economics and Finance", 1, 
 [[71,0], [56,0], [57,0], [58,0], [36,0], [37,0], [6,0], [7,0]],
-[[59, 0], [40, 0], [10,0], [11,0], [14,0], [23,0] , [22,1], [0,1], [50,0], [30,0]], 
+[[59, 0], [40, 0], [10,0], [11,0], [14,0], [23,0], [22,1], [0,1], [50,0], [30,0]], 
 [["EC", 300, 1, 3], ["FIN", 300, 1, 3], ["EC", 200, 0, 3], ["FIN", 200, 0, 3], ["BUS", 200, 0, 3], ["LAW", 200, 0, 3], ["MA", 200, 0, 3], ["MGT", 200, 0, 3], ["MKT", 200, 0, 3], ["PL", 200, 0, 3], ["PS", 200, 0, 3]], 
-"Six courses to be chosen from 200-level of higher BUS, EC, FIN, LAW, MA, MGT, MKT, PL or PS courses. At least three course must be 300-level EC or FIN courses."]]
+"Six courses to be chosen from 200-level of higher BUS, EC, FIN, LAW, MA, MGT, MKT, PL or PS courses. At least three course must be 300-level EC or FIN courses.", 0]]

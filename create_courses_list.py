@@ -13,10 +13,9 @@ retuns the list of objects
 """
 
 import json
-from courses import Course
+from courses import Course, Course_taken
 
-
-def return_class_objects():
+def create_course_obj():
     with open('course_id_list.json', 'r') as myfile:
       general_courses = json.load(myfile)
       
@@ -24,12 +23,33 @@ def return_class_objects():
 
     for i in range(0, len(general_courses)):
         curr_course = general_courses[i]
-        course = Course(curr_course[0], curr_course[1], curr_course[2], curr_course[3], curr_course[4])
-        print(course.name)
+        course = Course(curr_course[0], curr_course[1], curr_course[2], curr_course[3], curr_course[4], curr_course[5])
+        #print(course.name)
         courses_obj.append(course)
+        i = i+1
     
     return courses_obj
 
+def create_coursetaken_obj(courses_list, student, courses_taken_list):
+    courses_taken_obj = []
+    
+    for i in range(0, len(courses_taken_list)): #loops over all the courses the student has taken
+        curr_course_taken = courses_taken_list[i]
+        course_taken_key = curr_course_taken[0]
+        for j in range(0, len(courses_list)): #loops over all the courses the universtity offers
+            curr_course = courses_list[j]
+            course_key = curr_course.get_course_key()
+            if course_taken_key == course_key:
+                course_taken = Course_taken(curr_course, student, curr_course_taken[1], curr_course_taken[2], curr_course_taken[3], curr_course_taken[4])
+                courses_taken_obj.append(course_taken)
+                print(curr_course.get_name())
+                break
+            else:
+                j += 1
+        i += 1
+        
+    return courses_taken_obj
+    
 """
 ADD KEYS TO COURSES
 with open('courses_list.json', 'r') as myfile:

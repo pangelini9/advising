@@ -4,7 +4,7 @@ Created on Tue Nov  8 01:20:49 2022
 
 @author: ilda1
 
-p_list = ["part name" , "name hhat will be printed on the degree planner", "explanation"]
+p_list = ["part name" , "name that will be printed on the degree planner", "explanation"]
 planner_parts_list.append(p_list)
 
 should out in the same list both the name and the explanation

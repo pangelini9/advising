@@ -39,7 +39,7 @@
 ["Independent Study in Finance", "FIN", 281, 3, []],
 ["Independent Study in Finance", "FIN", 381, 3, []],
 ["Finance", "FIN", 301, 3, []],
-["Financial Management", "FIN", 301, 3, []],
+["Financial Management", "FIN", 302, 3, []],
 ["Investment Analysis", "FIN", 312, 3, []],
 ["International Finance", "FIN", 330, 3, []],
 ["Portfolio Management", "FIN", 331, 3, []],
@@ -69,7 +69,7 @@
 ["Differential Equations", "MA", 495, 3, []],
 ["Real Analysis", "MA", 497, 3, []],
 ["Introduction to Computer Science", "CS", 101, 3, []],
-["Computer Office Applications", "CS", 110, 3, []],
+["Computer Office Applications", "CS", 160, 3, []],
 ["Web Design I", "CS", 130, 3, []],
 ["Web Design II", "CS", 131, 3, []],
 ["Programming Concepts and Applications", "CS", 110, 3, []],
@@ -82,5 +82,4 @@
 ["Artificial Intelligence Concepts", "CS", 302, 3, []],
 ["Advanced Programming: Python", "CS", 320, 3, []],
 ["Special Topics in Computer Science", "CS", 399, 3, []],
-["Independent Research", "CS", 481, 3, []],
-["Special Topics in Computer Science", "CS", 399, 3, []]]
+["Independent Research", "CS", 481, 3, []]]

@@ -8,12 +8,13 @@ Created on Tue Oct  4 09:39:11 2022
 
 class Course:
     
-    def __init__(self, namecourse, code, number, credits_num, req_list):
+    def __init__(self, namecourse, code, number, credits_num, req_list, course_key):
         self.name = namecourse
         self.code = code
         self.number = number
         self.credits = credits_num
         self.requirements_list = req_list
+        self.course_key = course_key
         
     def get_name(self):
         return self.name
@@ -29,6 +30,9 @@ class Course:
     
     def get_requirements_list(self):
         return self.requirements_list
+    
+    def get_course_key(self):
+        return self.course_key
 
 """
 NB:
