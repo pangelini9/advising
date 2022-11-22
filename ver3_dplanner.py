@@ -12,6 +12,27 @@ from majors import Major, create_major_list
 from create_courses_list import create_course_obj, create_coursetaken_obj
 import formats
 
+number_to_letter = {
+    4 : "A",
+    3.67 :"A-",
+    3.33 :"B+",
+    3 : "B",
+    2.67 : "B-",
+    2.33 : "C+",
+    2 : "C",
+    1.67 : "C-",
+    1.33 : "D+",
+    1 : "D",
+    0.67: "D-", 
+    0 : "F",
+    0.1 : "INC",
+    5 : "P",
+    0.2 : "NP",
+    0.3 : "W",
+    0.4 : "current",
+    }
+
+
 workbook = formats.workbook
 worksheet = formats.worksheet
 #workbook = xlsxwriter.Workbook('planner.xlsx')
@@ -84,13 +105,16 @@ worksheet.write(row, 11, "Grade", formats.bold_left)
 worksheet.write(row, 12, "Credits", formats.bold_left)
 
 m_list = ma_requirement.get("courses done")
-ma_course = m_list[0]
+ma_course = m_list[0][0]
+ma_format = formats.border_left
+if m_list[0] [1] == 0:
+    ma_format = formats.color_cell3
 row = 2
 worksheet.write(row, 7, ma_course.course.get_name(), formats.border_left) #col H=7
 worksheet.write(row, 8, ma_course.course.get_code(), formats.border_left)
 worksheet.write(row, 9, ma_course.course.get_number(), formats.border_left)
 worksheet.write(row, 10, ma_course.get_term(), formats.border_left)
-worksheet.write(row, 11, ma_course.get_grade(), formats.border_left)
+worksheet.write(row, 11, number_to_letter.get(ma_course.get_grade()), ma_format  )
 worksheet.write(row, 12, ma_course.course.get_credits(), formats.border_left)
 
 """

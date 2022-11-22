@@ -6,6 +6,26 @@ Created on Tue Oct  4 09:39:11 2022
 """
 #from students import Student
 
+letter_to_number = {
+    "A" : 4,
+    "A-" : 3.67,
+    "B+" : 3.33,
+    "B" : 3,
+    "B-" : 2.67,
+    "C+" : 2.33,
+    "C" : 2,
+    "C-" : 1.67,
+    "D+" : 1.33,
+    "D" : 1,
+    "D-" : 0.67, 
+    "F" : 0,
+    "INC" : 0.1,
+    "P" : 5,
+    "NP" : 0.2,
+    "W" : 0.3,
+    "" : 0.4,
+    }
+
 class Course:
     
     def __init__(self, namecourse, code, number, credits_num, req_list, course_key):
@@ -45,7 +65,7 @@ class Course_taken:
         self.course = course
         self.student = student
         self.section = course_section
-        self.grade = grade
+        self.grade = letter_to_number.get(grade)
         self.term = term
         self.c_type = c_type
         
@@ -72,3 +92,4 @@ class Course_taken:
             return " - Honor"
         else:
             return ""
+    

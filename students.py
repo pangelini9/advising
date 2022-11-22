@@ -7,6 +7,7 @@ Created on Fri Nov  4 16:15:21 2022
 
 #from majors import Major
 from courses import Course, Course_taken
+from courses import letter_to_number
 #NB: major = Major(...)
 #    def __init__(self, name, surname, highschool_credits, major, minor1, minor2, courses_done):
 
@@ -138,22 +139,38 @@ class Student:
             course_key = 54
             for i in self.reduced_courses_list:
                 if course_key == i.course.get_course_key():
-                    self.m_ma["courses missing"] -= 1
-                    self.m_ma["courses done"].append(i) 
-                    self.reduced_courses_list.remove(i)       
+                    if i.get_grade() >= letter_to_number.get("C-"):
+                        self.m_ma["courses missing"] -= 1
+                        self.m_ma["courses done"].append([i, 1]) 
+                        self.reduced_courses_list.remove(i)   
+                    else:
+                        self.m_ma["courses done"].append([i, 0]) 
+                        self.reduced_courses_list.remove(i)       
         else:
             course_key = [53,54]
             for key in course_key:
                 for i in self.reduced_courses_list:
                     if course_key == i.course.get_course_key():
-                        self.m_ma["courses missing"] -= 1
-                        self.m_ma["courses done"].append(i) 
-                        self.reduced_courses_list.remove(i)
+                        if i.get_grade() >= letter_to_number.get("C-"):
+                            self.m_ma["courses missing"] -= 1
+                            self.m_ma["courses done"].append(i) 
+                            self.reduced_courses_list.remove(i)
+                        else:
+                            self.m_ma["courses done"].append([i, 0]) 
+                            self.reduced_courses_list.remove(i) 
                         break
         return self.m_ma
             
-        
-    #def check_sci_req(self):
+    """    
+    def check_sci_req(self):
+        for i in self.reduced_courses_list:
+            if i.course.get_course_codecode == "MA":
+                    self.m_ma["courses missing"] -= 1
+                    self.m_ma["courses done"].append(i) 
+                    self.reduced_courses_list.remove(i) 
+            
+            elif i.course.get_course_codecode == "SCI":
+       """         
     
     #def check_flanguage(self):
         
