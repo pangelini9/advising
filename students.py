@@ -28,6 +28,17 @@ class Student:
         self.gpa = 0
         self.curr_standing = ""
         self.nx_standing = ""
+        self.reduced_courses_list = [] #created with the actual list gets reduced as requirements are checked
+        self.m_en = {"courses missing"  : 0, "courses done" : []}
+        self.m_ma = {"courses missing"  : 0, "courses done" : []}
+        self.m_sci = {"courses missing"  : 0, "courses done" : []}
+        self.m_flang = {"courses missing"  : 0, "courses done" : []}
+        self.m_sosc = {"courses missing"  : 0, "courses done" : []}
+        self.m_hum = {"courses missing"  : 0, "courses done" : []}
+        self.m_fa = {"courses missing"  : 0, "courses done" : []}
+        self.m_additional = {"courses missing"  : 0, "courses done" : []}
+        self.m_core = {"courses missing"  : 0, "courses done" : []}
+        self.m_electives = {"courses missing"  : 0, "courses done" : []}
         
     def get_name(self):
         return self.name
@@ -62,6 +73,7 @@ class Student:
     #change list of courses into the list of objects of the class Courses_taken
     def change_courses(self, courses_taken_obj):
         self.courses_done = courses_taken_obj
+        self.reduced_courses_list = courses_taken_obj
 
     #def cumpute_gpa(self):
         #do they compure it on the semester and then they do the total or it's
@@ -71,7 +83,7 @@ class Student:
         if self.highschool == 1:
             self.credits_earned = 30
         else:
-                    self.credits_earned = 0
+            self.credits_earned = 0
         for i in self.courses_done:
             grade = i.get_grade()
             if grade != "":
@@ -111,10 +123,67 @@ class Student:
         else:
             self.nx_standing = "Freshman"
             
+    #returns a list of informations to be printed in the additional information        
     def create_info_list(self):
         #["GPA", "Credits(earned)", "Current Standing", "Credits following semester", "Standing following semester", "Credits missing"]
         info_list = [self.gpa, self.credits_earned, self.curr_standing, self.credits_nxsem, self.nx_standing, self.credits_missing]
         return info_list
+    
+    #def check_en_req(self):
+        
+    def check_ma_req(self):
+        math_req = self.major.get_math_requirement()
+
+        if math_req == 1:
+            course_key = 54
+            for i in self.reduced_courses_list:
+                if course_key == i.course.get_course_key():
+                    self.m_ma["courses missing"] -= 1
+                    self.m_ma["courses done"].append(i) 
+                    self.reduced_courses_list.remove(i)       
+        else:
+            course_key = [53,54]
+            for key in course_key:
+                for i in self.reduced_courses_list:
+                    if course_key == i.course.get_course_key():
+                        self.m_ma["courses missing"] -= 1
+                        self.m_ma["courses done"].append(i) 
+                        self.reduced_courses_list.remove(i)
+                        break
+        return self.m_ma
+            
+        
+    #def check_sci_req(self):
+    
+    #def check_flanguage(self):
+        
+    #def check_sosc(self):
+    
+    #def check_hum(self):
+        
+    #def_check_arts(self):
+        
+    #def_check_additional(self):
+        
+    #def_check_core(self):
+        
+    #def_check_electives(self):
+        
+    #def_check_minor1(self):
+    
+    #def_check_minor2
+    
+    #def_return_missing(self):
+        #"English Comp", "Math", "Math, Science, Computer Science", "Foreign Language", "Sosc", "Hum", "FA", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"
+        #missing_courses_list = []
+        #return missing_courses_list
+    
+    
+    
+#"English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"    
+    
+    
+    
         
 def create_student_list():
     with open('students_list.json', 'r') as myfile:

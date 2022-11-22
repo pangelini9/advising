@@ -49,12 +49,14 @@ class Course_taken:
         self.term = term
         self.c_type = c_type
         
+    def get_course(self):
+        return self.course
+        
     def get_credits(self):
         creds = self.course.credits
         if self.c_type == 1:
            creds += 1
         return creds
-
     
     def get_section(self):
         return self.section
@@ -66,7 +68,7 @@ class Course_taken:
         return self.term
     
     def get_course_type(self):
-        if self.c_type == 0:
-            return ""
-        else:
+        if self.c_type == 1:
             return " - Honor"
+        else:
+            return ""

@@ -75,9 +75,7 @@ class Major:
         self.core_courses.append(course)
             
     def add_elective(self, course):
-        self.major_electives.append(course)
-        
-        
+        self.major_electives.append(course)        
         
 def create_major_list():
     with open('majors_list.json', 'r') as myfile:

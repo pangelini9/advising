@@ -69,11 +69,29 @@ curr_student.compute_credits_missing()
 curr_student.compute_cur_standing()
 curr_student.compute_nx_standing()
 
-        
 """
 START THE PRINT
-
+to check if ma requirement is working
 """
+
+ma_requirement = curr_student.check_ma_req()
+row = 1
+worksheet.write(row, 7, "Name", formats.bold_left) #col H=7
+worksheet.write(row, 8, "Course", formats.bold_left)
+worksheet.write(row, 9, "Code", formats.bold_left)
+worksheet.write(row, 10, "Term", formats.bold_left)
+worksheet.write(row, 11, "Grade", formats.bold_left)
+worksheet.write(row, 12, "Credits", formats.bold_left)
+
+m_list = ma_requirement.get("courses done")
+ma_course = m_list[0]
+row = 2
+worksheet.write(row, 7, ma_course.course.get_name(), formats.border_left) #col H=7
+worksheet.write(row, 8, ma_course.course.get_code(), formats.border_left)
+worksheet.write(row, 9, ma_course.course.get_number(), formats.border_left)
+worksheet.write(row, 10, ma_course.get_term(), formats.border_left)
+worksheet.write(row, 11, ma_course.get_grade(), formats.border_left)
+worksheet.write(row, 12, ma_course.course.get_credits(), formats.border_left)
 
 """
 DEFINE THE SECTIONS OF THE DEGREE PLANNER
@@ -112,6 +130,7 @@ geneldf = "Sufficient to give a total of 120 credits"
 """
 CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
 """   
+
 row = 4 #build legend
 arg = planner_elements.get("G")
 formats.legend_merge(row, arg[0])
