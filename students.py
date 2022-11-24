@@ -76,18 +76,31 @@ class Student:
         self.courses_done = courses_taken_obj
         self.reduced_courses_list = courses_taken_obj
 
-    #def cumpute_gpa(self):
+    def cumpute_gpa(self):
         #do they compure it on the semester and then they do the total or it's
         #the average of the courses' grades?
+        #PA: It is the average of the courses grades, weighted on the credits
+        creds = 0
+        weighted_total=0
+        for i in self.courses_done:
+            grade = i.get_grade()
+            # PA: I am excluding the grades that should not be counted:
+            # P (5), W, NP, current, INC, TR (between 0.1 and 0.5 - using 0.6 just in case)
+            # We should also consider the possible retake (if two grades, only consider the second)
+            if grade != 5 and not (0.1 <= grade <= 0.6):
+                course_credit = i.get_credits()
+                creds += course_credit
+                weighted_total += course_credit*grade
+        self.gpa = round(weighted_total / creds, 2) # rounding to 2 decimal digits
     
     def compute_credits_earned(self):
-        if self.highschool == 1:
+        if self.highschool == 1: # PA: I am not sure we need it: the 30 creds should be there as TRANSFER
             self.credits_earned = 30
         else:
             self.credits_earned = 0
         for i in self.courses_done:
             grade = i.get_grade()
-            if grade != "":
+            if grade != "": # PA: this should also be updated to use the dictionary values
                 course_credit = i.get_credits()
                 self.credits_earned += course_credit
             

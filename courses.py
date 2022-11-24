@@ -23,7 +23,8 @@ letter_to_number = {
     "P" : 5,
     "NP" : 0.2,
     "W" : 0.3,
-    "" : 0.4,
+    "current" : 0.4,
+    "TR" : 0.5, # PA: added this entry, for Transfer credits
     }
 
 class Course:

@@ -30,6 +30,7 @@ number_to_letter = {
     0.2 : "NP",
     0.3 : "W",
     0.4 : "current",
+    0.5 : "TR", # PA: added this entry, for Transfer credits
     }
 
 
@@ -83,7 +84,7 @@ curr_student.change_courses(courses_taken_obj)
     #print(curr_student.get_coursesTaken())
 
 #compute credits and standing for the student
-#curr_student.cumpute_gpa()
+curr_student.cumpute_gpa()
 curr_student.compute_credits_earned()
 curr_student.compute_credits_nxsem()
 curr_student.compute_credits_missing()
