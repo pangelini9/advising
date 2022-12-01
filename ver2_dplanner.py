@@ -18,7 +18,7 @@ from students import Student
 #from majors import Major
 from create_courses_list import return_class_objects
 
-workbook = xlsxwriter.Workbook('planner.xlsx')
+workbook = xlsxwriter.Workbook('planner_template.xlsx')
 worksheet = workbook.add_worksheet()
 
 worksheet.set_column(0, 5, 11)

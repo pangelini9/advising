@@ -147,3 +147,4 @@ def legend_structure(name_list, data_list, row):
             worksheet.write(position, 15, str(data_list[i]), border_left)
             i = +1
         
+        

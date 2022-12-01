@@ -30,16 +30,16 @@ class Student:
         self.curr_standing = ""
         self.nx_standing = ""
         self.reduced_courses_list = [] #created with the actual list gets reduced as requirements are checked
-        self.m_en = {"courses missing"  : 0, "courses done" : []}
-        self.m_ma = {"courses missing"  : 0, "courses done" : []}
-        self.m_sci = {"courses missing"  : 0, "courses done" : []}
-        self.m_flang = {"courses missing"  : 0, "courses done" : []}
-        self.m_sosc = {"courses missing"  : 0, "courses done" : []}
-        self.m_hum = {"courses missing"  : 0, "courses done" : []}
-        self.m_fa = {"courses missing"  : 0, "courses done" : []}
-        self.m_additional = {"courses missing"  : 0, "courses done" : []}
-        self.m_core = {"courses missing"  : 0, "courses done" : []}
-        self.m_electives = {"courses missing"  : 0, "courses done" : []}
+        self.m_en = {"courses missing"  : 5, "courses done" : []}
+        self.m_ma = {"courses missing"  : 1, "courses done" : []}
+        self.m_sci = {"courses missing"  : 2, "courses done" : []}
+        self.m_flang = {"courses missing"  : 2, "courses done" : []}
+        self.m_sosc = {"courses missing"  : 2, "courses done" : []}
+        self.m_hum = {"courses missing"  : 2, "courses done" : []}
+        self.m_fa = {"courses missing"  : 1, "courses done" : []}
+        self.m_additional = {"courses missing"  : 8, "courses done" : []}
+        self.m_core = {"courses missing"  : 9, "courses done" : []}
+        self.m_electives = {"courses missing"  : 6, "courses done" : []}
         
     def get_name(self):
         return self.name
@@ -185,29 +185,139 @@ class Student:
             elif i.course.get_course_codecode == "SCI":
        """         
     
-    #def check_flanguage(self):
-        
-    #def check_sosc(self):
+   
     
-    #def check_hum(self):
+    #def check_additional(self):
         
-    #def_check_arts(self):
+    #def check_core(self):
         
-    #def_check_additional(self):
+    #def check_electives(self):
         
-    #def_check_core(self):
         
-    #def_check_electives(self):
         
-    #def_check_minor1(self):
+    def check_sosc(self, student):
+        #Course(self, namecourse, code, number, credits_num, req_list, course_key)
+        #Course_taken(self, course, student, course_section, grade, term, c_type)
+        while self.m_sosc["courses missing"] > 0:
+            if self.highschool==1:
+                course = Course("Social Science Elective", "SOSC", "----", 6, [], "")
+                cc = Course_taken(course, student, 1, "P", "waived", 0)
+                self.m_sosc["courses missing"] -= 2
+                self.m_sosc["courses done"].append([cc,1])
+            else:
+                course_codes = ["COM", "CMS", "DMA", "DJRN", "EC", "GEOG", "PL", "PS", "SOSC"]
+                for i in self.reduced_courses_list:
+                    for j in course_codes:
+                        if j == i.course.get_code():
+                            c_creds = i.course.get_credits()
+                            if i.get_grade() >= letter_to_number.get("F"): #check on grades
+                                self.m_sosc["courses done"].append([i,1]) 
+                                self.reduced_courses_list.remove(i)
+                                if c_creds == 3:                               #check on credits
+                                    self.m_sosc["courses missing"] -= 1
+                                elif c_creds == 6:
+                                    self.m_sosc["courses missing"] -= 2
+                            else:
+                                self.m_sosc["courses done"].append([i,0]) 
+                                self.reduced_courses_list.remove(i)                                
+        return self.m_sosc
+        
+  
+    def check_hum(self, student):
+        #Course(self, namecourse, code, number, credits_num, req_list, course_key)
+        #Course_taken(self, course, student, course_section, grade, term, c_type)
+        while self.m_hum["courses missing"] > 0:
+            if self.highschool==1:
+                course = Course("Latin Elective", "LAT", "----", 6, [], "")
+                cc = Course_taken(course, student, 1, "P", "waived", 0)
+                self.m_hum["courses missing"] -= 2
+                self.m_hum["courses done"].append([cc,1])
+            else:
+                course_codes = ["CL", "EN", "GRK", "HM", "HS", "ITS", "LAT", "PH", "RL"]
+                for i in self.reduced_courses_list:
+                    for j in course_codes:
+                        if j == i.course.get_code():
+                            c_creds = i.course.get_credits()
+                            if i.get_grade() >= letter_to_number.get("F"): #check on grades
+                                self.m_hum["courses done"].append([i,1]) 
+                                self.reduced_courses_list.remove(i)
+                                if c_creds == 3:                               #check on credits
+                                    self.m_hum["courses missing"] -= 1
+                                elif c_creds == 6:
+                                    self.m_hum["courses missing"] -= 2
+                            else:
+                                self.m_hum["courses done"].append([i,0]) 
+                                self.reduced_courses_list.remove(i)                                
+        return self.m_hum
+                 
+
+        
+        
+    def check_arts(self, student):
+        #Course(self, namecourse, code, number, credits_num, req_list, course_key)
+        #Course_taken(self, course, student, course_section, grade, term, c_type)
+        while self.m_fa["courses missing"] > 0:
+            if self.highschool==1:
+                course = Course("Fine Arts Elective", "FA", "----", 3, [], "")
+                cc = Course_taken(course, student, 1, "P", "waived", 0)
+                self.m_fa["courses missing"] -= 1
+                self.m_fa["courses done"].append([cc,1])
+            else:
+                course_codes = ["AH", "ARCH", "AS", "CW", "DR", "MUS"]
+                for i in self.reduced_courses_list:
+                    for j in course_codes:
+                        if j == i.course.get_code():
+                            #c_creds = i.course.get_credits()
+                            if i.get_grade() >= letter_to_number.get("F"): #check on grades
+                                self.m_fa["courses done"].append([i,1]) 
+                                self.reduced_courses_list.remove(i)
+                                self.m_fa["courses missing"] -= 1
+                            else:
+                                self.m_fa["courses done"].append([i,0]) 
+                                self.reduced_courses_list.remove(i)                                
+        return self.m_fa
     
-    #def_check_minor2
+    def check_flanguage(self, student): 
+        #Course(self, namecourse, code, number, credits_num, req_list, course_key)
+        #Course_taken(self, course, student, course_section, grade, term, c_type)
+        while self.m_flang["courses missing"] > 0:
+            if self.highschool==1:
+                #should this only do a merge and print waived?
+                number_list = ["First Required Course", "Second Required Course"]
+                for i in range(0,2):
+                    course = Course(number_list[i], "----", "----", "----", [], "")
+                    cc = Course_taken(course, student, 1, "P", "waived", 0)
+                    self.m_flang["courses missing"] -= 1
+                    self.m_flang["courses done"].append([cc,1])
+            else:
+                course_codes = ["FR", "IT", "SPAN"]
+                for i in self.reduced_courses_list:
+                    for j in course_codes:
+                        if j == i.course.get_code():
+                            c_creds = i.course.get_credits()
+                            if i.get_grade() >= letter_to_number.get("C"): #check on grades
+                                self.m_flang["courses done"].append([i,1]) 
+                                self.reduced_courses_list.remove(i)
+                                if c_creds == 3:                               #check on credits
+                                    self.m_flang["courses missing"] -= 1
+                                elif c_creds == 6:
+                                    self.m_flang["courses missing"] -= 2
+                            else:
+                                self.m_flang["courses done"].append([i,0]) 
+                                self.reduced_courses_list.remove(i)                                
+        return self.m_flang
+        
+    #def check_minor1(self):
     
-    #def_return_missing(self):
+    #def check_minor2
+    
+    def return_missing(self):
         #"English Comp", "Math", "Math, Science, Computer Science", "Foreign Language", "Sosc", "Hum", "FA", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"
-        #missing_courses_list = []
-        #return missing_courses_list
-    
+        missing_numcourses = [self.m_en["courses missing"], self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_electives["courses missing"], "NA", "NA"]
+        return missing_numcourses
+
+          
+   
     
     
 #"English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"    

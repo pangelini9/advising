@@ -27,6 +27,7 @@ letter_to_number = {
     "TR" : 0.5, # PA: added this entry, for Transfer credits
     }
 
+
 class Course:
     
     def __init__(self, namecourse, code, number, credits_num, req_list, course_key):
