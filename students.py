@@ -38,9 +38,9 @@ class Student:
         self.m_sosc = {"courses missing"  : 2, "courses done" : []}
         self.m_hum = {"courses missing"  : 2, "courses done" : []}
         self.m_fa = {"courses missing"  : 1, "courses done" : []}
-        self.m_additional = {"courses missing"  : 8, "courses done" : []}
-        self.m_core = {"courses missing"  : 9, "courses done" : []}
-        self.m_electives = {"courses missing"  : 6, "courses done" : []}
+        self.m_additional = {"courses missing"  : 0, "courses done" : []}
+        self.m_core = {"courses missing"  : 0, "courses done" : []}
+        self.m_electives = {"courses missing"  : 0, "courses done" : []}
         
     def get_name(self):
         return self.name
@@ -184,8 +184,20 @@ class Student:
             
     #def check_additional(self):
         
-    #def check_core(self):
-        
+    def check_core(self):
+        core_courses = self.major.get_core_courses()
+        for i in core_courses:
+            found = False
+            for j in self.reduced_courses_list:
+                if i[0] == j.course.get_course_key():
+                    self.m_core["courses done"].append(j)
+                    self.reduced_courses_list.remove(j)
+                    found = True
+            if not found:
+                self.m_core["courses missing"] += 1
+        return self.m_core
+                    
+                    
     #def check_electives(self):
      
     def check_eng_requirement(self, student):

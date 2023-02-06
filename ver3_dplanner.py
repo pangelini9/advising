@@ -216,7 +216,7 @@ worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_fo
 worksheet.write(row, 12, sosc_course.course.get_credits(), sosc_format)
 
 """""""""""""""""""""""""""""""""""""""
-PRINT HUMANIETIES REQUIREMENT
+PRINT HUMANITIES REQUIREMENT
 """""""""""""""""""""""""""""""""""""""
 row = 10
 banner_list = banner["hum"] 
@@ -243,7 +243,7 @@ worksheet.write(row, 12, hum_course.course.get_credits(), hum_format)
 
 """""""""""""""""""""""""""""""""""""""
 PRINT FINE ARTS REQUIREMENT
-"""""""""""""""""""""""""""""""""""""""
+
 row = 15
 banner_list = banner["fa"] 
 formats.short_merge_dx(row, banner_list[0], 1)
@@ -253,12 +253,15 @@ formats.course_det_right(row+1)
 
 fa_list = fa_req.get("courses done")
 fa_format = formats.border_left
+"""""""""""""""""""""""""""""""""""""""
+
 """
 if fa_list[0][1] == 0:
     grade_format = formats.color_cell3
 elif fa_list[0][1] == 1:
     grade_format = formats.border_center
 """    
+"""""""""""""""""""""""""""""""""""""""
 fa_course = fa_list[0][0]
 
 row = 17
@@ -268,7 +271,7 @@ worksheet.write(row, 9, fa_course.course.get_number(), fa_format)
 worksheet.write(row, 10, fa_course.get_term(), fa_format)
 worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
 worksheet.write(row, 12, fa_course.course.get_credits(), fa_format)
-
+"""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
@@ -308,4 +311,5 @@ num_missing = curr_student.return_missing()
 row = 20
 formats.legend_structure(missing_list, num_missing, row)
 
+print("CC")
 workbook.close()
