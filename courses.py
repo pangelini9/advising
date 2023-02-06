@@ -38,13 +38,13 @@ class Course:
         self.requirements_list = req_list
         self.course_key = course_key
         
-    def get_name(self):
+    def get_name(self): #full name
         return self.name
     
-    def get_code(self):
+    def get_code(self): #prefix letter
         return self.code
     
-    def get_number(self):
+    def get_number(self): #number
         return self.number
     
     def get_credits(self):

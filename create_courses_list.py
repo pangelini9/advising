@@ -35,7 +35,7 @@ def create_course_obj():
     
     return courses_obj
 
-#you need to change the credits for honor courses
+    #you need to change the credits for honor courses
 def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
     courses_taken_obj = []
     

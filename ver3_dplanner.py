@@ -26,7 +26,7 @@ number_to_letter = {
     1 : "D",
     0.67: "D-", 
     0 : "F",
-    0.1 : "INC",
+    0.1 : "INC", #incomplete
     5 : "P",
     0.2 : "NP",
     0.3 : "W",
@@ -83,6 +83,7 @@ for j in range(0, len(majors_list)):
 courses_taken_list = curr_student.get_coursesTaken()
 courses_taken_obj = create_coursetaken_obj(curr_student, courses_taken_list, courses_list)
 curr_student.change_courses(courses_taken_obj)
+curr_student.remove_retake() #toglie retake
     #print(curr_student.get_coursesTaken())
 
 #compute credits and standing for the student
@@ -105,6 +106,36 @@ formats.long_merge(row, student_major, 1) #major
 formats.long_merge(row+1, student_name, 0)  #name and surname
 banner_list = banner["A"]
 formats.long_merge(row+3, banner_list[0], 1)
+
+
+"""""""""""""""""""""""""""""""""""""""
+PRINT ENGLISH COMP and LIT REQUIREMENT
+"""""""""""""""""""""""""""""""""""""""
+row =  5
+banner_list = banner["eng"] 
+formats.short_merge_sx(row, banner_list[0], 1)
+formats.short_merge_sx(row+1, banner_list[1], 0) #print english banner
+formats.course_det_left(row+1)
+eng_requirement = curr_student.check_eng_requirement(curr_student)
+
+for i in range(0, len(eng_requirement)):
+    en_course = eng_requirement[0]
+    en_format = formats.border_left
+    if eng_requirement[1] == 1:
+        en_format = formats.color_cell2
+    elif eng_requirement[1] == 2:
+        en_format = formats.color_cell3
+    elif eng_requirement[1] == 3:
+        en_format = formats.color_cell4
+    row = 7+i
+    worksheet.write(row, 0, en_course.course.get_name(), en_format) #col A=0
+    worksheet.write(row, 1, en_course.course.get_code(), en_format)
+    worksheet.write(row, 2, en_course.course.get_number(), en_format)
+    worksheet.write(row, 3, en_course.get_term(), en_format)
+    worksheet.write(row, 4, number_to_letter.get(en_course.get_grade()), en_format)
+    worksheet.write(row, 5, en_course.course.get_credits(), en_format)
+    
+
 
 """""""""""""""""""""""""""""""""""""""
 PRINT MA REQUIREMENT
@@ -222,10 +253,12 @@ formats.course_det_right(row+1)
 
 fa_list = fa_req.get("courses done")
 fa_format = formats.border_left
-if fa_list[0] [1] == 0:
+"""
+if fa_list[0][1] == 0:
     grade_format = formats.color_cell3
-elif fa_list[0] [1] == 1:
+elif fa_list[0][1] == 1:
     grade_format = formats.border_center
+"""    
 fa_course = fa_list[0][0]
 
 row = 17
@@ -270,7 +303,7 @@ banner_list = banner["I"]
 formats.legend_merge(row, banner_list[0])
 worksheet.write(row, 15, "Total", formats.bold_left)
 worksheet.write(row, 14, "", formats.bold_left)
-missing_list = ["English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"]
+missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"]
 num_missing = curr_student.return_missing()
 row = 20
 formats.legend_structure(missing_list, num_missing, row)
