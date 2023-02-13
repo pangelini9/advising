@@ -119,7 +119,7 @@ formats.course_det_left(row+1)
 eng_requirement = curr_student.check_eng_requirement(curr_student)
 
 for i in range(0, len(eng_requirement)):
-    en_course = eng_requirement[0]
+    en_course = eng_requirement[i]
     en_format = formats.border_left
     if eng_requirement[1] == 1:
         en_format = formats.color_cell2
@@ -161,6 +161,96 @@ worksheet.write(row, 2, ma_course.course.get_number(), ma_format)
 worksheet.write(row, 3, ma_course.get_term(), ma_format)
 worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
 worksheet.write(row, 5, ma_course.course.get_credits(), ma_format)
+
+
+"""""""""""""""""""""""""""""""""""""""
+PRINT ADDITIONAL REQUIREMENTS
+"""""""""""""""""""""""""""""""""""""""
+row = 28
+banner_list = banner["B"] 
+formats.short_merge_sx(row, banner_list[0], 1)
+#formats.short_merge_sx(row+1, banner_list[1], 0) #print core courses
+#additional_requirements = curr_student.check_additional()
+formats.course_det_left(row+1)
+
+"""""""""""""""""""""""""""""""""""""""
+additional_list = additional_requirements.get("courses done")
+for i in range(0, len(additional_list)):
+    additional_course = additional_list[i]
+    core_format = formats.border_left
+#different format depending on the stile
+    if additional_list[i] == 0: 
+        grade_format = formats.color_cell3
+    elif additional_list[i] == 1:
+        additional_format = formats.border_center
+    row = 29+i
+    worksheet.write(row, 0, additional_course.course.get_name(), additional_format) #col A=0
+    worksheet.write(row, 1, additional_course.course.get_code(), additional_format)
+    worksheet.write(row, 2, additional_course.course.get_number(), additional_format)
+    worksheet.write(row, 3, additional_course.get_term(), additional_format)
+    worksheet.write(row, 4, number_to_letter.get(additional_course.get_grade()), grade_format)
+    worksheet.write(row, 5, additional_course.course.get_credits(), additional_format)
+"""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""
+PRINT CORE COURSES
+"""""""""""""""""""""""""""""""""""""""
+row = 28
+banner_list = banner["C"] 
+formats.short_merge_dx(row, banner_list[0], 1)
+formats.short_merge_dx(row+1, banner_list[1], 0) #print core courses
+core_courses = curr_student.check_core()
+formats.course_det_right(row+1)
+
+core_list = core_courses.get("courses done")
+for i in range(0, len(core_list)):
+    core_course = core_list[i]
+    core_format = formats.border_left
+#different format depending on the stile
+    if core_list[i] == 0: 
+        grade_format = formats.color_cell3
+    elif core_list[i] == 1:
+        core_format = formats.border_center
+    row = 30+i
+    worksheet.write(row, 7, core_course.course.get_name(), core_format) #col H=7
+    worksheet.write(row, 8, core_course.course.get_code(), core_format)
+    worksheet.write(row, 9, core_course.course.get_number(), core_format)
+    worksheet.write(row, 10, core_course.get_term(), core_format)
+    worksheet.write(row, 11, number_to_letter.get(core_course.get_grade()), core_format)
+    worksheet.write(row, 12, core_course.course.get_credits(), core_format)
+
+
+"""""""""""""""""""""""""""""""""""""""
+PRINT MAJOR ELECTIVES
+"""""""""""""""""""""""""""""""""""""""
+#set the row depending on the longest between core and additional requirements
+row = 42
+banner_list = banner["D"] 
+formats.long_merge(row, banner_list[0], 1) #prints "Major Electives"
+#formats.long_merge(row, banner_list[0], 0) #prints description
+#major_electives = curr_student.check_electives()
+formats.course_det_left(row+1)
+
+"""""""""""""""""""""""""""""""""""""""
+electives_list = major_electives.get("courses done")
+for i in range(0, len(electives_list)):
+    elective_course = electives_list[i]
+    elective_format = formats.border_left
+#different format depending on the stile
+    if electives_list[i] == 0: 
+        grade_format = formats.color_cell3
+    elif electives_list[i] == 1:
+        elective_format = formats.border_center
+    row = 44+i
+    worksheet.write(row, 7, elective_course.course.get_name(), elective_format) #col H=7
+    worksheet.write(row, 8, elective_course.course.get_code(), elective_format)
+    worksheet.write(row, 9, elective_course.course.get_number(), elective_format)
+    worksheet.write(row, 10, elective_course.get_term(), elective_format)
+    worksheet.write(row, 11, number_to_letter.get(elective_course.get_grade()), elective_format)
+    worksheet.write(row, 12, elective_course.course.get_credits(), elective_format)
+"""""""""""""""""""""""""""""""""""""""
+
 
 """""""""""""""""""""""""""""""""""""""
 PRINT FOREIGN LANGUAGE REQUIREMENT
@@ -243,7 +333,7 @@ worksheet.write(row, 12, hum_course.course.get_credits(), hum_format)
 
 """""""""""""""""""""""""""""""""""""""
 PRINT FINE ARTS REQUIREMENT
-
+"""""""""""""""""""""""""""""""""""""""
 row = 15
 banner_list = banner["fa"] 
 formats.short_merge_dx(row, banner_list[0], 1)
@@ -253,7 +343,7 @@ formats.course_det_right(row+1)
 
 fa_list = fa_req.get("courses done")
 fa_format = formats.border_left
-"""""""""""""""""""""""""""""""""""""""
+
 
 """
 if fa_list[0][1] == 0:
@@ -261,7 +351,7 @@ if fa_list[0][1] == 0:
 elif fa_list[0][1] == 1:
     grade_format = formats.border_center
 """    
-"""""""""""""""""""""""""""""""""""""""
+
 fa_course = fa_list[0][0]
 
 row = 17
@@ -271,8 +361,13 @@ worksheet.write(row, 9, fa_course.course.get_number(), fa_format)
 worksheet.write(row, 10, fa_course.get_term(), fa_format)
 worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
 worksheet.write(row, 12, fa_course.course.get_credits(), fa_format)
-"""""""""""""""""""""""""""""""""""""""
 
+
+
+
+
+
+    
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

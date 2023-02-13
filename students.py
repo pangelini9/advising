@@ -338,6 +338,7 @@ class Student:
                 self.m_fa["courses done"].append([cc,1])
             else:
         """
+
         counter = len(self.reduced_courses_list)
         while counter>0 and self.m_fa["courses missing"]!=0:
             course_codes = ["FA","AH", "ARCH", "AS", "CW", "DR", "MUS"]
@@ -357,7 +358,9 @@ class Student:
                                 self.reduced_courses_list.remove(i)                                
                 counter -= 1
         return self.m_fa
-    
+        
+        
+        
     def check_flanguage(self, student): 
         """
         course structure
@@ -448,19 +451,13 @@ class Student:
     #def check_minor1(self):
     
     #def check_minor2
-    
-
-
-          
-   
-    
-    
-        #"English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"    
+    #"English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"    
     
     
     
         
 def create_student_list():
+    #with open('students_file.json', 'r') as myfile:
     with open('students_list.json', 'r') as myfile:
        students_list = json.load(myfile)
       

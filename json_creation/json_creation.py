@@ -35,12 +35,20 @@ for x in range(25, len(terms)):
     if type(courses[x]) is str and courses[x] != "Course ID" and not courses[x].startswith("ADMIN"):
         print(f"{current_term} - {courses[x]} - {course_names[x]}. Grade: {grades[x]}. Credits: {creds[x]}")
         
-        course_id = courses[x]
+        if courses[x].endswith("H"):
+            cou = courses[x][0:-2]
+        elif courses[x].endswith("ii"):
+            cou = courses[x][0:-2]
+        elif courses[x].endswith("i"):
+            cou = courses[x][0:-1]
+        else:
+            cou = courses[x]
         # search for the ID in the json file
         # SOME COURSES (ONLY EN?) HAVE i OR ii AT THE END OF THE CODE. ASK REGISTRAR
         # IF WE CAN IGNORE, WE MAY SIMPLY REMOVE THE i FROM THE STRING BEFORE THE TEST
+        course_id = "error"
         for c in course_id_list:
-            if courses[x] == f"{c[1]} {c[2]}":
+            if cou == f"{c[1]} {c[2]}":
                 course_id = c[5]
         
         honors = 0 
@@ -48,13 +56,15 @@ for x in range(25, len(terms)):
         # there should be an H at the end of the code
         if courses[x].endswith("H"):
             honors = 1
+            
         something = 1 # CHECK WHAT THIS MEANS AND CHANGE THIS TO 2 IF NEEDED
         if type(grades[x]) is str:
             term = current_term
+            grade = grades[x]
         else:
             term = "current"
-
-        new_course = [course_id, something, grades[x], term, honors]
+            grade = "current"
+        new_course = [course_id, something, grade, term, honors]
         stud_courses.append(new_course)
         
 data = []
