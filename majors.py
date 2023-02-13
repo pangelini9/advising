@@ -76,6 +76,9 @@ class Major:
             
     def add_elective(self, course):
         self.major_electives.append(course)        
+
+"""
+when dictionaries were in a list
         
 def create_major_list():
     with open('majors_list.json', 'r') as myfile:
@@ -94,4 +97,24 @@ def create_major_list():
         major_obj.append(major)
         i = i+1
     
+    return major_obj     
+"""
+
+def create_major_list():
+    with open('majors_dictionaries.json', 'r') as myfile:
+       majors_dict = json.load(myfile)
+      
+    major_obj = []
+    
+    for i in majors_dict.keys():
+        curr_major = majors_dict[i]
+        #for j in majors_dict[i]:
+        major = Major(i, curr_major['math requirement'], curr_major['additional requirements'], curr_major['core courses'], curr_major['major electives'], curr_major['electives description'], curr_major['major key'])
+        print(major.name)
+        cc = major.add_req
+        print(cc)
+        print(major.core_courses)
+        print(major.major_electives)
+        major_obj.append(major)
+
     return major_obj     
