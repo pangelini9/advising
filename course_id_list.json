@@ -1,4 +1,5 @@
-[["Fine Arts Elective", "FA", 0, 3, [], 900],
+[
+["Fine Arts Elective", "FA", 0, 3, [], 900],
 ["Greek Elective", "GRK", 0, 3, [], 901],
 ["Humanities Elective", "HM", 0, 3, [], 902],
 ["Latin Elective", "LAT", 0, 3, [], 903],
@@ -149,4 +150,10 @@
 ["Operations Management", "MGT", 330, 3, [], 141],
 ["International Management", "MGT", 426, 3, [], 142],
 ["International Marketing", "MKT", 330, 3, [], 143],
-["Strategic Management", "MGT", 498, 3, [], 144]]
+["Strategic Management", "MGT", 498, 3, [], 144],
+["Public Speaking", "COM", 101, 3, [], 145],
+["Painting", "AS", 204, 3, [], 146],
+["Classical Mythology", "CL", 260, 3, [], 147],
+["Intercultural Communications", "CMS", 280, 3, [], 148],
+["Intermediate Spanish II", "SPAN", 202, 3, [], 149]
+]
