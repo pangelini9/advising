@@ -335,7 +335,7 @@ worksheet.write(row, 12, hum_course.course.get_credits(), hum_format)
 PRINT FINE ARTS REQUIREMENT
 """""""""""""""""""""""""""""""""""""""
 
-"""
+
 row = 15
 banner_list = banner["fa"] 
 formats.short_merge_dx(row, banner_list[0], 1)
@@ -348,6 +348,7 @@ fa_format = formats.border_left
 
 
 
+"""
 fa_course = fa_list[0][0]
 
 row = 17
@@ -360,11 +361,13 @@ worksheet.write(row, 12, fa_course.course.get_credits(), fa_format)
 """
 
 """
-if fa_list[0][1] == 0:
-    grade_format = formats.color_cell3
-elif fa_list[0][1] == 1:
-    grade_format = formats.border_center
+    if fa_list[0][1] == 0:
+        grade_format = formats.color_cell3
+    elif fa_list[0][1] == 1:
+        grade_format = formats.border_center
 """   
+
+
 
     
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

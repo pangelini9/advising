@@ -1,11 +1,11 @@
 import pandas as pd
 import json
 
-with open("course_id_list.json") as myFile:
+with open("../course_id_list.json") as myFile:
     course_id_list = json.load(myFile)
     print(course_id_list)
 
-df = pd.read_excel('scianetti_export.xls')
+df = pd.read_excel('fall23.xlsx', sheet_name="scianetti")
 
 student = df['Unnamed: 0'][10]
 print(f"Name: {student}")
@@ -35,6 +35,10 @@ for x in range(25, len(terms)):
     if type(courses[x]) is str and courses[x] != "Course ID" and not courses[x].startswith("ADMIN"):
         print(f"{current_term} - {courses[x]} - {course_names[x]}. Grade: {grades[x]}. Credits: {creds[x]}")
         
+        # search for the ID in the json file
+        # SOME COURSES (ONLY EN?) HAVE i OR ii AT THE END OF THE CODE. ASK REGISTRAR
+        # IF WE CAN IGNORE, FOR NOW WE SIMPLY REMOVE THE i FROM THE STRING BEFORE THE TEST
+        # we also remove the H for the honors
         if courses[x].endswith("H"):
             cou = courses[x][0:-2]
         elif courses[x].endswith("ii"):
@@ -43,13 +47,15 @@ for x in range(25, len(terms)):
             cou = courses[x][0:-1]
         else:
             cou = courses[x]
-        # search for the ID in the json file
-        # SOME COURSES (ONLY EN?) HAVE i OR ii AT THE END OF THE CODE. ASK REGISTRAR
-        # IF WE CAN IGNORE, WE MAY SIMPLY REMOVE THE i FROM THE STRING BEFORE THE TEST
+
         course_id = "error"
         for c in course_id_list:
-            if cou == f"{c[1]} {c[2]}":
-                course_id = c[5]
+            if c[2] != 0:
+                if cou == f"{c[1]} {c[2]}":
+                    course_id = c[5]
+            else:
+                if cou == f"{c[1]}":
+                    course_id = c[5]
         
         honors = 0 
         # change to 1 if taken with honors
@@ -69,7 +75,8 @@ for x in range(25, len(terms)):
         
 data = []
 
-data.append(student) # add the student
+data.append(student[4:student.index(" ", 5)]) # add student's first name (ASSUMING SINGLE NAME - IT DOES NOT REALLY MATTER, I THINK)
+data.append(student[student.index(" ", 5)+1:]) # add student's last name
 data.append(1) # CHECK WHAT 1 MEANS HERE
 data.append(0) # CHECK WHAT 0 MEANS HERE
 data.append("") # CHECK WHAT "" MEANS HERE
