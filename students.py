@@ -151,7 +151,7 @@ class Student:
                     to_insert = False # non è d inserire
             if to_insert:
                 self.reduced_courses_list.append(current_course)
-            print(len(self.reduced_courses_list))
+            #print(len(self.reduced_courses_list))
         
     def check_ma_req(self):
         math_req = self.major.get_math_requirement()
@@ -200,7 +200,7 @@ class Student:
                     
     #def check_electives(self):
      
-    def check_eng_requirement(self, student):
+    def check_eng_requirement(self):
     
             #when passing the course to the list
             #0 = Failed (below D-)
@@ -209,7 +209,9 @@ class Student:
             #3 = current
     
             for i in self.reduced_courses_list:
+                print("en")
                 if i.course.get_code()=="EN":
+                    print("recognized en course")
                     if i.course.get_number() == 103:
                         if i.get_grade() >= letter_to_number.get("C"):
                             self.m_en.append([i,1]) 

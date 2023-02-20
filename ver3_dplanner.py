@@ -116,7 +116,7 @@ banner_list = banner["eng"]
 formats.short_merge_sx(row, banner_list[0], 1)
 formats.short_merge_sx(row+1, banner_list[1], 0) #print english banner
 formats.course_det_left(row+1)
-eng_requirement = curr_student.check_eng_requirement(curr_student)
+eng_requirement = curr_student.check_eng_requirement()
 
 for i in range(0, len(eng_requirement)):
     en_course = eng_requirement[i]
@@ -171,7 +171,7 @@ banner_list = banner["B"]
 formats.short_merge_sx(row, banner_list[0], 1)
 #formats.short_merge_sx(row+1, banner_list[1], 0) #print core courses
 #additional_requirements = curr_student.check_additional()
-formats.course_det_left(row+1)
+formats.course_det_left(row)
 
 """""""""""""""""""""""""""""""""""""""
 additional_list = additional_requirements.get("courses done")
@@ -334,6 +334,8 @@ worksheet.write(row, 12, hum_course.course.get_credits(), hum_format)
 """""""""""""""""""""""""""""""""""""""
 PRINT FINE ARTS REQUIREMENT
 """""""""""""""""""""""""""""""""""""""
+
+"""
 row = 15
 banner_list = banner["fa"] 
 formats.short_merge_dx(row, banner_list[0], 1)
@@ -345,12 +347,6 @@ fa_list = fa_req.get("courses done")
 fa_format = formats.border_left
 
 
-"""
-if fa_list[0][1] == 0:
-    grade_format = formats.color_cell3
-elif fa_list[0][1] == 1:
-    grade_format = formats.border_center
-"""    
 
 fa_course = fa_list[0][0]
 
@@ -361,11 +357,14 @@ worksheet.write(row, 9, fa_course.course.get_number(), fa_format)
 worksheet.write(row, 10, fa_course.get_term(), fa_format)
 worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
 worksheet.write(row, 12, fa_course.course.get_credits(), fa_format)
+"""
 
-
-
-
-
+"""
+if fa_list[0][1] == 0:
+    grade_format = formats.color_cell3
+elif fa_list[0][1] == 1:
+    grade_format = formats.border_center
+"""   
 
     
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
