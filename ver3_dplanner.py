@@ -84,7 +84,7 @@ courses_taken_list = curr_student.get_coursesTaken()
 courses_taken_obj = create_coursetaken_obj(curr_student, courses_taken_list, courses_list)
 curr_student.change_courses(courses_taken_obj)
 curr_student.remove_retake() #toglie retake
-    #print(curr_student.get_coursesTaken())
+#print(curr_student.get_coursesReduced())
 
 #compute credits and standing for the student
 curr_student.cumpute_gpa()
@@ -128,12 +128,12 @@ for i in range(0, len(eng_requirement)):
     elif eng_requirement[1] == 3:
         en_format = formats.color_cell4
     row = 7+i
-    worksheet.write(row, 0, en_course.course.get_name(), en_format) #col A=0
-    worksheet.write(row, 1, en_course.course.get_code(), en_format)
-    worksheet.write(row, 2, en_course.course.get_number(), en_format)
-    worksheet.write(row, 3, en_course.get_term(), en_format)
-    worksheet.write(row, 4, number_to_letter.get(en_course.get_grade()), en_format)
-    worksheet.write(row, 5, en_course.course.get_credits(), en_format)
+    worksheet.write(row, 0, en_course[0].course.get_name(), en_format) #col A=0
+    worksheet.write(row, 1, en_course[0].course.get_code(), en_format)
+    worksheet.write(row, 2, en_course[0].course.get_number(), en_format)
+    worksheet.write(row, 3, en_course[0].get_term(), en_format)
+    worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), en_format)
+    worksheet.write(row, 5, en_course[0].course.get_credits(), en_format)
     
 
 
@@ -408,5 +408,5 @@ num_missing = curr_student.return_missing()
 row = 20
 formats.legend_structure(missing_list, num_missing, row)
 
-print("CC")
+#print("CC")
 workbook.close()

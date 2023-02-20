@@ -62,6 +62,11 @@ class Student:
 
     def get_coursesTaken(self):
         return self.courses_done
+        #return self.reduced_courses_list
+        
+    def get_coursesReduced(self):
+        return self.reduced_courses_list
+
     
     #adds to the lit of courses the list for each course done by the student
     def add_course(self, course):
@@ -150,8 +155,8 @@ class Student:
                 if current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and current_course.course.get_number() not in special_courses:
                     to_insert = False # non è d inserire
             if to_insert:
-                self.reduced_courses_list.append(current_course)
-            #print(len(self.reduced_courses_list))
+                self.reduced_courses_list.insert(0, current_course)
+            print(len(self.reduced_courses_list))
         
     def check_ma_req(self):
         math_req = self.major.get_math_requirement()
@@ -207,9 +212,11 @@ class Student:
             #1 = Grade requirement satifsfied (above C)
             #2 = Grade requirement not satifsfied (between D- and C-)
             #3 = current
-    
+            print(self.reduced_courses_list)
+            lit_counter = 0
             for i in self.reduced_courses_list:
-                print("en")
+                print("ciao")
+                print(i.course.get_code())
                 if i.course.get_code()=="EN":
                     print("recognized en course")
                     if i.course.get_number() == 103:
@@ -231,7 +238,18 @@ class Student:
                         else:
                             self.m_en.append([i,0])
                         self.reduced_courses_list.remove(i)
-                return self.m_en
+                        
+                    elif i.course.get_number() >= 200 and lit_counter<2:
+                        if i.get_grade() >= letter_to_number.get("D-"):
+                            self.m_en.append([i,1])
+                        elif i.get_grade() == letter_to_number.get("current"):
+                            self.m_en.append([i,3])
+                        else:
+                            self.m_en.append([i,0])
+                        self.reduced_courses_list.remove(i)
+                        lit_counter += 1
+                  
+            return self.m_en
     
 
         
