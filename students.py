@@ -75,7 +75,7 @@ class Student:
     #change major key into major object
     def change_major(self, majorobj):
         self.major = majorobj
-        print(self.major)
+        #print(self.major)
         
     #change list of courses into the list of objects of the class Courses_taken
     def change_courses(self, courses_taken_obj):
@@ -148,15 +148,17 @@ class Student:
     def remove_retake(self):
         #poi da modificare per fare il confronto sul term
         special_courses = [0, 281, 299, 381, 399]
-        for i in range(len(self.courses_done)-1, 0, -1):
+        for i in range(len(self.courses_done)-1, -1, -1):
             current_course = self.courses_done[i]
             to_insert = True #è da inserire in reduced
+            print(current_course.course.get_code())
             for h in self.reduced_courses_list:
                 if current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and current_course.course.get_number() not in special_courses:
                     to_insert = False # non è d inserire
             if to_insert:
                 self.reduced_courses_list.insert(0, current_course)
-            print(len(self.reduced_courses_list))
+                
+            #print(len(self.reduced_courses_list))
         
     def check_ma_req(self):
         math_req = self.major.get_math_requirement()
@@ -187,8 +189,20 @@ class Student:
                         break
         return self.m_ma
             
-    #def check_additional(self):
-        
+    def check_additional(self):
+        additional_courses = self.major.get_additional_requirements()
+        for i in additional_courses:
+            found = False
+            for j in self.reduced_courses_list:
+                if i[0] == j.course.get_course_key():
+                    self.m_additional["courses done"].append(j)
+                    self.reduced_courses_list.remove(j)
+                    found = True
+            if not found:
+                self.m_additional["courses missing"] += 1
+        return self.m_additional
+    
+    #da aggiungere il check dei voti, ogni volta che c'è lower than c-    
     def check_core(self):
         core_courses = self.major.get_core_courses()
         for i in core_courses:
@@ -212,13 +226,13 @@ class Student:
             #1 = Grade requirement satifsfied (above C)
             #2 = Grade requirement not satifsfied (between D- and C-)
             #3 = current
-            print(self.reduced_courses_list)
+            #print(self.reduced_courses_list)
             lit_counter = 0
             for i in self.reduced_courses_list:
-                print("ciao")
-                print(i.course.get_code())
+                #print("ciao")
+                #print(i.course.get_code())
                 if i.course.get_code()=="EN":
-                    print("recognized en course")
+                    #print("recognized en course")
                     if i.course.get_number() == 103:
                         if i.get_grade() >= letter_to_number.get("C"):
                             self.m_en.append([i,1]) 
@@ -250,6 +264,45 @@ class Student:
                         lit_counter += 1
                   
             return self.m_en
+        
+        
+    def check_sci(self):
+        """
+        course structure
+        #Course(namecourse, code, number, credits_num, req_list, course_key)
+        #Course_taken(course, student, course_section, grade, term, c_type)
+        
+        when passing the course to the list
+        0 = Failed (below D-)
+        1 = Grade requirement satifsfied (above C)
+        2 = Grade requirement not satifsfied (between D- and C-)
+        3 = current
+        """
+        counter = len(self.reduced_courses_list)
+        while counter>0 and self.m_sci["courses missing"]!=0:
+            course_codes = ["MA", "NS", "CS"]
+            for i in self.reduced_courses_list:
+                #print(i.course.get_code())
+                if self.m_sci["courses missing"] == 0:
+                    break
+                else:
+                    for j in course_codes:
+                        if j == i.course.get_code():
+                            #print("recognized sci course")
+                            c_creds = i.course.get_credits()
+                            if i.get_grade() >= letter_to_number.get("F"): #check on grades
+                                #print("accepted grade")
+                                self.m_sci["courses done"].append([i,1]) 
+                                self.reduced_courses_list.remove(i)
+                                if c_creds == 3:                               #check on credits
+                                    self.m_sci["courses missing"] -= 1
+                                elif c_creds == 6:
+                                    self.m_sci["courses missing"] -= 2
+                            else:
+                                self.m_sci["courses done"].append([i,0]) 
+                                self.reduced_courses_list.remove(i)        
+                counter -= 1 
+            return self.m_sci
     
 
         
@@ -337,7 +390,7 @@ class Student:
                                 self.reduced_courses_list.remove(i)    
                                 
                 counter -=1            
-        return self.m_hum
+            return self.m_hum
         
     def check_arts(self, student):
         """
@@ -363,21 +416,27 @@ class Student:
         while counter>0 and self.m_fa["courses missing"]!=0:
             course_codes = ["FA","AH", "ARCH", "AS", "CW", "DR", "MUS"]
             for i in self.reduced_courses_list:
+                print("entered fa")
                 if self.m_fa["courses missing"] == 0:
+                    print("fail")
                     break
                 else:
+                    print("entered check")
                     for j in course_codes:
+                        print(j + " " + i.course.get_code())
                         if j == i.course.get_code():
+                            print("recognized fa course")
                             #c_creds = i.course.get_credits()
                             if i.get_grade() >= letter_to_number.get("F"): #check on grades
+                                print("added course")
                                 self.m_fa["courses done"].append([i,1]) 
                                 self.reduced_courses_list.remove(i)
                                 self.m_fa["courses missing"] -= 1
                             else:
                                 self.m_fa["courses done"].append([i,0]) 
                                 self.reduced_courses_list.remove(i)                                
-                counter -= 1
-        return self.m_fa
+                counter -= 1 
+            return self.m_fa
         
         
         
@@ -488,8 +547,8 @@ def create_student_list():
         student = Student(curr_student[0], curr_student[1], curr_student[2], curr_student[3], curr_student[4], curr_student[5])
         courses_t = curr_student[6]
         for course in courses_t:
+            print(course)
             student.add_course(course)
         #print(student.courses_done)
         student_obj.append(student)
-        i = i+1
         return student_obj

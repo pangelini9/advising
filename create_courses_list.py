@@ -20,6 +20,7 @@ create_coursetaken_obj():
 import json
 from courses import Course, Course_taken
 
+#creates objects for each of the courses
 def create_course_obj():
     with open('course_id_list.json', 'r') as myfile:
       general_courses = json.load(myfile)
@@ -36,6 +37,7 @@ def create_course_obj():
     return courses_obj
 
     #you need to change the credits for honor courses
+#takes the objects of the general courses and modifies for the student
 def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
     courses_taken_obj = []
     

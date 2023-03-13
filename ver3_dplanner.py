@@ -121,18 +121,18 @@ eng_requirement = curr_student.check_eng_requirement()
 for i in range(0, len(eng_requirement)):
     en_course = eng_requirement[i]
     en_format = formats.border_left
-    if eng_requirement[1] == 1:
-        en_format = formats.color_cell2
-    elif eng_requirement[1] == 2:
-        en_format = formats.color_cell3
-    elif eng_requirement[1] == 3:
-        en_format = formats.color_cell4
+    if en_course[1] == 1:
+        grade_format = formats.border_center
+    elif en_course[1] == 2:
+        grade_format = formats.color_cell3
+    elif en_course[1] == 3:
+        grade_format = formats.color_cell4
     row = 7+i
     worksheet.write(row, 0, en_course[0].course.get_name(), en_format) #col A=0
     worksheet.write(row, 1, en_course[0].course.get_code(), en_format)
     worksheet.write(row, 2, en_course[0].course.get_number(), en_format)
     worksheet.write(row, 3, en_course[0].get_term(), en_format)
-    worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), en_format)
+    worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
     worksheet.write(row, 5, en_course[0].course.get_credits(), en_format)
     
 
@@ -162,7 +162,6 @@ worksheet.write(row, 3, ma_course.get_term(), ma_format)
 worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
 worksheet.write(row, 5, ma_course.course.get_credits(), ma_format)
 
-
 """""""""""""""""""""""""""""""""""""""
 PRINT ADDITIONAL REQUIREMENTS
 """""""""""""""""""""""""""""""""""""""
@@ -170,14 +169,14 @@ row = 28
 banner_list = banner["B"] 
 formats.short_merge_sx(row, banner_list[0], 1)
 #formats.short_merge_sx(row+1, banner_list[1], 0) #print core courses
-#additional_requirements = curr_student.check_additional()
+additional_requirements = curr_student.check_additional()
 formats.course_det_left(row)
 
-"""""""""""""""""""""""""""""""""""""""
+
 additional_list = additional_requirements.get("courses done")
 for i in range(0, len(additional_list)):
     additional_course = additional_list[i]
-    core_format = formats.border_left
+    additional_format = formats.border_left
 #different format depending on the stile
     if additional_list[i] == 0: 
         grade_format = formats.color_cell3
@@ -190,7 +189,6 @@ for i in range(0, len(additional_list)):
     worksheet.write(row, 3, additional_course.get_term(), additional_format)
     worksheet.write(row, 4, number_to_letter.get(additional_course.get_grade()), grade_format)
     worksheet.write(row, 5, additional_course.course.get_credits(), additional_format)
-"""""""""""""""""""""""""""""""""""""""
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -211,13 +209,13 @@ for i in range(0, len(core_list)):
     if core_list[i] == 0: 
         grade_format = formats.color_cell3
     elif core_list[i] == 1:
-        core_format = formats.border_center
+        grade_format = formats.border_center
     row = 30+i
     worksheet.write(row, 7, core_course.course.get_name(), core_format) #col H=7
     worksheet.write(row, 8, core_course.course.get_code(), core_format)
     worksheet.write(row, 9, core_course.course.get_number(), core_format)
     worksheet.write(row, 10, core_course.get_term(), core_format)
-    worksheet.write(row, 11, number_to_letter.get(core_course.get_grade()), core_format)
+    worksheet.write(row, 11, number_to_letter.get(core_course.get_grade()), grade_format)
     worksheet.write(row, 12, core_course.course.get_credits(), core_format)
 
 
@@ -228,7 +226,7 @@ PRINT MAJOR ELECTIVES
 row = 42
 banner_list = banner["D"] 
 formats.long_merge(row, banner_list[0], 1) #prints "Major Electives"
-#formats.long_merge(row, banner_list[0], 0) #prints description
+formats.long_merge(row+1, curr_student.major.get_major_explanation(), 0) #prints description
 #major_electives = curr_student.check_electives()
 formats.course_det_left(row+1)
 
@@ -334,8 +332,6 @@ worksheet.write(row, 12, hum_course.course.get_credits(), hum_format)
 """""""""""""""""""""""""""""""""""""""
 PRINT FINE ARTS REQUIREMENT
 """""""""""""""""""""""""""""""""""""""
-
-
 row = 15
 banner_list = banner["fa"] 
 formats.short_merge_dx(row, banner_list[0], 1)
@@ -343,8 +339,22 @@ formats.short_merge_dx(row+1, banner_list[1], 0) #print fine arts banner
 fa_req = curr_student.check_arts(curr_student) 
 formats.course_det_right(row+1)
 
+
 fa_list = fa_req.get("courses done")
 fa_format = formats.border_left
+if fa_list[0] [1] == 0:
+    grade_format = formats.color_cell3
+elif fa_list[0] [1] == 1:
+    grade_format = formats.border_center
+fa_course = fa_list[0][0]
+
+row = 17
+worksheet.write(row, 7, fa_course.course.get_name(), fa_format) #col H=7
+worksheet.write(row, 8, fa_course.course.get_code(), fa_format)
+worksheet.write(row, 9, fa_course.course.get_number(), fa_format)
+worksheet.write(row, 10, fa_course.get_term(), fa_format)
+worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
+worksheet.write(row, 12, fa_course.course.get_credits(), fa_format)
 
 
 
@@ -367,6 +377,32 @@ worksheet.write(row, 12, fa_course.course.get_credits(), fa_format)
         grade_format = formats.border_center
 """   
 
+"""""""""""""""""""""""""""""""""""""""
+PRINT MA, SCI, COMP SCI REQUIREMENT
+"""""""""""""""""""""""""""""""""""""""
+row =  17
+banner_list = banner["sci"] 
+formats.short_merge_sx(row, banner_list[0], 1)
+formats.short_merge_sx(row+1, banner_list[1], 0) #print math, sci, comp sci banner
+sci_requirement = curr_student.check_sci()
+formats.course_det_left(row+1)
+
+sci_list = sci_requirement.get("courses done")
+for i in range(0, len(sci_list)):
+    sci_course = sci_list[i][0]
+    sci_format = formats.border_left
+#different format depending on the stile
+    if sci_list[i] == 0: 
+        grade_format = formats.color_cell3
+    elif sci_list[i] == 1:
+        grade_format = formats.border_center
+    row = 19+i
+    worksheet.write(row, 0, sci_course.course.get_name(), sci_format) #col H=7
+    worksheet.write(row, 1, sci_course.course.get_code(), sci_format)
+    worksheet.write(row, 2, sci_course.course.get_number(), sci_format)
+    worksheet.write(row, 3, sci_course.get_term(), sci_format)
+    worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
+    worksheet.write(row, 5, sci_course.course.get_credits(), sci_format)
 
 
     
