@@ -5,7 +5,7 @@ with open("../course_id_list.json") as myFile:
     course_id_list = json.load(myFile)
     print(course_id_list)
 
-df = pd.read_excel('fall23.xlsx', sheet_name="scianetti")
+df = pd.read_excel('scianetti_export.xls') #, sheet_name="scianetti")
 
 student = df['Unnamed: 0'][10]
 print(f"Name: {student}")
@@ -83,7 +83,7 @@ data.append("") # CHECK WHAT "" MEANS HERE
 data.append("") # CHECK WHAT "" MEANS HERE
 data.append(stud_courses)
         
-with open("student_file.json", "w") as myFile:
+with open("../students_list.json", "w") as myFile:
     # DUMPING A LIST CONTAINING THE LIST DATA, AS IN THE ORIGINAL JSON
     # CHECK WHETHER THIS IS NEEDED. IF NOT, REMOVE []
     json.dump([data], myFile)

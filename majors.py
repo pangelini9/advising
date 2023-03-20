@@ -60,7 +60,7 @@ class Major:
         return self.core_courses
     
     def get_major_electives(self):
-        self.major_electives
+        return self.major_electives
     
     def get_major_explanation(self):
         return self.explanation
@@ -111,8 +111,7 @@ def create_major_list():
         #for j in majors_dict[i]:
         major = Major(i, curr_major['math requirement'], curr_major['additional requirements'], curr_major['core courses'], curr_major['major electives'], curr_major['electives description'], curr_major['major key'])
         print(major.name)
-        cc = major.add_req
-        print(cc)
+        print(major.add_req)
         print(major.core_courses)
         print(major.major_electives)
         major_obj.append(major)

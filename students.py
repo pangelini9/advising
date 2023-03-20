@@ -40,7 +40,8 @@ class Student:
         self.m_fa = {"courses missing"  : 1, "courses done" : []}
         self.m_additional = {"courses missing"  : 0, "courses done" : []}
         self.m_core = {"courses missing"  : 0, "courses done" : []}
-        self.m_electives = {"courses missing"  : 0, "courses done" : []}
+        self.m_majorelectives = {"courses missing"  : 0, "courses done" : []}
+        self.m_genelectives = []
         
     def get_name(self):
         return self.name
@@ -151,10 +152,11 @@ class Student:
         for i in range(len(self.courses_done)-1, -1, -1):
             current_course = self.courses_done[i]
             to_insert = True #è da inserire in reduced
-            print(current_course.course.get_code())
+            #print(current_course.course.get_code())
             for h in self.reduced_courses_list:
-                if current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and current_course.course.get_number() not in special_courses:
-                    to_insert = False # non è d inserire
+                if current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number() not in special_courses or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
+                    
+                        to_insert = False # non è da inserire
             if to_insert:
                 self.reduced_courses_list.insert(0, current_course)
                 
@@ -216,9 +218,38 @@ class Student:
                 self.m_core["courses missing"] += 1
         return self.m_core
                     
-                    
-    #def check_electives(self):
-     
+  
+    def check_major_electives(self):
+        melective_list = self.major.get_major_electives()
+        #print(melective_list)
+        #print(melective_list)
+
+        #if self.major.get_name != "Business Administration" : 
+        for i in melective_list:
+            #print("entered loop")
+            counter = i[0] 
+            #found = False
+            for j in self.reduced_courses_list:
+                if counter!=0 and j.course.get_number() >= i[1] and j.course.get_code() in i[2]:
+                    self.m_majorelectives["courses done"].append(j)
+                    self.reduced_courses_list.remove(j)  
+                    counter -= 1
+                            #found = True
+                            
+        return self.m_majorelectives
+        #else:
+        #    print("Business Administration")
+        
+        
+        
+    def check_genelectives(self):
+        for i in self.reduced_courses_list:
+            if i.get_grade() >= letter_to_number.get("D"):
+                self.m_genelectives.append([i,1])
+            else:
+                self.m_genelectives.append([i,0])
+        return self.m_genelectives
+        
     def check_eng_requirement(self):
     
             #when passing the course to the list
@@ -416,19 +447,19 @@ class Student:
         while counter>0 and self.m_fa["courses missing"]!=0:
             course_codes = ["FA","AH", "ARCH", "AS", "CW", "DR", "MUS"]
             for i in self.reduced_courses_list:
-                print("entered fa")
+                #print("entered fa")
                 if self.m_fa["courses missing"] == 0:
-                    print("fail")
+                    #print("fail")
                     break
                 else:
-                    print("entered check")
+                    #print("entered check")
                     for j in course_codes:
-                        print(j + " " + i.course.get_code())
+                        #print(j + " " + i.course.get_code())
                         if j == i.course.get_code():
-                            print("recognized fa course")
+                            #print("recognized fa course")
                             #c_creds = i.course.get_credits()
                             if i.get_grade() >= letter_to_number.get("F"): #check on grades
-                                print("added course")
+                                #print("added course")
                                 self.m_fa["courses done"].append([i,1]) 
                                 self.reduced_courses_list.remove(i)
                                 self.m_fa["courses missing"] -= 1
@@ -470,7 +501,8 @@ class Student:
                         if self.m_flang["courses missing"] == 0:
                             break
                         for j in course_codes:
-                            if j == i.course.get_code():
+                            #if j == i.course.get_code():
+                            if i.course.get_code().startswith(j) or i.course.get_code().endswith(j):
                                 c_creds = i.course.get_credits()
                                 if i.get_grade() >= letter_to_number.get("C"): #check on grades
                                     self.m_flang["courses done"].append([i,1]) 
@@ -487,7 +519,7 @@ class Student:
     
     def return_missing(self):
         #"Math", "Math, Science, Computer Science", "Foreign Language", "Sosc", "Hum", "FA", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"
-        missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_electives["courses missing"], "NA", "NA"]
+        missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_majorelectives["courses missing"], "NA", "NA"]
         return missing_numcourses
 """ 
     #needs to be checked, ma not 100 nor 101

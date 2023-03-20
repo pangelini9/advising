@@ -227,10 +227,9 @@ row = 42
 banner_list = banner["D"] 
 formats.long_merge(row, banner_list[0], 1) #prints "Major Electives"
 formats.long_merge(row+1, curr_student.major.get_major_explanation(), 0) #prints description
-#major_electives = curr_student.check_electives()
+major_electives = curr_student.check_major_electives()
 formats.course_det_left(row+1)
 
-"""""""""""""""""""""""""""""""""""""""
 electives_list = major_electives.get("courses done")
 for i in range(0, len(electives_list)):
     elective_course = electives_list[i]
@@ -241,13 +240,12 @@ for i in range(0, len(electives_list)):
     elif electives_list[i] == 1:
         elective_format = formats.border_center
     row = 44+i
-    worksheet.write(row, 7, elective_course.course.get_name(), elective_format) #col H=7
-    worksheet.write(row, 8, elective_course.course.get_code(), elective_format)
-    worksheet.write(row, 9, elective_course.course.get_number(), elective_format)
-    worksheet.write(row, 10, elective_course.get_term(), elective_format)
-    worksheet.write(row, 11, number_to_letter.get(elective_course.get_grade()), elective_format)
-    worksheet.write(row, 12, elective_course.course.get_credits(), elective_format)
-"""""""""""""""""""""""""""""""""""""""
+    worksheet.write(row, 0, elective_course.course.get_name(), elective_format) #col H=7
+    worksheet.write(row, 1, elective_course.course.get_code(), elective_format)
+    worksheet.write(row, 2, elective_course.course.get_number(), elective_format)
+    worksheet.write(row, 3, elective_course.get_term(), elective_format)
+    worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), elective_format)
+    worksheet.write(row, 5, elective_course.course.get_credits(), elective_format)
 
 
 """""""""""""""""""""""""""""""""""""""
@@ -404,8 +402,37 @@ for i in range(0, len(sci_list)):
     worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
     worksheet.write(row, 5, sci_course.course.get_credits(), sci_format)
 
+"""""""""""""""""""""""""""""""""""""""
+PRINT GENERAL ELECTIVES
+"""""""""""""""""""""""""""""""""""""""
 
-    
+row = 19
+banner_list = banner["genel"] 
+formats.short_merge_dx(row, banner_list[0], 1)
+formats.short_merge_dx(row+1, banner_list[1], 0) #print general electives courses
+genel_list = curr_student.check_genelectives()
+formats.course_det_right(row+1)
+
+
+
+for i in range(0, len(genel_list)):
+    genel_course = genel_list[i]
+    genel_format = formats.border_left
+#different format depending on the stile
+    if genel_course[1] == 0: 
+        grade_format = formats.color_cell3
+    elif genel_course[1] == 1:
+        grade_format = formats.border_center
+        
+    row = 21+i
+    worksheet.write(row, 7, genel_course[0].course.get_name(), genel_format) #col H=7
+    worksheet.write(row, 8, genel_course[0].course.get_code(), genel_format)
+    worksheet.write(row, 9, genel_course[0].course.get_number(), genel_format)
+    worksheet.write(row, 10, genel_course[0].get_term(), genel_format)
+    worksheet.write(row, 11, number_to_letter.get(genel_course[0].get_grade()), grade_format)
+    worksheet.write(row, 12, genel_course[0].course.get_credits(), genel_format)
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
