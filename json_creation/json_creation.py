@@ -7,9 +7,10 @@ with open("../course_id_list.json") as myFile:
 
 data_list = []
 
-for name in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]: 
-    df = pd.read_excel('fall23.xlsx', sheet_name=name)
-
+#for name in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]: 
+    #df = pd.read_excel('fall23.xlsx', sheet_name=name)
+for name in ["E"]:
+    df = pd.read_excel('scianetti_export.xls', sheet_name=name)
     student = df['Unnamed: 0'][10]
     print(f"Name: {student}")
     
@@ -32,7 +33,7 @@ for name in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]:
     #        print(terms[x])
             current_term = terms[x]
             # DON'T REMEMBER HOW WE ENCODE TRANSFER CREDS: WE MAY NEED TO CHANGE THE CODE HERE
-            if not (current_term.startswith("Fall") or current_term.startswith("Spring") or current_term.startswith("Summer")):
+            if not (current_term.startswith("Fall") or current_term.startswith("Spring") or current_term.startswith("Sum")):
                 current_term = "TR"
     
         if type(courses[x]) is str and courses[x] != "Course ID" and not courses[x].startswith("ADMIN"):
