@@ -88,7 +88,7 @@ class Student:
         #PA: It is the average of the courses grades, weighted on the credits
         creds = 0
         weighted_total=0
-        for i in self.courses_done:
+        for i in self.reduced_courses_list:
             grade = i.get_grade()
             # PA: I am excluding the grades that should not be counted:
             # P (5), W, NP, current, INC, TR (between 0.1 and 0.5 - using 0.6 just in case)
@@ -101,18 +101,14 @@ class Student:
     
     def compute_credits_earned(self):
         self.credits_earned = 0
-        for i in self.courses_done:
-            grade = i.get_grade()
-            if grade != "": # PA: this should also be updated to use the dictionary values
+        for i in self.reduced_courses_list:
+            if i.get_grade()>= letter_to_number.get("D-"):
+            #if grade != "": # PA: this should also be updated to use the dictionary values
                 course_credit = i.get_credits()
                 self.credits_earned += course_credit
             
     def compute_credits_nxsem(self):
-        #if self.highschool == 1:
-        #    self.credits_nxsem = 30
-        #else:
-        #     self.credits_nxsem = 0
-        for i in self.courses_done:
+        for i in self.reduced_courses_list:
             course_credit = i.get_credits()
             self.credits_nxsem += course_credit
     
@@ -248,13 +244,18 @@ class Student:
                     
   
     def check_major_electives(self):
+        """
+        STRUCTURE:
+            "major electives": [[3, [["EC", 300, 1000], ["FIN", 300, 1000]]], [3, [["EC", 200, 1000], ["FIN", 200, 1000], ["BUS", 200, 1000], ["LAW", 200, 1000], ["MA", 200, 1000], ["MGT", 200, 1000], ["MKT", 200, 1000], ["PL", 200, 1000], ["PS", 200, 1000]]]]
+            [cap courses, [list of possible electives indicated with code and interval of valid numbers]]
+        """
         melective_list = self.major.get_major_electives()
         #if self.major.get_name != "Business Administration" : 
         for i in melective_list:
             counter = i[0] 
             for j in self.reduced_courses_list[:]:
-                for m in i[2]:
-                    if counter!=0 and j.course.get_number() >= i[1] and (j.course.get_code().startswith(m) or j.course.get_code().endswith(m)):
+                for m in i[1]:
+                    if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
                         if j.get_grade() == letter_to_number.get("current"):
                             self.m_majorelectives["courses done"].append([j,2])
                             self.reduced_courses_list.remove(j)
@@ -289,6 +290,7 @@ class Student:
             #2 = Grade requirement not satifsfied (between D- and C-)
             #3 = current
             lit_counter = 0
+            approved_substitute = False #for the approved substitute for en
             for i in self.reduced_courses_list[:]:
                 if i.course.get_code().startswith("EN") or i.course.get_code().endswith("EN"):
                 #if i.course.get_code()=="EN":
@@ -321,7 +323,30 @@ class Student:
                             self.m_en.append([i,0])
                         self.reduced_courses_list.remove(i)
                         lit_counter += 1
-                  
+                    
+                elif  i.course.get_code()== "CL" and approved_substitute==False and lit_counter<2:
+                    if i.course.get_number()== 268 or i.course.get_number()== 278:
+                        if i.get_grade() >= letter_to_number.get("D-"):
+                            self.m_en.append([i,1])
+                        elif i.get_grade() == letter_to_number.get("current"):
+                            self.m_en.append([i,3])
+                        else:
+                            self.m_en.append([i,0])
+                        self.reduced_courses_list.remove(i)
+                        approved_substitute = True
+                        lit_counter += 1
+                        
+                elif i.course.get_code()== "ITS" and i.course.get_number()==292 and approved_substitute==False and lit_counter<2:
+                    if i.get_grade() >= letter_to_number.get("D-"):
+                        self.m_en.append([i,1])
+                    elif i.get_grade() == letter_to_number.get("current"):
+                        self.m_en.append([i,3])
+                    else:
+                        self.m_en.append([i,0])
+                    self.reduced_courses_list.remove(i)
+                    approved_substitute = True
+                    lit_counter += 1
+                    
             return self.m_en
         
         
