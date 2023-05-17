@@ -1,6 +1,12 @@
 import pandas as pd
 import json
 
+filename = "scianetti_export.xls"
+worksheets = ["E"]
+language_waived = 1
+major_code = 0
+
+
 with open("../course_id_list.json") as myFile:
     course_id_list = json.load(myFile)
     print(course_id_list)
@@ -9,8 +15,8 @@ data_list = []
 
 #for name in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]: 
     #df = pd.read_excel('fall23.xlsx', sheet_name=name)
-for name in ["E"]:
-    df = pd.read_excel('scianetti_export.xls', sheet_name=name)
+for name in worksheets:
+    df = pd.read_excel(filename, sheet_name=name)
     student = df['Unnamed: 0'][10]
     print(f"Name: {student}")
     
@@ -82,10 +88,10 @@ for name in ["E"]:
     
     data.append(student[4:student.index(" ", 5)]) # add student's first name (ASSUMING SINGLE NAME - IT DOES NOT REALLY MATTER, I THINK)
     data.append(student[student.index(" ", 5)+1:]) # add student's last name
-    data.append(1) # CHECK WHAT 1 MEANS HERE
-    data.append(0) # CHECK WHAT 0 MEANS HERE
-    data.append("") # CHECK WHAT "" MEANS HERE
-    data.append("") # CHECK WHAT "" MEANS HERE
+    data.append(language_waived) # CHECK WHAT 1 MEANS HERE - LANGUAGE - Deafult 0?
+    data.append(major_code) # CHECK WHAT 0 MEANS HERE - MAJOR - GET THE ID FROM JSON
+    data.append("") # CHECK WHAT "" MEANS HERE - Minor 1 - NOT IMPLEMENTED
+    data.append("") # CHECK WHAT "" MEANS HERE - Minor 2 - NOT IMPLEMENTED
     data.append(stud_courses)
     
     data_list.append(data)
