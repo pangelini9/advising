@@ -480,7 +480,7 @@ banner_list = banner["I"]
 formats.legend_merge(row, banner_list[0])
 worksheet.write(row, 15, "Total", formats.bold_left)
 worksheet.write(row, 14, "", formats.bold_left)
-missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"]
+missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
 num_missing = curr_student.return_missing()
 row = 20
 formats.legend_structure(missing_list, num_missing, row)

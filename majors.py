@@ -110,10 +110,10 @@ def create_major_list():
         curr_major = majors_dict[i]
         #for j in majors_dict[i]:
         major = Major(i, curr_major['math requirement'], curr_major['additional requirements'], curr_major['core courses'], curr_major['major electives'], curr_major['electives description'], curr_major['major key'])
-        print(major.name)
-        print(major.add_req)
-        print(major.core_courses)
-        print(major.major_electives)
+        #print(major.name)
+        #print(major.add_req)
+        #print(major.core_courses)
+        #print(major.major_electives)
         major_obj.append(major)
 
     return major_obj     

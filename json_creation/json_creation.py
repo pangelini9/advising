@@ -1,15 +1,19 @@
 import pandas as pd
 import json
 
+#name of the excel file that contains the data of the courses done by the student
 filename = "scianetti_export.xls"
+#name of the excel sheet that contains the data for the student
 worksheets = ["E"]
+#1 if the student has the language waived, 0 if the student does not have the language courses waived
 language_waived = 1
+#key corresponding to the major of the student under consideration
 major_code = 0
 
 
 with open("../course_id_list.json") as myFile:
     course_id_list = json.load(myFile)
-    print(course_id_list)
+    #print(course_id_list)
 
 data_list = []
 
