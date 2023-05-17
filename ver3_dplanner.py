@@ -405,6 +405,8 @@ for i in range(0, len(core_list)):
         grade_format = formats.border_center
     elif course_grade == 2: #current
         grade_format = formats.color_cell4
+    elif course_grade == 3: #D
+        grade_format = formats.color_cell2
     
     row = 26+len(genel_list)+i
     worksheet.write(row, 7, core_course.course.get_name(), course_info_format) #col H=7

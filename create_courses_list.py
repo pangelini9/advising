@@ -30,13 +30,12 @@ def create_course_obj():
     for i in range(0, len(general_courses)):
         curr_course = general_courses[i]
         course = Course(curr_course[0], curr_course[1], curr_course[2], curr_course[3], curr_course[4], curr_course[5])
-        #print(course.name)
+        #namecourse, code, number, credits_num, req_list, course_key
         courses_obj.append(course)
         i = i+1
     
     return courses_obj
 
-    #you need to change the credits for honor courses
 #takes the objects of the general courses and modifies for the student
 def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
     courses_taken_obj = []
@@ -52,6 +51,10 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
                 courses_taken_obj.append(taken_obj)
                 #print(taken_obj.grade)
                 break
+            #elif key_course_taken != courses_list[-1]:
+                #taken_obj = Course_taken(curr_course, curr_student, curr_course_taken[1], curr_course_taken[2], curr_course_taken[3], curr_course_taken[4])
+                #courses_taken_obj.append(taken_obj)
+                #print(f"key_course_taken : this course is not in list")
             else:
                 h += 1
         j += 1

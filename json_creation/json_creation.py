@@ -78,6 +78,7 @@ for name in ["E"]:
             stud_courses.append(new_course)
             
     data = []
+    #name, surname, highschool_credits, major, minor1, minor2
     
     data.append(student[4:student.index(" ", 5)]) # add student's first name (ASSUMING SINGLE NAME - IT DOES NOT REALLY MATTER, I THINK)
     data.append(student[student.index(" ", 5)+1:]) # add student's last name
