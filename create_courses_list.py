@@ -60,6 +60,49 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
         j += 1
     return courses_taken_obj
 
+def create_remaining_list(courses_list, remaining_list):
+    obj_remaining_list =  []
+    #for m in courses_list: #m is an object course
+        #counter +=1
+    for i in range(0, len(remaining_list)):
+        counter = 0
+        curr_info = remaining_list[i] #the list with info about remaing requirement [1, [["EN", 102, 102], ["FIN", 300, 300]]]
+        #print(curr_info)
+        rem_courses_list = curr_info[1]
+        #print(rem_courses_list)
+        prevname = ""
+        for n in rem_courses_list: #each of the individual courses that can be alternatives
+            #counter = 0
+            #print(n)
+            for m in courses_list: #m is an object course
+                if counter==0 and n[0]==m.get_code() and n[1]==m.get_number():
+                    obj_remaining_list.append(m)
+                    counter += 1
+                    prevname = m.get_name()
+                elif counter!=0 and n[0]==m.get_code() and n[1]==m.get_number() and prevname!=m.get_name():
+                    old_name = m.get_name()
+                    new_name = "OR " + old_name #str(old_name)
+                    new_Course = Course(new_name, m.get_code(), m.get_number(), m.get_credits(), m.get_requirements_list(), m.get_course_key())
+                    obj_remaining_list.append(new_Course)
+                    counter += 1
+
+ 
+        """
+        #for i in remaining_list:
+            rem_courses_list = curr_info[1]
+            for n in rem_courses_list:
+                if counter==0 and n[0]==m.get_code() and n[1]==m.get_number():
+                    obj_remaining_list.append(m)
+                    counter += 1
+                elif counter!=0 and n[0]==m.get_code() and n[1]==m.get_number():
+                    new_name = "OR " + m.get_name
+                    new_Course = Course(new_name, m.get_code, m.get_number , m.get_credits , m.get_requirements_list, m.get_course_key)
+                    obj_remaining_list.append(new_Course)
+                    counter += 1
+        """                
+    #print(counter) 
+    return obj_remaining_list                    
+                    
     
 """
 ADD KEYS TO COURSES

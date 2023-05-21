@@ -9,7 +9,7 @@ import xlsxwriter
 from courses import Course, Course_taken
 from students import Student, create_student_list
 from majors import Major, create_major_list
-from create_courses_list import create_course_obj, create_coursetaken_obj
+from create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
 import formats
 from banners import banner
 
@@ -167,8 +167,19 @@ worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 CHECK ADDITIONAL REQUIREMENTS, CORE COURSES, AND GENERAL ELECTIVES
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 additional_requirements = curr_student.check_additional()
+#additional_requirements = curr_student.additional_remaining(courses_list)
+additional_remaining = curr_student.get_additional_remaining()
+obj_additional_remaining = create_remaining_list(courses_list, additional_remaining)
+#print(obj_additional_remaining)
+
 core_courses = curr_student.check_core()
+#core_courses = curr_student.core_remaining(courses_list)
+core_remaining = curr_student.get_core_remaining()
+obj_core_remaining = create_remaining_list(courses_list, core_remaining)
+#print(obj_core_remaining)
+
 major_electives = curr_student.check_major_electives()
 
 
@@ -352,17 +363,26 @@ for i in range(0, len(genel_list)):
     worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
     worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
 
-
+"""""""""""""""""""""""""""""""""""""""
+DECIDE WHAT LENGHT TO PRINT
+"""""""""""""""""""""""""""""""""""""""
+lengt_first_part = 0
+if (21+len(genel_list)) >= 26:
+    lengt_first_part = len(genel_list)
+else:
+    lengt_first_part = 4
+    
 """""""""""""""""""""""""""""""""""""""
 PRINT ADDITIONAL REQUIREMENTS
 """""""""""""""""""""""""""""""""""""""
-row = 24+len(genel_list)
+#row = 24+len(genel_list)
+row = 24+lengt_first_part
 banner_list = banner["B"] 
 formats.short_merge_sx(row, banner_list[0], 1)
 #formats.short_merge_sx(row+1, banner_list[1], 0) #print core courses
 formats.course_det_left(row)
 
-
+#to print the courses that the student has done in this category
 additional_list = additional_requirements.get("courses done")
 #print(additional_list)
 for i in range(0, len(additional_list)):
@@ -376,7 +396,8 @@ for i in range(0, len(additional_list)):
     elif course_grade == 2: #current course
         grade_format = formats.color_cell4
         
-    row = 25+len(genel_list)+i
+    #row = 25+len(genel_list)+i
+    row = 25+lengt_first_part+i
     worksheet.write(row, 0, additional_course.course.get_name(), course_info_format) #col A=0
     worksheet.write(row, 1, additional_course.course.get_code(), course_info_format)
     worksheet.write(row, 2, additional_course.course.get_number(), course_info_format)
@@ -384,11 +405,31 @@ for i in range(0, len(additional_list)):
     worksheet.write(row, 4, number_to_letter.get(additional_course.get_grade()), grade_format)
     worksheet.write(row, 5, additional_course.course.get_credits(), course_info_format)
 
+#to print the courses that the student has not done in this category
+
+#additional_remaining = additional_requirements.get("courses remaining")
+#print(additional_remaining)
+
+for i in range(0, len(obj_additional_remaining)):
+    additional_course = obj_additional_remaining[i]
+    
+    #instead of the check on grades I would put here a check on the pre-requisites to color the cell with the course name
+    
+    #row = 25+len(genel_list)+len(additional_list)+i
+    row = 25+lengt_first_part+len(additional_list)+i
+    worksheet.write(row, 0, additional_course.get_name(), course_info_format) #col A=0
+    worksheet.write(row, 1, additional_course.get_code(), course_info_format)
+    worksheet.write(row, 2, additional_course.get_number(), course_info_format)
+    worksheet.write(row, 3, "", course_info_format)
+    worksheet.write(row, 4, "", course_info_format)
+    worksheet.write(row, 5, additional_course.get_credits(), course_info_format)
+
 
 """""""""""""""""""""""""""""""""""""""
 PRINT CORE COURSES
 """""""""""""""""""""""""""""""""""""""
-row = 24+len(genel_list)
+#row = 24+len(genel_list)
+row = 24+lengt_first_part
 banner_list = banner["C"] 
 formats.short_merge_dx(row, banner_list[0], 1)
 formats.short_merge_dx(row+1, banner_list[1], 0) #print core courses
@@ -408,20 +449,48 @@ for i in range(0, len(core_list)):
     elif course_grade == 3: #D
         grade_format = formats.color_cell2
     
-    row = 26+len(genel_list)+i
+    #row = 26+len(genel_list)+i
+    row = 26+lengt_first_part+i
     worksheet.write(row, 7, core_course.course.get_name(), course_info_format) #col H=7
     worksheet.write(row, 8, core_course.course.get_code(), course_info_format)
     worksheet.write(row, 9, core_course.course.get_number(), course_info_format)
     worksheet.write(row, 10, core_course.get_term(), course_info_format)
     worksheet.write(row, 11, number_to_letter.get(core_course.get_grade()), grade_format)
     worksheet.write(row, 12, core_course.course.get_credits(), course_info_format)
+    
+#to print the courses that the student has not done in this category
+#core_remaining = core_courses.get("courses remaining")
+#print(core_remaining)
 
+#obj_additional_remaining, obj_core_remaining
 
+for i in range(0,len(obj_core_remaining)):
+    core_course = obj_core_remaining[i]
+    
+    #instead of the check on grades I would put here a check on the pre-requisites to color the cell with the course name
+    
+    #row = 26+len(genel_list)+len(core_list)+i
+    row = 26+lengt_first_part+len(core_list)+i
+    #print(core_course.get_name())
+    #print(core_course.get_code())
+    #print(core_course.get_number())
+    #print(core_course.get_credits())
+
+    worksheet.write(row, 7, core_course.get_name(), course_info_format) #col H=7
+    worksheet.write(row, 8, core_course.get_code(), course_info_format)
+    worksheet.write(row, 9, core_course.get_number(), course_info_format)
+    worksheet.write(row, 10, "", course_info_format)
+    worksheet.write(row, 11, "", course_info_format)
+    worksheet.write(row, 12, core_course.get_credits(), course_info_format)
+
+    
 """""""""""""""""""""""""""""""""""""""
 PRINT MAJOR ELECTIVES
 """""""""""""""""""""""""""""""""""""""
 #set the row depending on the longest between core and additional requirements
-row = 30+len(genel_list)+len(core_list)
+#row = 30+len(genel_list)+len(core_list)
+row = 30+lengt_first_part+len(core_list)
+
 banner_list = banner["D"] 
 formats.long_merge(row, banner_list[0], 1) #prints "Major Electives"
 formats.long_merge(row+1, curr_student.major.get_major_explanation(), 0) #prints description
@@ -439,13 +508,15 @@ for i in range(0, len(electives_list)):
     elif course_grade == 2: #current
         grade_format = formats.color_cell4
         
-    row = 32+len(genel_list)+len(core_list)+i
+    #row = 32+len(genel_list)+len(core_list)+i
+    row = 32+lengt_first_part+len(core_list)+i
     worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
     worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
     worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
     worksheet.write(row, 3, elective_course.get_term(), course_info_format)
     worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
     worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
