@@ -13,7 +13,8 @@ Senior    90-...
 """
 
 #general structure expanded
-prerequisites = {"specific course" : [{"code": "", 
+prerequisites = {"specific course" : [{"id" : 0,
+                                       "code": "", 
                                        "number": 0, 
                                        "grade": "", 
                                        "alternative" : 0, #should signal if there are more than one course that can be used to satisfy the requirement
@@ -39,7 +40,7 @@ prerequisites = {"specific course" : [{"code": "",
 
 #general structure condensed
 prerequisites = {
-    "specific course" : [{"code": "", "num": 0, "grade": "", "alternative" : 0, "placement": 0}],
+    "specific course" : [{"id" : 0, "code": "", "num": 0, "grade": "", "alternative" : 0, "placement": 0}],
     "course in category" : [{"code": "", "num": 0, "grade": "", "alternative" : 0}], 
     "standing" : 0,
     "corequisite" : [{"code": "", "num": 0, "grade": ""}],

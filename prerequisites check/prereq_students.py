@@ -677,27 +677,46 @@ class Student:
                         for j in course_codes:
                             #if j == i.course.get_code():
                             if i.course.get_code().startswith(j) or i.course.get_code().endswith(j):
-                                c_creds = i.course.get_credits()
                                 if i.get_grade() >= letter_to_number.get("current"): #check on grades
                                     self.m_flang["courses done"].append([i,2]) 
                                     self.reduced_courses_list.remove(i)
-                                    if c_creds == 3:                               #check on credits
-                                        self.m_flang["courses missing"] -= 1
-                                    elif c_creds == 6:
-                                        self.m_flang["courses missing"] -= 2
-                                elif i.get_grade() >= letter_to_number.get("C"): #check on grades
+                                    self.check_flanguage_level(i)
+                                elif i.get_grade() >= letter_to_number.get("C"): #check on grades (passing grade)
                                     self.m_flang["courses done"].append([i,1]) 
                                     self.reduced_courses_list.remove(i)
-                                    if c_creds == 3:                               #check on credits
-                                        self.m_flang["courses missing"] -= 1
-                                    elif c_creds == 6:
-                                        self.m_flang["courses missing"] -= 2
+                                    self.check_flanguage_level(i)
                                 else:
-                                    self.m_flang["courses done"].append([i,0]) 
+                                    self.m_flang["courses done"].append([i,0]) #check on grades (failing grade)
                                     self.reduced_courses_list.remove(i)                                
                     counter -=1
         return self.m_flang
     
+    def check_flanguage_level(self, fl_course):
+        cnumber = fl_course.course.get_number() 
+        if cnumber == 301: 
+            if self.m_flang["courses missing"] < 5:
+                self.m_flang["courses missing"] = 0
+            else:
+                self.m_flang["courses missing"] -= 5
+        elif cnumber == 202: 
+            if self.m_flang["courses missing"] < 4:
+                self.m_flang["courses missing"] = 0
+            else:
+                self.m_flang["courses missing"] -= 4
+        elif cnumber == 201: 
+            if self.m_flang["courses missing"] < 3:
+                self.m_flang["courses missing"] = 0
+            else:
+                self.m_flang["courses missing"] -= 3
+        elif cnumber == 102: 
+            if self.m_flang["courses missing"] < 2:
+                self.m_flang["courses missing"] = 0
+            else:
+                self.m_flang["courses missing"] -= 2
+        elif cnumber == 101:
+            self.m_flang["courses missing"] -= 1
+
+
     def return_missing(self):
         #"Math", "Math, Science, Computer Science", "Foreign Language", "Sosc", "Hum", "FA", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"
         missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_majorelectives["courses missing"], "NA", "NA"]

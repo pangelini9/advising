@@ -546,35 +546,35 @@ CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
 row = 4 
 banner_list = banner["G"] 
 formats.legend_merge(row, banner_list[0])
-legend_list = ["Course not taken yet", "No more than two core courses can be passed with D", "Grade requirement not satisfied", "Courses that the student is taking the current semester"]
+legend_list = ["No more than two core courses can be passed with D", "Grade requirement not satisfied", "Courses that the student is taking the current semester"]
 formats.legend_structure(legend_list, "", row)
 
 
-legend_format = [formats.color_cell1, formats.color_cell2, formats.color_cell3, formats.color_cell4]
+legend_format = [formats.color_cell2, formats.color_cell3, formats.color_cell4]
 for i in range(0, len(legend_format)):
     position = int(row + i)
     worksheet.write(position, 15, "", legend_format[i])
 
 #general information
-row = 10 
+row = row + 2 +  len(legend_list)
 banner_list = banner["H"] 
 formats.legend_merge(row, banner_list[0])
 worksheet.write(row, 15, "Total", formats.bold_left)
 worksheet.write(row, 14, "", formats.bold_left)
 info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
 data_list = curr_student.create_info_list()
-row = 11
+row = row + 1
 formats.legend_structure(info_list, data_list, row)
 
 #courses missing by section
-row = 19 
+row = row + len(legend_list) + len(info_list) - 1
 banner_list = banner["I"]
 formats.legend_merge(row, banner_list[0])
 worksheet.write(row, 15, "Total", formats.bold_left)
 worksheet.write(row, 14, "", formats.bold_left)
 missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
 num_missing = curr_student.return_missing()
-row = 20
+row = row + 1
 formats.legend_structure(missing_list, num_missing, row)
 
 #print("CC")
