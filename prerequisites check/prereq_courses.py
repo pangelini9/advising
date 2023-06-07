@@ -63,13 +63,14 @@ student = Student(...)
 """
 class Course_taken:
     
-    def __init__(self, course, student, course_section, grade, term, c_type):
+    def __init__(self, course, student, course_section, grade, term, c_type, transfer):
         self.course = course
         self.student = student
         self.section = course_section
         self.grade = letter_to_number.get(grade)
         self.term = term
         self.c_type = c_type #se è honor
+        self.transfer = transfer
         
     def get_course(self):
         return self.course
@@ -94,4 +95,7 @@ class Course_taken:
             return " - Honor"
         else:
             return ""
+        
+    def get_transfer(self):
+        return self.transfer
     

@@ -11,23 +11,27 @@ from courses import letter_to_number
 #NB: major = Major(...)
 #    def __init__(self, name, surname, highschool_credits, major, minor1, minor2, courses_done):
 
-
+#major
 import json
 
 class Student:
     
-    def __init__(self, name, surname, language_waived, major, minor1, minor2):
+    def __init__(self, name, surname, language_waived, major1, major2, double_major, double_degree, minor1, minor2):
         self.name = name
         self.surname = surname
         self.language_waived = language_waived #=1 if yes
-        self.major = major
+        self.major1 = major1
+        self.major2 = major2
+        self.double_major = double_major #yes/no category - this is true if the two majors are written in the same cell
+        self.double_degree = double_degree #yes/no category - this is true if the second major is written in the cell respective to "Second Degree"
         self.minor1 = minor1
         self.minor2 = minor2
         self.courses_done = []
+        self.credits_total = 120
         self.credits_earned = 0
         self.credits_nxsem = 0
-        #must be changed to account for double major
-        self.credits_missing = 120
+        self.credits_missing = 0
+        self.transfer_credits = 0
         self.gpa = 0
         self.curr_standing = ""
         self.nx_standing = ""
@@ -53,8 +57,11 @@ class Student:
     def get_highschool(self):
         return self.highschool_credits
     
-    def get_major(self):
-        return self.major
+    def get_major1(self):
+        return self.major1
+    
+    def get_major2(self):
+        return self.major2
     
     def get_minor1(self):
         return self.minor1
@@ -75,19 +82,35 @@ class Student:
     def get_core_remaining(self):
         return self.m_core["courses remaining"]
     
-    
-    #adds to the lit of courses the list for each course done by the student
+    #adds to the list of courses the list for each course done by the student
     def add_course(self, course):
         self.courses_done.append(course)
     
     #change major key into major object
-    def change_major(self, majorobj):
-        self.major = majorobj
-        #print(self.major)
+    def change_major1(self, majorobj):
+        self.major1 = majorobj
+        
+    def change_major2(self, majorobj):
+        self.major2 = majorobj
         
     #change list of courses into the list of objects of the class Courses_taken
     def change_courses(self, courses_taken_obj):
         self.courses_done = courses_taken_obj
+        
+    def change_credits_total(self):
+        if self.double_degree == 1:
+            self.credits_total = 150
+    
+    #for every course that has not been dropped, this function checks if the course has not been done in residency
+    #if so, it adds its credits to the total
+    def compute_transfer_credits(self):
+        for i in self.reduced_courses_list: 
+            if i.get_transfer() == 1:
+                self.transfer_credits += i.course.get_credits()
+    
+    def add_transfer_credits(self):
+        if self.transfer_credits > 60:
+            self.credits_total += (self.transfer_credits - 60)
         
     def cumpute_gpa(self):
         #do they compure it on the semester and then they do the total or it's
@@ -122,9 +145,9 @@ class Student:
             course_credit = i.get_credits()
             self.credits_nxsem += course_credit
     
-    #does not account for minors
+    #does not account for minors, nor for double majors
     def compute_credits_missing(self):
-        self.credits_missing = 120 - self.credits_nxsem 
+        self.credits_missing = self.credits_total - self.credits_nxsem 
             
     def compute_cur_standing(self):
         if self.credits_earned >= 91:
@@ -624,10 +647,20 @@ class Student:
         2 = Grade requirement not satifsfied (between D- and C-)
         3 = current
         """
+        #if self.major == [lista di id per le varie versioni di political sciences and international affairs (che hanno 4 corsi di lingua)]:
+            #self.m_flang["courses missing"] = 4
+
         counter = len(self.reduced_courses_list)
         while counter>0 and self.m_flang["courses missing"]!=0:
-            if self.language_waived==1:
-                #should this only do a merge and print waived?
+            if self.language_waived==1 and self.m_flang["courses missing"] == 4:
+                number_list = ["First Required Course", "Second Required Course", "Third Required Course", "Fourth Required Course"]
+                for i in range(0,4):
+                    course = Course(number_list[i], "----", "----", "----", [], "")
+                    cc = Course_taken(course, student, 1, "P", "waived", 0)
+                    self.m_flang["courses missing"] -= 1
+                    self.m_flang["courses done"].append([cc,1])
+                    
+            elif self.language_waived==1 and self.m_flang["courses missing"] != 4:
                 number_list = ["First Required Course", "Second Required Course"]
                 for i in range(0,2):
                     course = Course(number_list[i], "----", "----", "----", [], "")
