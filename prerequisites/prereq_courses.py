@@ -70,7 +70,7 @@ class Course_taken:
         self.grade = letter_to_number.get(grade)
         self.term = term
         self.c_type = c_type #se è honor
-        self.transfer = transfer
+        self.transfer = transfer #1 se è transfer/ 0 se no
         
     def get_course(self):
         return self.course

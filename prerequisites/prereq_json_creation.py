@@ -8,7 +8,7 @@ worksheets = ["E"]
 #1 if the student has the language waived, 0 if the student does not have the language courses waived
 language_waived = 1
 #key corresponding to the major of the student under consideration
-major_code = 0
+major_code = 0 #da implementare con la lettura del jason majors
 
 
 with open("../course_id_list.json") as myFile:
@@ -93,7 +93,7 @@ for name in worksheets:
     data.append(student[4:student.index(" ", 5)]) # add student's first name (ASSUMING SINGLE NAME - IT DOES NOT REALLY MATTER, I THINK)
     data.append(student[student.index(" ", 5)+1:]) # add student's last name
     data.append(language_waived) # CHECK WHAT 1 MEANS HERE - LANGUAGE - Deafult 0?
-    data.append(major_code) # CHECK WHAT 0 MEANS HERE - MAJOR - GET THE ID FROM JSON
+    data.append(major_code) # MAJOR - GET THE ID FROM JSON
     data.append("") # CHECK WHAT "" MEANS HERE - Minor 1 - NOT IMPLEMENTED
     data.append("") # CHECK WHAT "" MEANS HERE - Minor 2 - NOT IMPLEMENTED
     data.append(stud_courses)

@@ -16,13 +16,13 @@ import json
 
 class Student:
     
-    def __init__(self, name, surname, language_waived, major1, major2, double_major, double_degree, minor1, minor2):
+    def __init__(self, name, surname, language_waived, major1, major2, double_degree, minor1, minor2):
         self.name = name
         self.surname = surname
         self.language_waived = language_waived #=1 if yes
         self.major1 = major1
         self.major2 = major2
-        self.double_major = double_major #yes/no category - this is true if the two majors are written in the same cell
+        #self.double_major = double_major se ci sono due major e double_degree=False è assumption
         self.double_degree = double_degree #yes/no category - this is true if the second major is written in the cell respective to "Second Degree"
         self.minor1 = minor1
         self.minor2 = minor2

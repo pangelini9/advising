@@ -1,0 +1,29 @@
+BUS 301 Business Ethics (Prerequisite: Junior Standing)
+
+EN 110 Advanced Composition (Prerequisite: Placement via JCU English Composition Placement Exam or completion of either EN 103 or EN 105 with a grade of C or above)
+
+EN 200 Introduction to Literature (Prerequisite: EN 110 with a grade of C or above)
+
+EN 205 Introduction to the Novel (Prerequisite: EN 110 with a grade of C or above)
+
+EC 480 Research Seminar in Economics and Finance (Prerequisites: Senior Standing; EC 301, EC 302, FIN 301, MA 209 or EC 360)
+
+FIN 340 Introduction to Derivatives (Prerequisite: FIN 301)
+
+MA 197 Pre-Calculus (Prerequisite: Placement or completion of MA 101 with a grade of C- or above)
+
+MA 198 Calculus I (Prerequisite: Placement or completion of MA 197 with a grade of C- or above)
+
+MA 209 Statistics II (Prerequisites: CS 110 OR CS 160, MA 208 with a grade of C- or above)
+
+MA 299 Calculus II (Prerequisite: MA 198 with a grade of C- or above)
+
+MA 497 Real Analysis (Prerequisite: MA 198 Calculus I. Recommended: MA 299 Calculus II)
+
+CS 320 Advanced Programming: Python (Prerequisite: CS 160)
+
+EN 370 Introduction to Narrative Studies: Interdisciplinary Applications (Prerequisite: EN 110 with a grade of C or above. In addition, students must have completed one other English literature class or have Junior standing.)
+
+CL 381 Independent Study (Prerequisite: Junior Standing; Corequisite: EN 110)
+Full name
+type of prerequisite
