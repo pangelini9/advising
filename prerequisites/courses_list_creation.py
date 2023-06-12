@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 #name of the excel file that contains the data of the courses done by the student
-filename = "course_list.xlsx"
+filename = "course list.xlsx"
 
 df = pd.read_excel(filename, "lista corsi")
 
@@ -66,11 +66,11 @@ for x in range(0,len(names)):
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
             curr = names[x][3]
-            if current == curr:            
-                course[4]["corequisite"][-1].append(c)
-            # or we have to create a new list
-            else:
-                course[4]["corequisite"] = [c]
+            if curr == "1" or current != curr:
+                course[4]["corequisite"].append([c])
                 current = curr
+            else:
+                course[4]["corequisite"][-1].append(c)
+                
 with open("courses.json", "w") as myFile:
     json.dump(courses, myFile, indent=2)
