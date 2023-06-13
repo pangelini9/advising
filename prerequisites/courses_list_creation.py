@@ -19,7 +19,7 @@ course = ""
 current = ""
 
 for x in range(0,len(names)):
-    print("Analyzing: ", names[x])    
+    #print("Analyzing: ", names[x])    
     if type(names[x]) is not float:
         
         if not (names[x].startswith("PR") and names[x][3].isdigit()) and not (names[x].startswith("CR") and names[x][3].isdigit()):
@@ -46,7 +46,8 @@ for x in range(0,len(names)):
             
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
-            curr = names[x][3]
+            curr = names[x][3:5]
+            print(curr)
             if current == curr:
                 course[4]["prerequisite"][-1].append(c)
             # or we have to create a new list
