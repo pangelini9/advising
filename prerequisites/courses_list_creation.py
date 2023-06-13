@@ -37,17 +37,20 @@ for x in range(0,len(names)):
             
         elif names[x].startswith("PR"):
             
+            grade = "D-"
+            if type(ids[x]) is not float:
+                grade = ids[x]
+            
             # this is a pre-req
             # create the pre-req
             c = {"code": codes[x],
                  "lower bound" : numbers[x],
                  "upper bound" : creds[x],
-                 "grade" : ids[x]}
+                 "grade" : grade}
             
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
-            curr = names[x][3:5]
-            print(curr)
+            curr = names[x][3]
             if current == curr:
                 course[4]["prerequisite"][-1].append(c)
             # or we have to create a new list
@@ -57,12 +60,16 @@ for x in range(0,len(names)):
     
         elif names[x].startswith("CR"):
             
+            grade = "D-"
+            if type(ids[x]) is not float:
+                grade = ids[x]
+
             # this is a pre-req
             # create the pre-req
             c = {"code": codes[x],
                  "lower bound" : numbers[x],
                  "upper bound" : creds[x],
-                 "grade" : ids[x]}
+                 "grade" : grade}
             
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
