@@ -20,7 +20,7 @@ current = ""
 req_grade = ""
 
 for x in range(0,len(names)):
-    #print("Analyzing: ", names[x])    
+    print("Analyzing: ", names[x])    
     if type(names[x]) is not float:
         
         if not (names[x].startswith("PR") and names[x][3].isdigit()) and not (names[x].startswith("CR") and names[x][3].isdigit()):
@@ -33,9 +33,11 @@ for x in range(0,len(names)):
                 # I also need to reset current, for the next pre-req
                 current = ""
                 req_grade = ""
+                
+            print("Work on ", x, names[x])
     
             # initialize a new one
-            course = [names[x], codes[x], numbers[x], creds[x], {"prerequisite":[], "corequisite":[]}, ids[x]]
+            course = [names[x], codes[x], int(numbers[x]), int(creds[x]), {"prerequisite":[], "corequisite":[]}, int(ids[x])]
             
         elif names[x].startswith("PR"):
             
