@@ -17,6 +17,7 @@ ids = df["E"] # also required grade
 courses = []
 course = ""
 current = ""
+req_grade = ""
 
 for x in range(0,len(names)):
     #print("Analyzing: ", names[x])    
@@ -31,11 +32,15 @@ for x in range(0,len(names)):
                 courses.append(course)
                 # I also need to reset current, for the next pre-req
                 current = ""
+                req_grade = ""
     
             # initialize a new one
             course = [names[x], codes[x], numbers[x], creds[x], {"prerequisite":[], "corequisite":[]}, ids[x]]
             
         elif names[x].startswith("PR"):
+            
+            #creds[x]=creds[x].fillna(value=1000, inplace=True)
+            #ids[x] = ids[x].fillna(value='', inplace=True)
             
             # this is a pre-req
             # create the pre-req
@@ -47,7 +52,7 @@ for x in range(0,len(names)):
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
             curr = names[x][3:5]
-            print(curr)
+            #print(curr)
             if current == curr:
                 course[4]["prerequisite"][-1].append(c)
             # or we have to create a new list
@@ -56,6 +61,9 @@ for x in range(0,len(names)):
                 current = curr
     
         elif names[x].startswith("CR"):
+            
+            #creds[x]=creds[x].fillna(value=1000, inplace=True)
+            #ids[x] = ids[x].fillna(value='', inplace=True)
             
             # this is a pre-req
             # create the pre-req

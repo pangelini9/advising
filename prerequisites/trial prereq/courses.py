@@ -30,12 +30,12 @@ letter_to_number = {
 
 class Course:
     
-    def __init__(self, namecourse, code, number, credits_num, req_dict, course_key):
+    def __init__(self, namecourse, code, number, credits_num, req_list, course_key):
         self.name = namecourse
         self.code = code
         self.number = number
         self.credits = credits_num
-        self.requirements_dict = req_dict
+        self.requirements_dict = req_list
         self.course_key = course_key
         
     def get_name(self): #full name
@@ -63,14 +63,13 @@ student = Student(...)
 """
 class Course_taken:
     
-    def __init__(self, course, student, course_section, grade, term, c_type, transfer):
+    def __init__(self, course, student, course_section, grade, term, c_type):
         self.course = course
         self.student = student
         self.section = course_section
         self.grade = letter_to_number.get(grade)
         self.term = term
         self.c_type = c_type #se è honor
-        self.transfer = transfer #1 se è transfer/ 0 se no
         
     def get_course(self):
         return self.course
@@ -95,7 +94,4 @@ class Course_taken:
             return " - Honor"
         else:
             return ""
-        
-    def get_transfer(self):
-        return self.transfer
     

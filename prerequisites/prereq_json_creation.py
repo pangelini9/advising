@@ -103,6 +103,6 @@ for name in worksheets:
 with open("../students_list.json", "w") as myFile:
     # DUMPING A LIST CONTAINING THE LIST DATA, AS IN THE ORIGINAL JSON
     # CHECK WHETHER THIS IS NEEDED. IF NOT, REMOVE []
-    json.dump(data_list, myFile)
+    json.dump(data_list, myFile, indent=2)
         
         
