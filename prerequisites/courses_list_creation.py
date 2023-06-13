@@ -39,18 +39,20 @@ for x in range(0,len(names)):
             
         elif names[x].startswith("PR"):
             
-            #creds[x]=creds[x].fillna(value=1000, inplace=True)
-            #ids[x] = ids[x].fillna(value='', inplace=True)
+            grade = "D-"
+            if type(ids[x]) is not float:
+                grade = ids[x]
             
             # this is a pre-req
             # create the pre-req
             c = {"code": codes[x],
                  "lower bound" : numbers[x],
                  "upper bound" : creds[x],
-                 "grade" : ids[x]}
+                 "grade" : grade}
             
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
+
             curr = names[x][3:5]
             #print(curr)
             if current == curr:
@@ -62,19 +64,20 @@ for x in range(0,len(names)):
     
         elif names[x].startswith("CR"):
             
-            #creds[x]=creds[x].fillna(value=1000, inplace=True)
-            #ids[x] = ids[x].fillna(value='', inplace=True)
-            
+            grade = "D-"
+            if type(ids[x]) is not float:
+                grade = ids[x]
+
             # this is a pre-req
             # create the pre-req
             c = {"code": codes[x],
                  "lower bound" : numbers[x],
                  "upper bound" : creds[x],
-                 "grade" : ids[x]}
+                 "grade" : grade}
             
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
-            curr = names[x][3]
+            curr = names[x][3:5]
             if curr == "1" or current != curr:
                 course[4]["corequisite"].append([c])
                 current = curr
