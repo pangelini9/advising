@@ -63,6 +63,15 @@ curr_student.compute_nx_standing()
 CHECK THE PREREQUISITES
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
+curr_student.create_curr_list()
+course = []
+course = curr_student.check_requirements()
+
+for i in course:
+    print("\n")
+    print(f"the student cannot take the course: \n{i[0].course.get_name()}")
+    print(f"because they have not fullfilled these prerequisites: \n{i[1]}")
+#current_courses=curr_student.return_current()
 
 
 
