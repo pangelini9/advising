@@ -71,6 +71,7 @@ class Student:
         self.noncurrent_courses = []
         self.req_satisfied = []
         self.req_not_satisfied = []
+        self.iteration = 0
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Return Functions
@@ -705,137 +706,115 @@ class Student:
     Prerequisites Check
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     
+    #this function creates a list that contains only the courses that the student is taking currently 
+    #and one that contains all the courses that the student has done in the past semesters
     def create_curr_list(self):
+        """
+        
+        """
         self.noncurrent_courses = self.reduced_courses_list
-        for i in self.reduced_courses_list:
+        for i in self.reduced_courses_list[:]:
             if i.get_grade() == 0.4:
                 self.current_courses.append(i)
                 self.noncurrent_courses.remove(i)
+    
+    def return_current(self):
+        print(self.current_courses)
+        return self.current_courses
+    
+
+    def attributes_check(self, courses_taken, prerequisite):
+        """
+        this function gets one course out of all the courses that satisfy the same prerequisite
+        and the list of all the courses that should be looked into to find the requirement
+        so, the attrribute that should be passed for prerequisites is the list of courses excluding the current ones
+        while the one that should be passed for corequisites is the list of all courses including current
+        """
+        found = False
+        courses_taken = courses_taken
+        prerequisite = prerequisite
+        #missing_list = []
+        #goes through all courses done
+        for c_taken in courses_taken:
+            taken_code = c_taken.course.get_code()
+            taken_num = c_taken.course.get_number()
+            taken_grade = c_taken.get_grade()    
             
+            prereq_code = prerequisite["code"]
+            prereq_grade = prerequisite["grade"]
+            
+            #if prereq_grade is float:
+                #prereq_grade = "D-"
+                    
+            lower_bound = prerequisite["lower bound"]
+            upper_bound = prerequisite["upper bound"]
+            
+            #se il prerequisito è lo standing
+            if prereq_code == "S":
+                if self.credits_earned>=lower_bound:
+                    found = True
+                    
+            #se il prerequisito è un qualunque corso o range di corsi
+            else:
+                if taken_code==prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))) and taken_grade>=letter_to_number.get(prereq_grade):
+                    print("found")
+                    found = True
+        return found
+                    
     def check_requirements(self):
         #for loop sui current course:
+        info_list = [] #will contain the current courses that do not satisfy the requirements in addition to the missing requirements
+
         for m in self.current_courses[:]:
-            #di ogni corso prende prerequisites e corequisites e li mette in req_list:
-                current_prerequisites1 = m.course.get_requirements_dictionary() # current_prerequisites1 = {"prerequisite" : [[{}, {}]], "corequisite": [[{}], [{}]]}
-                current_prerequisites = current_prerequisites1["prerequisite"] # current_prerequisites = [[{}, {}], [{}, {}]], all the requirements
-                current_corequisite = current_prerequisites1["corequisite"] # current_corequisite = [[{}, {}], [{}, {}]]
-                req_list = []
-                req_list.append(current_prerequisites)
-                req_list.append(current_corequisite)
-                
-                control_var1 = 0 #so that if ==0 checks prerequisites, and if ==1 checks corequisites even if the lists are empty
-                
-                #for loop su req_list:
-                for req in req_list[:]: #first checks prereq then coreq
-                    info_list = [] #will contain the name of the current courses that do not satisfy the requirements in addition to the missing requirements
-                    missing_req = {"prerequisite" : [], "corequisite" : []} #will contain the missing requirement, will be different for each of the courses
-                    
-                    #ITERAZIONE 1 == PREREQUISITES
-                    if control_var1 == 0: 
-                        control_var1 += 1 #so that next iteration is corequisites
-                        found = False #so that we know if one of the alternatives for the requirement has been found
-                        #for loop sulla lista di prerequisites:
-                        for alternatives_for_req in req[:]: #alternatives_for_req = [{}, {}, {}, {}], all the courses that satisfy a single requirement    
-                            control_var2 = len(alternatives_for_req) #aka len(lista di corsi alternativi)
-                            
-                            #for loop sui corsi in alternative per ogni prerequisite:
-                            for alternative in alternatives_for_req[:]: #alternative = one course. 
-                                #Further, h = {"code" : "", "lower bound" : 0, "upper bound" : 0, "grade" : 0.5}
-                                
-                                #extrapolate characteristics of the course that satisfies a requirement
-                                prereq_grade = alternative["grade"]
-                                lower_bound = alternative["lower bound"]
-                                upper_bound = alternative["upper bound"]
-                                #modify values to avoid the null problem
-                                #if prereq_grade is float:
-                                    #prereq_grade = "D-"
-                                if math.isnan(upper_bound):
-                                    upper_bound = 1000
-                                
-                                #case 1: prereq not found but there are still alternatives to look into
-                                if control_var2!=0 and found==False:
-                                    control_var2 -= 1
-                                    
-                                    #for loop sui corsi che lo studente ha fatto nei previous semestri (in noncurrent_courses, =course_done):
-                                    for course_done in self.noncurrent_courses[:]:
-                                        taken_code = course_done.course.get_code()
-                                        taken_num = course_done.course.get_number()
-                                        taken_grade = course_done.get_grade()    
-                                        if taken_code==alternative["code"] and (int(taken_num)>=int(lower_bound) and int(taken_num)<=int(upper_bound)) and taken_grade>=letter_to_number.get(prereq_grade):
-                                            #one requirement in the list is fullfilled
-                                            current_prerequisites.remove(alternatives_for_req)
-                                            found = True
-                                            break
-                                        
-                                #case 2: prereq not found in any of the alternatives     
-                                elif control_var2 == 0 and found == False:
-                                    #aggiungi il prereqisito alla lista di missing prereq
-                                    missing_req["prerequisite"].append(alternatives_for_req)
-                                    break
-                                
-                                #case 3: the student has satisfied the prerequisite
-                                else:
-                                    break
-
-                    #ITERAZIONE 2 == COREQUISITES
-                    elif control_var1 == 1:
-                        found = False #so that we know if one of the alternatives for the requirement has been found
-                        #for loop sulla lista di prerequisites:
-                        for alternatives_for_req in req[:]: #alternatives_for_req = [{}, {}, {}, {}], all the courses that satisfy a single requirement    
-                            control_var2 = len(alternatives_for_req) #aka len(lista di corsi alternativi)
-                            
-                            #for loop sui corsi in alternative per ogni prerequisite:
-                            for alternative in alternatives_for_req[:]: #alternative = one course. 
-                                #Further, h = {"code" : "", "lower bound" : 0, "upper bound" : 0, "grade" : 0.5}
-                                
-                                #extrapolate characteristics of the course that satisfies a requirement
-                                prereq_grade = alternative["grade"]
-                                lower_bound = alternative["lower bound"]
-                                upper_bound = alternative["upper bound"]
-                                #modify values to avoid the null problem
-                                #if prereq_grade is float:
-                                    #prereq_grade = "D-"
-                                if math.isnan(upper_bound):
-                                    upper_bound = 1000
-                                
-                                #case 1: prereq not found but there are still alternatives to look into
-                                if control_var2!=0 and found==False:
-                                    control_var2 -= 1
-                                    
-                                    #for loop sui corsi che lo studente ha fatto nei previous semestri (in noncurrent_courses, =course_done):
-                                    for course_done in self.noncurrent_courses[:]:
-                                        taken_code = course_done.course.get_code()
-                                        taken_num = course_done.course.get_number()
-                                        taken_grade = course_done.get_grade()    
-                                        if taken_code==alternative["code"] and (int(taken_num)>=int(lower_bound) and int(taken_num)<=int(upper_bound)) and taken_grade>=letter_to_number.get(prereq_grade):
-                                            #one requirement in the list is fullfilled
-                                            current_prerequisites.remove(alternatives_for_req)
-                                            found = True
-                                            break
-                                        
-                                #case 2: prereq not found in any of the alternatives     
-                                elif control_var2 == 0 and found == False:
-                                    #aggiungi il prereqisito alla lista di missing prereq
-                                    missing_req["corequisite"].append(alternatives_for_req)
-                                    break
-                                
-                                #case 3: the student has satisfied the prerequisite
-                                else:
-                                    break     
-                
-                #check if both prereq and coreq are empty, if so, do not add to the missing req list                
-                if len(missing_req["prerequisite"]) == 0 and len(missing_req["corequisite"]) == 0:
-                    break
-                else:
-                    info_list.append([m,missing_req])
-                    self.req_not_satisfied.append(info_list)
-                    
-        return self.req_not_satisfied
-
-
+            print('\n')
+            print(m.course.get_name())  
+            info = []
+            missing_req = {"prerequisite" : [], "corequisite" : []} #will contain the missing requirement, will be different for each of the courses
         
-        def create_prereq_message(self):
-            return "nope"
+            #di ogni corso prende prerequisites e corequisites e li mette in req_list:
+            current_requirements = m.course.get_requirements_dictionary() # current_prerequisites1 = {"prerequisite" : [[{}, {}]], "corequisite": [[{}], [{}]]}
+            req_list = ["prerequisite", "corequisite"]
+                           
+            #for loop su req_list:
+            for i in req_list[:]: #first checks prereq then coreq
+                requirements = current_requirements[i] #either prerequisites or corequisites [[{}, {}], [{}], [{}]]
+                #print(requirements)
+                found = False
+                self.iteration = len(requirements)
+                
+                for requirement in requirements: #[{}, {}, {}] # a signle requirement, which is a list of the possible alternatives that satisfy it
+                    #print(requirement)
+                    
+                    for alternative in requirement:
+                        if found == False:
+                            #print(alternative)
+                            if i == "prerequisite":
+                                found = self.attributes_check(self.noncurrent_courses, alternative)
+                            elif i == "corequisite":
+                                found = self.attributes_check(self.reduced_courses_list, alternative)
+                        else:
+                            break
+                    
+                    if found == False: #il requirement non è stato soddisfatto 
+                        missing_req[i] = requirement
+                        print("not found")
+                        
+                    found = False
+            
+            #se al corso non mancano requirements da soddisfare lo ignora 
+            #if len(missing_req["prerequisite"]) == 0 and len(missing_req["corequisite"]) == 0:
+                #print("no missing prerequisites or corequisites")
+                
+            if len(missing_req["prerequisite"])!=0 or len(missing_req["corequisite"])!=0:
+                info.append(m)
+                info.append(missing_req)
+                info_list.append(info)
+
+        return info_list
+               
+            
+    def create_prereq_message(self):
+        return "nope"
       
         
     #def check_minor1(self):
