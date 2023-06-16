@@ -778,12 +778,13 @@ class Student:
             #for loop su req_list:
             for i in req_list[:]: #first checks prereq then coreq
                 requirements = current_requirements[i] #either prerequisites or corequisites [[{}, {}], [{}], [{}]]
-                #print(requirements)
                 found = False
                 self.iteration = len(requirements)
                 
-                for requirement in requirements: #[{}, {}, {}] # a signle requirement, which is a list of the possible alternatives that satisfy it
+                for requirement in requirements: #[{}, {}, {}] # a single requirement, which is a list of the possible alternatives that satisfy it
                     #print(requirement)
+                    print(requirements)
+                    #print("\n")
                     
                     for alternative in requirement:
                         if found == False:
@@ -796,8 +797,9 @@ class Student:
                             break
                     
                     if found == False: #il requirement non è stato soddisfatto 
-                        missing_req[i] = requirement
+                        missing_req[i].append([requirement])
                         print("not found")
+                        break
                         
                     found = False
             

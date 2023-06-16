@@ -161,8 +161,15 @@ OLD VERSION
                     self.req_not_satisfied.append(info_list)
 
 
-
-
+""""*********************************************************************************************************
+LOGIC FLOW print prereq
+*********************************************************************************************************"""
+for loop over the list of current courses whose requirements are not satisfied:
+    for loops that first takes the prerequisites then the corequisites:
+        for loop that goes over all the requirements that are not satisfied:
+            
+            for loop that goes over all the alternatives for the same requirement:
+                controllo colonne
 
 
 
