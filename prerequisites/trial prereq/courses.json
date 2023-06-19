@@ -3,17 +3,6 @@
     "Computer Science Elective",
     "CS",
     0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10018
-  ],
-  [
-    "Computer Science Elective",
-    "CS",
-    0,
     3,
     {
       "prerequisite": [],
@@ -25,45 +14,12 @@
     "English Literature Elective",
     "EN LIT",
     0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10021
-  ],
-  [
-    "English Literature Elective",
-    "EN LIT",
-    0,
     3,
     {
       "prerequisite": [],
       "corequisite": []
     },
     10022
-  ],
-  [
-    "Fine Arts Elective",
-    "FA",
-    0,
-    13,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10008
-  ],
-  [
-    "Fine Arts Elective",
-    "FA",
-    0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10009
   ],
   [
     "Fine Arts Elective",
@@ -88,15 +44,15 @@
     10010
   ],
   [
-    "Greek Elective",
-    "GRK",
+    "Economics and Law Elective",
+    "GEN ELECT",
     0,
-    6,
+    3,
     {
       "prerequisite": [],
       "corequisite": []
     },
-    10019
+    10030
   ],
   [
     "Greek Elective",
@@ -113,56 +69,12 @@
     "Humanities Elective",
     "HM",
     0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10011
-  ],
-  [
-    "Humanities Elective",
-    "HM",
-    0,
-    4,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10026
-  ],
-  [
-    "Humanities Elective",
-    "HM",
-    0,
     3,
     {
       "prerequisite": [],
       "corequisite": []
     },
     10002
-  ],
-  [
-    "Humanities Elective",
-    "HUM",
-    0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10023
-  ],
-  [
-    "Humanities Elective",
-    "HUM",
-    0,
-    4,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10027
   ],
   [
     "Humanities Elective",
@@ -179,34 +91,12 @@
     "Foreign Language Elective",
     "LANG",
     0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10012
-  ],
-  [
-    "Foreign Language Elective",
-    "LANG",
-    0,
     3,
     {
       "prerequisite": [],
       "corequisite": []
     },
     10013
-  ],
-  [
-    "Latin Elective",
-    "LAT",
-    0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10014
   ],
   [
     "Latin Elective",
@@ -223,45 +113,12 @@
     "Math Elective",
     "MA",
     0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10020
-  ],
-  [
-    "Math Elective",
-    "MA",
-    0,
     3,
     {
       "prerequisite": [],
       "corequisite": []
     },
     10004
-  ],
-  [
-    "Natural Sciences Elective",
-    "SCI",
-    0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10015
-  ],
-  [
-    "Science Elective",
-    "SCI",
-    0,
-    4,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10025
   ],
   [
     "Natural Sciences Elective",
@@ -278,34 +135,12 @@
     "Social Sciences Elective",
     "SOSC",
     0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10006
-  ],
-  [
-    "Social Sciences Elective",
-    "SOSC",
-    0,
     3,
     {
       "prerequisite": [],
       "corequisite": []
     },
     10016
-  ],
-  [
-    "Social Sciences Elective",
-    "SOC SCI",
-    0,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    10028
   ],
   [
     "Social Sciences Elective",
@@ -365,354 +200,13 @@
   [
     "German Elective",
     "GER",
-    101,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    831
-  ],
-  [
-    "German Elective",
-    "GER",
-    102,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    845
-  ],
-  [
-    "German Elective",
-    "GER",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    832
-  ],
-  [
-    "Special Topics in Religious Studies",
-    "RL",
-    299,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    819
-  ],
-  [
-    "Financial Accounting",
-    "FIN",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    820
-  ],
-  [
-    "Financial Accounting",
-    "ACCT",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    833
-  ],
-  [
-    "Special Topics in",
-    "CL",
-    299,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    821
-  ],
-  [
-    "Principles of Microeconomics",
-    "EC",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    822
-  ],
-  [
-    "Special Topics in History",
-    "HS",
-    299,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    823
-  ],
-  [
-    "Special Topics in Computer Science",
-    "CS",
-    299,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    824
-  ],
-  [
-    "Special Topics in Legal Studies",
-    "LAW",
-    299,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    825
-  ],
-  [
-    "General Psychology",
-    "PS",
-    101,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    826
-  ],
-  [
-    "Introduction to Sociology",
-    "SOSC",
     202,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    827
-  ],
-  [
-    "Computer Office Applications",
-    "CS",
-    110,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    828
-  ],
-  [
-    "Calculus I",
-    "MA",
-    198,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    829
-  ],
-  [
-    "Calculus I",
-    "MA",
-    198,
-    4,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    839
-  ],
-  [
-    "Calculus II",
-    "MA",
-    299,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    834
-  ],
-  [
-    "Introductory French I",
-    "FR",
-    101,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    835
-  ],
-  [
-    "Introductory French II",
-    "FR",
-    102,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    836
-  ],
-  [
-    "Intermediate French I",
-    "FR",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    843
-  ],
-  [
-    "Intermediate French II",
-    "FR",
-    202,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    844
-  ],
-  [
-    "Introductory Spanish I",
-    "SPAN",
-    101,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    837
-  ],
-  [
-    "Introductory Spanish II",
-    "SPAN",
-    102,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    850
-  ],
-  [
-    "Intermediate Spanish I",
-    "SPAN",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    851
-  ],
-  [
-    "Intermediate Spanish II",
-    "SPAN",
-    202,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    852
-  ],
-  [
-    "English Literature Elective",
-    "EN",
-    101,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    840
-  ],
-  [
-    "English Literature Elective",
-    "EN",
-    101,
     3,
     {
       "prerequisite": [],
       "corequisite": []
     },
-    842
-  ],
-  [
-    "English Composition",
-    "EN",
-    105,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    841
-  ],
-  [
-    "Introductory Italian I",
-    "IT",
-    101,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    846
-  ],
-  [
-    "Introductory Italian II",
-    "IT",
-    102,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    847
-  ],
-  [
-    "Intermediate Italian I",
-    "IT",
-    201,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    848
-  ],
-  [
-    "Intermediate Italian II",
-    "IT",
-    202,
-    6,
-    {
-      "prerequisite": [],
-      "corequisite": []
-    },
-    849
+    854
   ],
   [
     "Research Assistantship",
@@ -760,9 +254,7 @@
             "lower bound": 103.0,
             "upper bound": 103.0,
             "grade": "C"
-          }
-        ],
-        [
+          },
           {
             "code": "EN",
             "lower bound": 105.0,
@@ -788,9 +280,7 @@
             "lower bound": 100.0,
             "upper bound": 100.0,
             "grade": "D-"
-          }
-        ],
-        [
+          },
           {
             "code": "MA",
             "lower bound": 101.0,
@@ -816,9 +306,7 @@
             "lower bound": 100.0,
             "upper bound": 100.0,
             "grade": "D-"
-          }
-        ],
-        [
+          },
           {
             "code": "MA",
             "lower bound": 101.0,
@@ -841,6 +329,17 @@
       "corequisite": []
     },
     8
+  ],
+  [
+    "Special Topics in Economics",
+    "EC",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    857
   ],
   [
     "Independent Study in Economics",
@@ -1330,7 +829,7 @@
     24
   ],
   [
-    "Money,  Banking and Capital Markets",
+    "Money, Banking and Capital Markets",
     "EC",
     371,
     3,
@@ -2181,6 +1680,17 @@
     55
   ],
   [
+    "Introduction to Logic",
+    "PH/MA",
+    103,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    838
+  ],
+  [
     "Pre-Calculus",
     "MA",
     197,
@@ -2671,6 +2181,17 @@
     79
   ],
   [
+    "Special Topics in Computer Science",
+    "CS",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    855
+  ],
+  [
     "Independent Study in Computer Science",
     "CS",
     381,
@@ -2751,6 +2272,17 @@
       "corequisite": []
     },
     83
+  ],
+  [
+    "Special Topics in Computer Science and Business",
+    "CS",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    856
   ],
   [
     "Independent Research",
@@ -2919,6 +2451,17 @@
       "corequisite": []
     },
     87
+  ],
+  [
+    "Special Topics in Business",
+    "BUS",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    868
   ],
   [
     "Independent Study in Business",
@@ -3106,6 +2649,17 @@
       "corequisite": []
     },
     95
+  ],
+  [
+    "Leadership,  Mindfulness, and Emotional Intelligence",
+    "BUS",
+    342,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    832
   ],
   [
     "Innovation and Information Technology",
@@ -3323,6 +2877,17 @@
     101
   ],
   [
+    "Special Topics in Management and Business",
+    "MGT/BUS",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    828
+  ],
+  [
     "Leadership,  Mindfulness, and Emotional Intelligence",
     "MGT/BUS",
     342,
@@ -3332,6 +2897,28 @@
       "corequisite": []
     },
     102
+  ],
+  [
+    "Entrepreneurship in Creative Industries",
+    "MGT/BUS",
+    375,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    833
+  ],
+  [
+    "Special Topics in Management and Business",
+    "MGT/BUS",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    829
   ],
   [
     "Leadership,  Mindfulness, and Emotional Intelligence",
@@ -3852,6 +3439,26 @@
     132
   ],
   [
+    "Advanced Topics in International Law: Human Trafficking, Forced Labor and Slavery",
+    "PL/LAW",
+    420,
+    3,
+    {
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 90.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
+      "corequisite": []
+    },
+    835
+  ],
+  [
     "Religious Freedom in a Comparative Perspective",
     "PL/LAW",
     428,
@@ -3880,9 +3487,9 @@
       "prerequisite": [
         [
           {
-            "code": 101,
+            "code": "PS",
             "lower bound": 101.0,
-            "upper bound": NaN,
+            "upper bound": 101.0,
             "grade": "D-"
           }
         ]
@@ -3933,7 +3540,7 @@
           {
             "code": "SOSC/LAW",
             "lower bound": 221.0,
-            "upper bound": NaN,
+            "upper bound": 221.0,
             "grade": "D-"
           }
         ]
@@ -3941,6 +3548,28 @@
       "corequisite": []
     },
     137
+  ],
+  [
+    "Special Topics in Social Sciences and Law",
+    "SOSC/LAW",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    824
+  ],
+  [
+    "Special Topics in Social Sciences and Law",
+    "SOSC/LAW",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    825
   ],
   [
     "Green Criminology",
@@ -3963,6 +3592,17 @@
     155
   ],
   [
+    "English Literature Elective",
+    "EN",
+    101,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    842
+  ],
+  [
     "Literary Research Methods",
     "EN",
     197,
@@ -3980,7 +3620,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -3995,6 +3635,17 @@
       "corequisite": []
     },
     156
+  ],
+  [
+    "Introduction to English Literature",
+    "EN",
+    198,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    839
   ],
   [
     "Foundations for Advanced Literary Studies",
@@ -4254,7 +3905,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4468,7 +4119,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4502,7 +4153,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4517,6 +4168,34 @@
       "corequisite": []
     },
     178
+  ],
+  [
+    "Race, Class and Gender in the Victorian Novel",
+    "EN",
+    303,
+    3,
+    {
+      "prerequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "C"
+          }
+        ],
+        [
+          {
+            "code": "EN",
+            "lower bound": 200.0,
+            "upper bound": 1000.0,
+            "grade": "D-"
+          }
+        ]
+      ],
+      "corequisite": []
+    },
+    858
   ],
   [
     "19th-Century Autobiography",
@@ -4536,7 +4215,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4551,6 +4230,17 @@
       "corequisite": []
     },
     179
+  ],
+  [
+    "Victorian Poetry",
+    "EN",
+    305,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    840
   ],
   [
     "How Black Lives Matter in Literature: Slavery and its Narrative Legacies",
@@ -4570,7 +4260,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4604,7 +4294,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4638,7 +4328,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4672,7 +4362,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4706,7 +4396,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4740,7 +4430,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4774,7 +4464,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4808,7 +4498,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4842,7 +4532,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4876,7 +4566,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4944,7 +4634,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -4998,7 +4688,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -5290,7 +4980,7 @@
         [
           {
             "code": "EN",
-            "lower bound": 1.0,
+            "lower bound": 200.0,
             "upper bound": 1000.0,
             "grade": "D-"
           },
@@ -5790,6 +5480,17 @@
       "corequisite": []
     },
     220
+  ],
+  [
+    "Special Topics in Marketing",
+    "MKT",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    821
   ],
   [
     "Independent Study in Marketing",
@@ -7210,6 +6911,17 @@
     293
   ],
   [
+    "Greek and Roman Political Philosophy",
+    "PL/PH",
+    213,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    837
+  ],
+  [
     "Introduction to Social Science Research Methodology",
     "PL/SOSC",
     260,
@@ -7323,6 +7035,17 @@
       "corequisite": []
     },
     301
+  ],
+  [
+    "Special Topics in Psychology",
+    "PS",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    861
   ],
   [
     "Cognitive Psychology",
@@ -8600,6 +8323,17 @@
     368
   ],
   [
+    "Special Topics in Archaeology",
+    "ARCH",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    859
+  ],
+  [
     "Independent Study in Archaeology",
     "ARCH",
     381,
@@ -8609,6 +8343,17 @@
       "corequisite": []
     },
     369
+  ],
+  [
+    "Special Topics in Archaeology",
+    "ARCH",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    860
   ],
   [
     "Technology of The Ancient World: Aqueducts,  Armor, Automata",
@@ -9114,6 +8859,12 @@
             "lower bound": 1.0,
             "upper bound": 1000.0,
             "grade": "D-"
+          },
+          {
+            "code": "CL",
+            "lower bound": 1.0,
+            "upper bound": 1000.0,
+            "grade": "D-"
           }
         ]
       ],
@@ -9549,9 +9300,9 @@
             "grade": "D-"
           },
           {
-            "code": "CS",
-            "lower bound": NaN,
-            "upper bound": NaN,
+            "code": "CL",
+            "lower bound": 1.0,
+            "upper bound": 1000.0,
             "grade": "D-"
           }
         ]
@@ -9575,9 +9326,9 @@
             "grade": "D-"
           },
           {
-            "code": "CS",
-            "lower bound": NaN,
-            "upper bound": NaN,
+            "code": "CL",
+            "lower bound": 1.0,
+            "upper bound": 1000.0,
             "grade": "D-"
           }
         ]
@@ -10087,6 +9838,17 @@
     466
   ],
   [
+    "Special Topics in Communications",
+    "COM",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    862
+  ],
+  [
     "Digital Media Culture",
     "COM",
     311,
@@ -10125,6 +9887,17 @@
       "corequisite": []
     },
     468
+  ],
+  [
+    "Special Topics in Communications",
+    "COM",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    863
   ],
   [
     "Advanced Media Theory",
@@ -10195,6 +9968,28 @@
       "corequisite": []
     },
     472
+  ],
+  [
+    "Special Topics in Digital Media Arts and Media Studies",
+    "DMA/CMS",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    826
+  ],
+  [
+    "Special Topics in Digital Media Arts and Media Studies",
+    "DMA/CMS",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    827
   ],
   [
     "Editing, Remixing and Critical Media Practice",
@@ -10827,6 +10622,17 @@
     501
   ],
   [
+    "Special Topics in Journalism",
+    "DJRN",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    867
+  ],
+  [
     "Investigative Reporting",
     "DJRN",
     320,
@@ -11066,6 +10872,17 @@
       "corequisite": []
     },
     514
+  ],
+  [
+    "Special Topics in Digital Media Studies",
+    "DMA",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    819
   ],
   [
     "Digital Storytelling and Community Engagement",
@@ -11341,6 +11158,17 @@
       "corequisite": []
     },
     530
+  ],
+  [
+    "Experimental Film",
+    "DMA/CMS",
+    342,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    831
   ],
   [
     "Editing, Remixing, and Critical Media Practice",
@@ -12474,7 +12302,7 @@
   ],
   [
     "History, Memory, and Popular Culture",
-    "HS/RS",
+    "HS-RS",
     311,
     3,
     {
@@ -12503,7 +12331,7 @@
   ],
   [
     "The Problem of Slavery in Western Culture",
-    "HS/RS",
+    "HS-RS",
     320,
     3,
     {
@@ -12532,7 +12360,7 @@
   ],
   [
     "Pirates, Runaways, Witches and Rebels: The Underside of the Colonial Atlantic World",
-    "HS/RS",
+    "HS-RS",
     321,
     3,
     {
@@ -12561,7 +12389,7 @@
   ],
   [
     "Europe since 1945",
-    "HS/RS",
+    "HS-RS",
     345,
     3,
     {
@@ -12590,7 +12418,7 @@
   ],
   [
     "The American 20th Century",
-    "HS/RS",
+    "HS-RS",
     371,
     3,
     {
@@ -12619,7 +12447,7 @@
   ],
   [
     "African Atlantic: Slavery and Beyond",
-    "HS/RS",
+    "HS-RS",
     372,
     3,
     {
@@ -12648,7 +12476,7 @@
   ],
   [
     "A World at Arms: The Second World War",
-    "HS/RS",
+    "HS-RS",
     373,
     3,
     {
@@ -12677,7 +12505,7 @@
   ],
   [
     "Hitler and Mussolini",
-    "HS/RS",
+    "HS-RS",
     374,
     3,
     {
@@ -12706,7 +12534,7 @@
   ],
   [
     "The Spanish Civil War and the Franco Regime",
-    "HS/RS",
+    "HS-RS",
     375,
     3,
     {
@@ -12735,7 +12563,7 @@
   ],
   [
     "The Atlantic Revolutions: The U.S., France, Haiti, and Latin America",
-    "HS/RS",
+    "HS-RS",
     376,
     3,
     {
@@ -12764,7 +12592,7 @@
   ],
   [
     "History of World War I",
-    "HS/RS",
+    "HS-RS",
     377,
     3,
     {
@@ -12793,7 +12621,7 @@
   ],
   [
     "Sport,  Politics and Society in the Modern World",
-    "HS/RS",
+    "HS-RS",
     378,
     3,
     {
@@ -12822,7 +12650,7 @@
   ],
   [
     "European Imperialism and the World Wars",
-    "HS/RS",
+    "HS-RS",
     380,
     3,
     {
@@ -12851,7 +12679,7 @@
   ],
   [
     "The Enlightenment and the World",
-    "HS/RS",
+    "HS-RS",
     382,
     3,
     {
@@ -13093,7 +12921,7 @@
   ],
   [
     "Italian Media and Popular Culture",
-    "CMS/ITS",
+    "ITS/CMS",
     322,
     3,
     {
@@ -13515,6 +13343,17 @@
       "corequisite": []
     },
     648
+  ],
+  [
+    "Meme Culture and Aesthetics",
+    "CMS",
+    326,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    834
   ],
   [
     "Media Ethics",
@@ -14113,6 +13952,28 @@
     689
   ],
   [
+    "Special Topics in Natural Sciences",
+    "NS",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    864
+  ],
+  [
+    "Special Topics in Natural Sciences",
+    "NS",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    865
+  ],
+  [
     "Introduction to Public Health: Addressing Health Disparities and Social Challenges",
     "SOSC/NS",
     260,
@@ -14397,6 +14258,17 @@
       ]
     },
     706
+  ],
+  [
+    "Special Topics in Philosophy and Political Science",
+    "PH/PL",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    820
   ],
   [
     "Greek and Roman Political Philosophy",
@@ -14760,6 +14632,17 @@
       "corequisite": []
     },
     734
+  ],
+  [
+    "Special Topics in Social Sciences",
+    "SOSC",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    866
   ],
   [
     "Introduction to Graphic Design",
@@ -15466,7 +15349,18 @@
       "prerequisite": [],
       "corequisite": []
     },
-    1000
+    853
+  ],
+  [
+    "Experimental Drawing",
+    "M-AS",
+    305,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    836
   ],
   [
     "Survey of Rhetoric",
@@ -15852,5 +15746,148 @@
       "corequisite": []
     },
     814
+  ],
+  [
+    "From Concept to Production: Writing Effective Audio-visual Project Proposals",
+    "EXP",
+    1022,
+    1,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    815
+  ],
+  [
+    "Special Topics in Gender Studies",
+    "GDR",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    822
+  ],
+  [
+    "Special Topics in Gender Studies",
+    "GDR",
+    399,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    823
+  ],
+  [
+    "Financial Accounting",
+    "BA",
+    201,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    841
+  ],
+  [
+    "Independent Study in Greek",
+    "GRK",
+    381,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    843
+  ],
+  [
+    "Independent Srudy in Latin",
+    "LAT",
+    381,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    844
+  ],
+  [
+    "Religious Freedom in a Comparative Perspective",
+    "PL/LAW",
+    328,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    845
+  ],
+  [
+    "Public International Law",
+    "PL",
+    320,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    846
+  ],
+  [
+    "Religious Freedom in a Comparative Perspective",
+    "CMS",
+    360,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    847
+  ],
+  [
+    "Religious Freedom in a Comparative Perspective",
+    "CMS/LAW",
+    271,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    848
+  ],
+  [
+    "Abnormal Psychology",
+    "PS",
+    254,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    849
+  ],
+  [
+    "Introduction to Animation",
+    "AS",
+    270,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    850
+  ],
+  [
+    "Europe Since 1945",
+    "HS",
+    345,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    851
   ]
 ]

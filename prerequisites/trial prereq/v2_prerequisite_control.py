@@ -71,9 +71,10 @@ curr_student.compute_nx_standing()
 CHECK THE PREREQUISITES
 """""""""""""""""""""""""""""""""""""""""""""""""""
 curr_student.create_curr_list()
-course = []
-course = curr_student.check_requirements()
+missing_courses = []
+missing_courses = curr_student.check_requirements()
 
+#print(f"\n{missing_courses}")
 """
 for i in course:
     print("\n")
@@ -87,77 +88,95 @@ for i in course:
 prerequisites_formats.print_fields_names()
 
 """    
-course structure = [
-                        [course_taken, {'prerequisite': [[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}], [{'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}]], 'corequisite': []}], 
-                                        'corequisite': [[]]}
-                         ], 
-                        [course_taken, {'prerequisite': [[{'code': 'MA', 'lower bound': 198.0, 'upper bound': 198.0, 'grade': 'D-'}], [{'code': 'MA', 'lower bound': 208.0, 'upper bound': 208.0, 'grade': 'D-'}], 
-                                        'corequisite': [[]]}
-                         ]
-                    ]
+course structure = [[courses, {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, 
+                                                  {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 
+                                                 'Missing']], 
+                               'corequisite': []}], 
+                    [courses, {'prerequisite': [[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], 
+                                                 'Grade']], 
+                               'corequisite': []}]]
 """    
 
-prereq_num = 0 #counter so that stuff does  not override eachoter   
+prev_row_lenght = 0 #counter so that stuff does  not override eachoter   
 
 #worksheet.write(row, column, "stuff to print", format)
-for row_content in range(0, len(course)): 
+
+#for loop over the list of courses whose requirements are not satisfied
+for row_content in range(0, len(missing_courses)): 
                
     #row_index = row_content + prereq_num + 1
     row_index = row_content + 1
     
     req_type = ["prerequisite", "corequisite"]
-    requirements = course[row_content][1] # {'prerequisite': [[{'code': 'MA', 'lower bound': 198.0, 'upper bound': 198.0, 'grade': 'D-'}], [{'code': 'MA', 'lower bound': 208.0, 'upper bound': 208.0, 'grade': 'D-'}]]
+    requirements = missing_courses[row_content][1] # {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 'Missing']], 'corequisite': []}
+    current_course = missing_courses[row_content][0]
+    #print(f"\n{current_course}: {requirements}")
     
-    row_index += prereq_num
-    
-    for j in req_type:
-        
-        curr_requirement = requirements[j] #[[{'code': 'MA', 'lower bound': 198.0, 'upper bound': 198.0, 'grade': 'D-'}], [{'code': 'MA', 'lower bound': 208.0, 'upper bound': 208.0, 'grade': 'D-'}]]
-        row_index += prereq_num
-        
+    #first picks prerequisites, then corequisites
+    for j in req_type: 
+        curr_requirement = requirements[j] #the list of missing requirements:
+        #[[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 'Missing']]
+        #print(f"\ncurr_requirement: {curr_requirement}")
+
+        #colum lenght because goes over all the alternatives in the same requirement
         for index_requirement in range(0,len(curr_requirement)):
+            name = f"{curr_student.get_name()} {curr_student.get_surname()}"
+            course_name = current_course.course.get_code()
+            course_num = current_course.course.get_number()
+            course_info = f"{course_name} {course_num}"
+                        
+            #worksheet.write(row_index, 0, name, p_format) #prints student's name
+            #worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
             
-            worksheet.write(row_index, 0, curr_student.get_name(), p_format) #prints name
-            worksheet.write(row_index, 1, curr_student.get_surname(), p_format) #prints surname
-            worksheet.write(row_index, 2, course[row_content][0].course.get_name(), p_format) #prints name of the course
+                   
+            single_requirement = curr_requirement[index_requirement] #the list of alternatives for a single requirement + the problem
+            #[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], 'Grade']
+            #print(f"\nsingle_requirement: {single_requirement}")
             
-            prereq_num += 1
-            #row_index += 1
-            
-            single_requirement = curr_requirement[index_requirement]
+            """
             for list_index in range(0, len(requirements)):
 
                 #print("\nnext step")
                 #print(j)
                 
-                column_index = list_index + 4
-                
-                for counter in range(0, len(single_requirement)):
+                column_index = list_index + 3
+                """  
+            
+            alternatives_list = single_requirement[0]
+            requirement_reason = single_requirement[1]
+            
 
-                    worksheet.write(row_index, 3, j, p_format)
+            for list_index in range(0, len(alternatives_list)): #goes over all the alternatives for the single requirements one by one
+                #print(f"\n{alternatives_list[list_index]}")
+                row_index = list_index+1 
+                row_index += prev_row_lenght
+                print(f"iteration: {list_index} \nrow_index: {row_index}")
+
+                worksheet.write(row_index, 0, name, p_format) #prints student's name
+                worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
+                worksheet.write(row_index, 2, j, p_format) #prints the course with the unfilled requirements
+                
+                r_code = alternatives_list[list_index]["code"]
+                r_lowerbound = alternatives_list[list_index]["lower bound"]
+                r_upperbound =  alternatives_list[list_index]["upper bound"]
+                
+                if r_lowerbound == r_upperbound:
+                    cell_content = f"{r_code} {r_lowerbound}"
+                else:
+                    cell_content = f"A {r_code} missing_courses from {r_lowerbound} to {r_upperbound}" #prints requirements one by one
+                
+                column_index = index_requirement + 3
+                
+                worksheet.write(row_index, column_index, cell_content, p_format)
+                worksheet.write(row_index, column_index+1, requirement_reason, p_format)
                     
-                    print_info = single_requirement[counter]
-                    #print(print_info)
-                    """
-                    r_code = print_info["code"]
-                    r_lowerbound = print_info["lower bound"]
-                    r_upperbound =  print_info["upper bound"]
-                    
-                    if r_lowerbound == r_upperbound:
-                        cell_content = f"{r_code} {r_lowerbound}"
-                    else:
-                        cell_content = f"A {r_code} course from {r_lowerbound} to {r_upperbound}" #prints requirements one by one
-                        
-                    worksheet.write(row_index, column_index, cell_content, p_format)
-                    """
+            prev_row_lenght += len(alternatives_list)
+            print(f"prev_row_lenght: {prev_row_lenght}")
             row_index += 1
             
         row_index -= len(curr_requirement)
 
-"""             
-[[<courses.Course_taken object at 0x000001391D1A0970>, {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}]]], 
-                                                        'corequisite': []}], [<courses.Course_taken object at 0x000001391D1A0E20>, {'prerequisite': [[[{'code': 'MA', 'lower bound': 208.0, 'upper bound': 208.0, 'grade': 'D-'}]]], 'corequisite': []}]]
-"""
+
 
 
 workbook.close()

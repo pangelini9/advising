@@ -72,6 +72,7 @@ class Student:
         self.req_satisfied = []
         self.req_not_satisfied = []
         self.iteration = 0
+        self.prerequisite_reason = ""
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Return Functions
@@ -730,6 +731,7 @@ class Student:
         so, the attrribute that should be passed for prerequisites is the list of courses excluding the current ones
         while the one that should be passed for corequisites is the list of all courses including current
         """
+        self.prerequisite_reason = ""
         found = False
         courses_taken = courses_taken
         prerequisite = prerequisite
@@ -756,50 +758,64 @@ class Student:
                     
             #se il prerequisito è un qualunque corso o range di corsi
             else:
-                if taken_code==prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))) and taken_grade>=letter_to_number.get(prereq_grade):
-                    print("found")
-                    found = True
+                if taken_code==prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))):
+                    
+                    if taken_grade>=letter_to_number.get(prereq_grade):
+                        print(f"found: {prerequisite}")
+                        found = True
+                    
+                    else:
+                        self.prerequisite_reason = "Grade"
+                        
+            if self.prerequisite_reason == "":
+                self.prerequisite_reason = "Missing"
         return found
                     
     def check_requirements(self):
         #for loop sui current course:
         info_list = [] #will contain the current courses that do not satisfy the requirements in addition to the missing requirements
-
+        
         for m in self.current_courses[:]:
-            print('\n')
-            print(m.course.get_name())  
+            #print('\n')
+            #print(m.course.get_name())  
             info = []
             missing_req = {"prerequisite" : [], "corequisite" : []} #will contain the missing requirement, will be different for each of the courses
-        
+            
             #di ogni corso prende prerequisites e corequisites e li mette in req_list:
             current_requirements = m.course.get_requirements_dictionary() # current_prerequisites1 = {"prerequisite" : [[{}, {}]], "corequisite": [[{}], [{}]]}
             req_list = ["prerequisite", "corequisite"]
-                           
+            
+               
             #for loop su req_list:
             for i in req_list[:]: #first checks prereq then coreq
                 requirements = current_requirements[i] #either prerequisites or corequisites [[{}, {}], [{}], [{}]]
                 found = False
                 self.iteration = len(requirements)
+                self.prerequisite_reason = ""
                 
                 for requirement in requirements: #[{}, {}, {}] # a single requirement, which is a list of the possible alternatives that satisfy it
                     #print(requirement)
-                    print(requirements)
+                    #print(requirements)
                     #print("\n")
                     
                     for alternative in requirement:
                         if found == False:
                             #print(alternative)
+                            #print("\n")
                             if i == "prerequisite":
                                 found = self.attributes_check(self.noncurrent_courses, alternative)
                             elif i == "corequisite":
                                 found = self.attributes_check(self.reduced_courses_list, alternative)
-                        else:
-                            break
+                        #else:
+                            #break
                     
                     if found == False: #il requirement non è stato soddisfatto 
-                        missing_req[i].append([requirement])
-                        print("not found")
-                        break
+                        if self.prerequisite_reason == "":
+                            self.prerequisite_reason = "Missing"
+                        
+                        missing_req[i].append([requirement, self.prerequisite_reason])
+                        #print("not found")
+                        #break
                         
                     found = False
             
