@@ -171,7 +171,7 @@ for row_content in range(0, len(missing_courses)):
                 
                 #column_index = index_requirement 
                 
-                #print(f"\n{cell_content} in row={row_index} column={column_index}")
+                print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
                 
                 
                 
@@ -181,7 +181,7 @@ for row_content in range(0, len(missing_courses)):
                 #column_index += 1
                 if len(alternatives_list)>loop_lenght:
                     loop_lenght = len(alternatives_list)
-                    print(f"\nloop_lenght= {loop_lenght}")
+                    #print(f"\nloop_lenght= {loop_lenght}")
             #prev_row_lenght += loop_lenght        
             #print(f"\nprev_row_lenght= {prev_row_lenght}")
             #print(f"prev_row_lenght: {prev_row_lenght}")
@@ -191,7 +191,7 @@ for row_content in range(0, len(missing_courses)):
 
         row_index -= len(curr_requirement)
     prev_row_lenght += loop_lenght        
-    print(f"\nprev_row_lenght= {prev_row_lenght}")
+    #print(f"\nprev_row_lenght= {prev_row_lenght}")
 
 
 
