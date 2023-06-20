@@ -98,7 +98,7 @@ course structure = [[courses, {'prerequisite': [[[{'code': 'EN', 'lower bound': 
 """    
 
 prev_row_lenght = 0 #counter so that stuff does  not override eachoter   
-
+'il loop dello studente deve partire sotto questa variabile o i dati vengono sovrascritti'
 #worksheet.write(row, column, "stuff to print", format)
 
 #for loop over the list of courses whose requirements are not satisfied
@@ -117,14 +117,18 @@ for row_content in range(0, len(missing_courses)):
         curr_requirement = requirements[j] #the list of missing requirements:
         #[[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 'Missing']]
         #print(f"\ncurr_requirement: {curr_requirement}")
-
-        #colum lenght because goes over all the alternatives in the same requirement
+        
+        row_index = prev_row_lenght + 1 #prev_row_lenght should acount for the last row the program has written, while 1 accounts for the title line
+        
+        #colum lenght because goes over all the missing requirements for the same course
         for index_requirement in range(0,len(curr_requirement)):
             name = f"{curr_student.get_name()} {curr_student.get_surname()}"
             course_name = current_course.course.get_code()
             course_num = current_course.course.get_number()
             course_info = f"{course_name} {course_num}"
-                        
+            
+            #row_index += prev_row_lenght
+            
             #worksheet.write(row_index, 0, name, p_format) #prints student's name
             #worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
             
@@ -145,16 +149,16 @@ for row_content in range(0, len(missing_courses)):
             alternatives_list = single_requirement[0]
             requirement_reason = single_requirement[1]
             
-
-            for list_index in range(0, len(alternatives_list)): #goes over all the alternatives for the single requirements one by one
-                #print(f"\n{alternatives_list[list_index]}")
-                row_index = list_index+1 
-                row_index += prev_row_lenght
-                print(f"iteration: {list_index} \nrow_index: {row_index}")
+            #goes over all the alternatives for a requirement so control rows
+            for list_index in range(0, len(alternatives_list)): 
+                loop_lenght = 0
+                row_index += list_index
+                #row_index += prev_row_lenght
 
                 worksheet.write(row_index, 0, name, p_format) #prints student's name
                 worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
-                worksheet.write(row_index, 2, j, p_format) #prints the course with the unfilled requirements
+                
+                worksheet.write(row_index, 2 + 3*index_requirement, j, p_format) #prints the course with the unfilled requirements
                 
                 r_code = alternatives_list[list_index]["code"]
                 r_lowerbound = alternatives_list[list_index]["lower bound"]
@@ -165,17 +169,29 @@ for row_content in range(0, len(missing_courses)):
                 else:
                     cell_content = f"A {r_code} missing_courses from {r_lowerbound} to {r_upperbound}" #prints requirements one by one
                 
-                column_index = index_requirement + 3
+                #column_index = index_requirement 
                 
-                worksheet.write(row_index, column_index, cell_content, p_format)
-                worksheet.write(row_index, column_index+1, requirement_reason, p_format)
-                    
-            prev_row_lenght += len(alternatives_list)
-            print(f"prev_row_lenght: {prev_row_lenght}")
-            row_index += 1
+                #print(f"\n{cell_content} in row={row_index} column={column_index}")
+                
+                
+                
+                worksheet.write(row_index, 3 + 3*index_requirement, cell_content, p_format) #prints requirements one by one
+                worksheet.write(row_index, 4 + 3*index_requirement, requirement_reason, p_format) #prints the reasoning
+                
+                #column_index += 1
+                if len(alternatives_list)>loop_lenght:
+                    loop_lenght = len(alternatives_list)
+                    print(f"\nloop_lenght= {loop_lenght}")
+            #prev_row_lenght += loop_lenght        
+            #print(f"\nprev_row_lenght= {prev_row_lenght}")
+            #print(f"prev_row_lenght: {prev_row_lenght}")
+            #row_index += 1
             
-        row_index -= len(curr_requirement)
+        #prev_row_lenght += len(alternatives_list)
 
+        row_index -= len(curr_requirement)
+    prev_row_lenght += loop_lenght        
+    print(f"\nprev_row_lenght= {prev_row_lenght}")
 
 
 

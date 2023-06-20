@@ -761,7 +761,7 @@ class Student:
                 if taken_code==prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))):
                     
                     if taken_grade>=letter_to_number.get(prereq_grade):
-                        print(f"found: {prerequisite}")
+                        #print(f"found: {prerequisite}")
                         found = True
                     
                     else:

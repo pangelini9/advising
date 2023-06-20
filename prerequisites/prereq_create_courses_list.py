@@ -22,7 +22,7 @@ from courses import Course, Course_taken
 
 #creates objects for each of the courses
 def create_course_obj():
-    with open('course_id_list.json', 'r') as myfile:
+    with open('courses.json', 'r') as myfile:
       general_courses = json.load(myfile)
       
     courses_obj = []

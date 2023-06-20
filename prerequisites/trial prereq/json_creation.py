@@ -13,7 +13,7 @@ major_code = 0
 
 #with open("../course_id_list.json") as myFile:
 
-with open("../courses.json") as myFile:
+with open("courses.json") as myFile:
     course_id_list = json.load(myFile)
     #print(course_id_list)
 
@@ -102,7 +102,7 @@ for name in worksheets:
     
     data_list.append(data)
         
-with open("../students_list.json", "w") as myFile:
+with open("students_list.json", "w") as myFile:
     # DUMPING A LIST CONTAINING THE LIST DATA, AS IN THE ORIGINAL JSON
     # CHECK WHETHER THIS IS NEEDED. IF NOT, REMOVE []
     json.dump(data_list, myFile, indent=2)
