@@ -17,14 +17,17 @@ ids = df["E"] # also required grade
 courses = []
 course = ""
 current = ""
+current_cr = ""
 req_grade = ""
 
 for x in range(0,len(names)):
     print("Analyzing: ", names[x])    
     if type(names[x]) is not float:
         
-        if not (names[x].startswith("PR") and names[x][3].isdigit()) and not (names[x].startswith("CR") and names[x][3].isdigit()):
-            
+        split_string = names[x].split()
+        
+        if split_string[0] != "PR" and split_string[0] != "CR":
+
             # this is a new course, so I have to:
             
             # store the previous one, if any
@@ -32,6 +35,7 @@ for x in range(0,len(names)):
                 courses.append(course)
                 # I also need to reset current, for the next pre-req
                 current = ""
+                current_cr = ""
                 req_grade = ""
                 
             print("Work on ", x, names[x])
@@ -39,7 +43,7 @@ for x in range(0,len(names)):
             # initialize a new one
             course = [names[x], codes[x], int(numbers[x]), int(creds[x]), {"prerequisite":[], "corequisite":[]}, int(ids[x])]
             
-        elif names[x].startswith("PR"):
+        elif split_string[0] == "PR":
             
             grade = "D-"
             if type(ids[x]) is not float:
@@ -55,16 +59,15 @@ for x in range(0,len(names)):
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
 
-            curr = names[x][3:5]
             #print(curr)
-            if current == curr:
+            if current == split_string[1]:
                 course[4]["prerequisite"][-1].append(c)
             # or we have to create a new list
             else:
                 course[4]["prerequisite"].append([c])
-                current = curr
+                current = split_string[1]
     
-        elif names[x].startswith("CR"):
+        elif split_string[0] == "CR":
             
             grade = "D-"
             if type(ids[x]) is not float:
@@ -79,12 +82,12 @@ for x in range(0,len(names)):
             
             # add it to the list in the prereq entry of the dictionary at course[4]
             # this is a list of lists, we have to decide whether it gets appended to the last list
-            curr = names[x][3:5]
-            if curr == "1" or current != curr:
-                course[4]["corequisite"].append([c])
-                current = curr
-            else:
+            if current_cr == split_string[1]:
                 course[4]["corequisite"][-1].append(c)
+            # or we have to create a new list
+            else:
+                course[4]["corequisite"].append([c])
+                current_cr = split_string[1]
                 
 with open("courses.json", "w") as myFile:
     json.dump(courses, myFile, indent=2)
