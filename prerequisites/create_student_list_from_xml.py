@@ -68,6 +68,27 @@ for s in students:
             # SHOULD READ THE CODE OF THE MAJOR(S) AND MINOR(S) FROM THE JSON
             # FOR NOW I AM USING 0 EVERYWHERE - SEE ABOVE
     
+    objects2 = s.findall("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection[@SectionNumber='2']/ns:FormattedReportObjects/ns:FormattedReportObject", namespace)
+    
+    for obj in objects2:
+        if obj.get("FieldName") == "{@SupressNameBreakForStudent}":
+            student = obj.find("ns:Value", namespace).text
+            print("Name: " + student)
+        if obj.get("FieldName") == "{EA.StudentInfoString4}":
+            major1 = obj.find("ns:Value", namespace).text
+            print("Major: " + str(major1))
+        if obj.get("FieldName") == "{EA.StudentInfoString5}":
+            minor = obj.find("ns:Value", namespace).text
+            #print("Minor: " + str(minor))
+        if obj.get("FieldName") == "{EA.StudentInfoString6}":
+            major2 = obj.find("ns:Value", namespace).text
+            #print("Second Major: " + str(major2))
+        if obj.get("FieldName") == "{EA.StudentInfoString7}":
+            minor2 = obj.find("ns:Value", namespace).text
+            #print("Second Minor: " + str(minor2))
+            #print()
+
+    
     # To contain the list of courses for the current student
     stud_courses = []
         
@@ -105,9 +126,6 @@ for s in students:
                             
                             # remove the H for the honors, and remember if we do it
                             honors = 0
-                            if current_course.endswith("H"):
-                                current_course = current_course[0:-2]
-                                honors = 1
                             
                             # remove possible final characters, like i, ii, -A, and variations
                             end = len(current_course)-1
@@ -116,6 +134,8 @@ for s in students:
                                     current_course = current_course[:end+1]
                                     end = 0
                                 else:
+                                    if current_course[end] == "H":
+                                        honors = 1
                                     end = end - 1
                                     
                             # reads the credits
