@@ -2275,7 +2275,7 @@
   ],
   [
     "Special Topics in Computer Science and Business",
-    "CS",
+    "CS/BUS",
     399,
     3,
     {
@@ -15889,5 +15889,38 @@
       "corequisite": []
     },
     851
+  ],
+  [
+    "Sociology of Communications",
+    "SOC SCI",
+    251,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    852
+  ],
+  [
+    "Religious Freedom in a Comparative Perspective",
+    "LAW/PL",
+    328,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    869
+  ],
+  [
+    "Special Topics in Law",
+    "LAW",
+    299,
+    3,
+    {
+      "prerequisite": [],
+      "corequisite": []
+    },
+    870
   ]
 ]
