@@ -19,7 +19,7 @@ course = ""
 current = ""
 req_grade = ""
 
-for x in range(0,len(names)):
+for x in range(0,len(names)+1):
     print("Analyzing: ", names[x])    
     if type(names[x]) is not float:
         

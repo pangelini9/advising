@@ -60,6 +60,7 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
         j += 1
     return courses_taken_obj
 
+#needed for the excel print of the degree planner: creates fake courses objects starting from the majors' requirements that the student has not fullfilled
 def create_remaining_list(courses_list, remaining_list):
     obj_remaining_list =  []
     #for m in courses_list: #m is an object course

@@ -85,7 +85,7 @@ for i in course:
 
 #print(f"\n{course}")
 
-prerequisites_formats.print_fields_names()
+#prerequisites_formats.print_fields_names()
 
 """    
 course structure = [[courses, {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, 
@@ -100,6 +100,9 @@ course structure = [[courses, {'prerequisite': [[[{'code': 'EN', 'lower bound': 
 prev_row_lenght = 0 #counter so that stuff does  not override eachoter   
 'il loop dello studente deve partire sotto questa variabile o i dati vengono sovrascritti'
 #worksheet.write(row, column, "stuff to print", format)
+
+
+missing_num = 0 #counter to print the right number of field names 
 
 #for loop over the list of courses whose requirements are not satisfied
 for row_content in range(0, len(missing_courses)): 
@@ -122,6 +125,8 @@ for row_content in range(0, len(missing_courses)):
         
         #colum lenght because goes over all the missing requirements for the same course
         for index_requirement in range(0,len(curr_requirement)):
+            if len(curr_requirement)>= missing_num:
+                missing_num = len(curr_requirement)
             name = f"{curr_student.get_name()} {curr_student.get_surname()}"
             course_name = current_course.course.get_code()
             course_num = current_course.course.get_number()
@@ -137,18 +142,10 @@ for row_content in range(0, len(missing_courses)):
             #[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], 'Grade']
             #print(f"\nsingle_requirement: {single_requirement}")
             
-            """
-            for list_index in range(0, len(requirements)):
-
-                #print("\nnext step")
-                #print(j)
-                
-                column_index = list_index + 3
-                """  
-            
+           
             alternatives_list = single_requirement[0]
             requirement_reason = single_requirement[1]
-            
+
             #goes over all the alternatives for a requirement so control rows
             for list_index in range(0, len(alternatives_list)): 
                 loop_lenght = 0
@@ -158,22 +155,55 @@ for row_content in range(0, len(missing_courses)):
                 worksheet.write(row_index, 0, name, p_format) #prints student's name
                 worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
                 
-                worksheet.write(row_index, 2 + 3*index_requirement, j, p_format) #prints the course with the unfilled requirements
+                if list_index != 0:
+                    worksheet.write(row_index, 2 + 3*index_requirement, "or", p_format) #prints "OR"
+                else:
+                    worksheet.write(row_index, 2 + 3*index_requirement, j, p_format) #prints the type of the unfilled requirements
+                
                 
                 r_code = alternatives_list[list_index]["code"]
-                r_lowerbound = alternatives_list[list_index]["lower bound"]
-                r_upperbound =  alternatives_list[list_index]["upper bound"]
                 
-                if r_lowerbound == r_upperbound:
-                    cell_content = f"{r_code} {r_lowerbound}"
+                #print diverso per lo standing
+                if r_code == "S":
+                    creds = alternatives_list[list_index]["lower bound"]
+                    #Freshman  0-29, Sophomore 30-59, Junior    60-89, Senior    90-...
+
+                    if creds>= 90:
+                        cell_content = "Senior Standing"
+                    elif creds>= 60:    
+                        cell_content = "Junior Standing"
+                    elif creds>= 30:    
+                        cell_content = "Sophomore Standing"
+                    elif creds>= 0:    
+                        cell_content = "Freshman Standing"
+                
+                #se il requirement è un corso o un range
                 else:
-                    cell_content = f"A {r_code} missing_courses from {r_lowerbound} to {r_upperbound}" #prints requirements one by one
-                
-                #column_index = index_requirement 
-                
+                    #r_code = alternatives_list[list_index]["code"]
+                    r_lowerbound = alternatives_list[list_index]["lower bound"]
+                    r_upperbound =  alternatives_list[list_index]["upper bound"]
+                    
+                    if r_lowerbound == r_upperbound:
+                        cell_content = f"{r_code} {r_lowerbound}"
+                    else: 
+                        #if the upper and lower bounds are in place only for the execution
+                        if r_lowerbound == 1 and r_upperbound == 1000:
+                            cell_content = f"One {r_code} course" 
+                            
+                        #if the upper bound is in place only for the execution, but the lower bound exists
+                        elif r_lowerbound != 1 and r_upperbound == 1000:
+                            cell_content = f"One {r_code} course from {r_lowerbound} onwards" 
+                        
+                        #if the lower bound is in place only for the execution, but the upper bound exists
+                        elif r_lowerbound == 1 and r_upperbound != 1000: 
+                            cell_content = f"One {r_code} course up to {r_upperbound}"
+                            
+                        #both lower and upper bounds exist
+                        elif r_lowerbound != r_upperbound and r_upperbound != 1000:
+                            cell_content = f"One {r_code} course from {r_lowerbound} to {r_upperbound}"
+                 
                 print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
-                
-                
+
                 
                 worksheet.write(row_index, 3 + 3*index_requirement, cell_content, p_format) #prints requirements one by one
                 worksheet.write(row_index, 4 + 3*index_requirement, requirement_reason, p_format) #prints the reasoning
@@ -182,17 +212,13 @@ for row_content in range(0, len(missing_courses)):
                 if len(alternatives_list)>loop_lenght:
                     loop_lenght = len(alternatives_list)
                     #print(f"\nloop_lenght= {loop_lenght}")
-            #prev_row_lenght += loop_lenght        
-            #print(f"\nprev_row_lenght= {prev_row_lenght}")
-            #print(f"prev_row_lenght: {prev_row_lenght}")
-            #row_index += 1
+                    
+                row_index -= list_index  
             
-        #prev_row_lenght += len(alternatives_list)
 
-        row_index -= len(curr_requirement)
     prev_row_lenght += loop_lenght        
     #print(f"\nprev_row_lenght= {prev_row_lenght}")
 
 
-
+prerequisites_formats.print_fields_names(missing_num)
 workbook.close()
