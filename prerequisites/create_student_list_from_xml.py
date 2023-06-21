@@ -130,7 +130,7 @@ for s in students:
                             # remove possible final characters, like i, ii, -A, and variations
                             end = len(current_course)-1
                             while end > 0:
-                                if current_course[end].isdigit():
+                                if current_course[end].isdigit() and current_course[end-1].isdigit():
                                     current_course = current_course[:end+1]
                                     end = 0
                                 else:
