@@ -707,24 +707,26 @@ class Student:
     Prerequisites Check
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     
-    #this function creates a list that contains only the courses that the student is taking currently 
-    #and one that contains all the courses that the student has done in the past semesters
     def create_curr_list(self):
         """
-        
+        this function creates a list that contains only the courses that the student is taking currently 
+        and one that contains all the courses that the student has done in the past semesters
         """
-        self.noncurrent_courses = self.reduced_courses_list
+        copy_list = self.reduced_courses_list[:]
+        self.noncurrent_courses = copy_list
         for i in self.reduced_courses_list[:]:
             if i.get_grade() == 0.4:
+                #print(f"adding {i.course.get_name()}")
                 self.current_courses.append(i)
                 self.noncurrent_courses.remove(i)
+                
     
     def return_current(self):
         print(self.current_courses)
         return self.current_courses
     
 
-    def attributes_check(self, courses_taken, prerequisite):
+    def attributes_check(self, courses_taken, prerequisite, req_type, remove):
         """
         this function gets one course out of all the courses that satisfy the same prerequisite
         and the list of all the courses that should be looked into to find the requirement
@@ -737,7 +739,7 @@ class Student:
         prerequisite = prerequisite
         #missing_list = []
         #goes through all courses done
-        for c_taken in courses_taken:
+        for c_taken in courses_taken[:]:
             taken_code = c_taken.course.get_code()
             taken_num = c_taken.course.get_number()
             taken_grade = c_taken.get_grade()    
@@ -751,24 +753,57 @@ class Student:
             lower_bound = prerequisite["lower bound"]
             upper_bound = prerequisite["upper bound"]
             
+            if found == True:
+                break
             #se il prerequisito è lo standing
-            if prereq_code == "S":
+            elif prereq_code == "S":
                 if self.credits_earned>=lower_bound:
                     found = True
                     
             #se il prerequisito è un qualunque corso o range di corsi
             else:
-                if taken_code==prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))):
+                #if remove.course.get_code() == "CS" and remove.course.get_number() == 320:
+                    #print(f"analyzing for {remove.course.get_code()}{remove.course.get_number()}: {taken_code} {taken_num}")
                     
-                    if taken_grade>=letter_to_number.get(prereq_grade):
+                if taken_code == prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))):
+
+                     #prerequisiti 
+                     if req_type == "prerequisite":
+                         if taken_grade>=letter_to_number.get(prereq_grade):
+                             #print(f"found: {prerequisite}")
+                             found = True
+                             #print("found")
+                             break
+                         
+                         elif taken_grade==letter_to_number.get("F"):
+                             self.prerequisite_reason = "Grade requirement not met"
+                         else:
+                             self.prerequisite_reason = "Grade requirement not met"
+                             
+                     #corequisiti dovrebbero avere anche current ammissibile come voto
+                     elif req_type == "corequisite":
+                        
+                        if (taken_grade>=letter_to_number.get(prereq_grade)) or (taken_grade == letter_to_number.get("current")):
+                            #print(f"found: {prerequisite}")
+                            found = True
+                            #print("found")
+                            break
+                        
+                        else:
+                            self.prerequisite_reason = "Grade requirement not met"
+                            
+                     """OLD VER
+                     if taken_grade>=letter_to_number.get(prereq_grade):
                         #print(f"found: {prerequisite}")
                         found = True
                     
-                    else:
-                        self.prerequisite_reason = "Grade"
-                        
+                     else:
+                        self.prerequisite_reason = "Grade requirement not met"
+                     """
+                    
             if self.prerequisite_reason == "":
                 self.prerequisite_reason = "Missing"
+                
         return found
                     
     def check_requirements(self):
@@ -793,19 +828,21 @@ class Student:
                 self.iteration = len(requirements)
                 self.prerequisite_reason = ""
                 
-                for requirement in requirements: #[{}, {}, {}] # a single requirement, which is a list of the possible alternatives that satisfy it
+                for requirement in requirements[:]: #[{}, {}, {}] # a single requirement, which is a list of the possible alternatives that satisfy it
                     #print(requirement)
                     #print(requirements)
                     #print("\n")
                     
-                    for alternative in requirement:
+                    for alternative in requirement[:]:
                         if found == False:
-                            #print(alternative)
+                            #print("not")
+                            #if m.course.get_code() == "CL" and m.course.get_number() == 381:
+                                #print(alternative)
                             #print("\n")
                             if i == "prerequisite":
-                                found = self.attributes_check(self.noncurrent_courses, alternative)
+                                found = self.attributes_check(self.noncurrent_courses, alternative, i, m)
                             elif i == "corequisite":
-                                found = self.attributes_check(self.reduced_courses_list, alternative)
+                                found = self.attributes_check(self.reduced_courses_list, alternative, i, m)
                         #else:
                             #break
                     
