@@ -158,9 +158,9 @@ for s in students:
                
                             # reads the grade
                             g = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn4}']/ns:Value", namespace)
-                            
+
                             grade = "current"
-                            if g != None:
+                            if g.text != None:
                                 grade = g.text
                             
                             in_residence = 1 # Whether the course has been taken at JCU. For now, always 1
