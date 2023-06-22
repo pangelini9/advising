@@ -20,7 +20,7 @@ font_size = workbook.add_format({'font_size': 11, 'font_name': 'calibri light'})
 bold_left = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1})
 border_left = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'border': 1})
 
-
+above_border = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'top': 5})
 '''new formats'''
 name_title = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'bottom': 5})
 course_title = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'right': 5, 'bottom': 5})
@@ -42,7 +42,7 @@ green_left = workbook.add_format({'font_size': 11, 'font_name': 'calibri light',
 
 normal_border = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'border': 1, 'right': 5})
 normal_noborder = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'border': 1})
-
+no_format = workbook.add_format({'font_size': 11, 'font_name': 'calibri light'})
 
 """""""""""""""""""""""""""""""""
 DEFINE SOME PRINTING SHORTCUTS
@@ -53,7 +53,8 @@ def print_fields_informations(row, index, information_list):
 def set_column_width():
     #columns = []
     for index in range(4, 43, 3):
-        worksheet.set_column(index, index, 25)
+        worksheet.set_column(index-1, index-1, 20)
+        worksheet.set_column(index, index, 20)
         #worksheet.set_column(index+1, index+1, 30)
 
 def set_contour_border():
@@ -88,8 +89,19 @@ def print_fields_names(maxlen):
 """""""""""""""""""""""""""""""""""
 FUNZIONE PER TOGLIERE I FORMATI 
 """""""""""""""""""""""""""""""""""
-#columns are from 1 to 43
+def remove_borders_rows(row_max_len):
+    for column_index in range(0, 45):
+        for row_index in range(row_max_len,2000):
+            worksheet.write(row_index, column_index, "", no_format)
+            
+def remove_borders_columns(column_max):
+    for column_index in range(2 + 3*column_max, 45):
+        for row_index in range(0,2000):
+            worksheet.write(row_index, column_index, "", no_format)
 
-
+def closing_border(row_max_len, column_max):
+    endpoint = 2 + 3*column_max
+    for column_index in range(0, endpoint):
+        worksheet.write(row_max_len, column_index, "", above_border)
 #rows 1 to 2000
 #workbook.close()

@@ -33,6 +33,27 @@ letter_to_number = {
     "TR" : 0.5 # PA: added this entry, for Transfer credits,
     }
 
+number_to_letter = {
+    4 : "A",
+    3.67 :"A-",
+    3.33 :"B+",
+    3 : "B",
+    2.67 : "B-",
+    2.33 : "C+",
+    2 : "C",
+    1.67 : "C-",
+    1.33 : "D+",
+    1 : "D",
+    0.67: "D-", 
+    0 : "F",
+    0.1 : "INC", #incomplete
+    5 : "P",
+    0.2 : "NP",
+    0.3 : "W",
+    0.4 : "current",
+    0.5 : "TR", # PA: added this entry, for Transfer credits
+    }
+
 import json
 
 class Student:
@@ -72,7 +93,9 @@ class Student:
         self.req_satisfied = []
         self.req_not_satisfied = []
         self.iteration = 0
-        self.prerequisite_reason = ""
+        #self.prerequisite_reason = ""
+        self.single_reason = ""
+        self.prerequisite_reason = []
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Return Functions
@@ -726,20 +749,34 @@ class Student:
         return self.current_courses
     
 
-    def attributes_check(self, courses_taken, prerequisite, req_type, remove):
+    def attributes_check(self, courses_taken, prerequisite, req_type, counter_alts):
         """
         this function gets one course out of all the courses that satisfy the same prerequisite
         and the list of all the courses that should be looked into to find the requirement
         so, the attrribute that should be passed for prerequisites is the list of courses excluding the current ones
         while the one that should be passed for corequisites is the list of all courses including current
         """
-        self.prerequisite_reason = ""
+        #self.prerequisite_reason = ""
+        
         found = False
-        courses_taken = courses_taken
-        prerequisite = prerequisite
+        #self.single_reason = ""
+        
+        courses_taken = courses_taken #list of courses that the student has taken
+        prerequisite = prerequisite #single alternative for the specific prerequisite
+        req_type = req_type #either prerequisites or corequisites
+        counter_alts = counter_alts #number of courses that satisfy the same requirement
+        
+        single_reason = ""
+        requirement_pair = []
+        
+        #self.single_reason = "" #Appoggio per dare una reason a ciascuna delle alternative
+        
         #missing_list = []
         #goes through all courses done
         for c_taken in courses_taken[:]:
+            #specific for each course to mantain the structure
+            #appoggio = {"course": [], "reason": []}
+            
             taken_code = c_taken.course.get_code()
             taken_num = c_taken.course.get_number()
             taken_grade = c_taken.get_grade()    
@@ -755,6 +792,7 @@ class Student:
             
             if found == True:
                 break
+            
             #se il prerequisito è lo standing
             elif prereq_code == "S":
                 if self.credits_earned>=lower_bound:
@@ -764,9 +802,9 @@ class Student:
             else:
                 #if remove.course.get_code() == "CS" and remove.course.get_number() == 320:
                     #print(f"analyzing for {remove.course.get_code()}{remove.course.get_number()}: {taken_code} {taken_num}")
-                    
-                if taken_code == prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))):
 
+                if taken_code == prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound))):
+                     #print(counter_alts)
                      #prerequisiti 
                      if req_type == "prerequisite":
                          if taken_grade>=letter_to_number.get(prereq_grade):
@@ -774,12 +812,48 @@ class Student:
                              found = True
                              #print("found")
                              break
-                         
-                         elif taken_grade==letter_to_number.get("F"):
-                             self.prerequisite_reason = "Grade requirement not met"
-                         else:
-                             self.prerequisite_reason = "Grade requirement not met"
-                             
+                         else: 
+                             if taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("W"):
+                                 if counter_alts == 1:
+                                     single_reason = "Failed"
+                                     #self.prerequisite_reason.append(single_reason)
+                                     #print("append 1")
+                                 else:
+                                     single_reason = f"{taken_code}{taken_num} Failed"
+                                     #self.prerequisite_reason.append(single_reason)
+                                     #print("append 2")
+                                    
+                             elif taken_grade==letter_to_number.get("INC"):
+                                 if counter_alts == 1:
+                                     single_reason = "Incomplete"
+                                     #self.prerequisite_reason.append(single_reason)
+                                 else:
+                                     single_reason = f"{taken_code}{taken_num} Incomplete"
+                                     #self.prerequisite_reason.append(single_reason)
+                            
+                             elif taken_grade==letter_to_number.get("F"):
+                                 if counter_alts == 1:
+                                     single_reason = "Failed"
+                                     #self.prerequisite_reason.append(single_reason)
+                                     #print("append 1")
+                                 else:
+                                     single_reason = f"{taken_code}{taken_num} Failed"
+                                     #self.prerequisite_reason.append(single_reason)
+                                     #print("append 2")
+                             else:
+                                #print("Grade requirement entered")
+                                if counter_alts == 1:
+                                    grade = number_to_letter.get(taken_grade)
+
+                                    single_reason = f"Grade req ({grade})"
+                                    #self.prerequisite_reason.append(single_reason)
+                                else:
+                                    grade = number_to_letter.get(taken_grade)
+                                    single_reason = f"Grade req ({grade} in {taken_code}{taken_num})"
+                                    #self.prerequisite_reason.append(single_reason)
+                                 
+                                 
+                    
                      #corequisiti dovrebbero avere anche current ammissibile come voto
                      elif req_type == "corequisite":
                         
@@ -790,23 +864,29 @@ class Student:
                             break
                         
                         else:
-                            self.prerequisite_reason = "Grade requirement not met"
+                             if counter_alts == 1:
+                                grade = number_to_letter.get(taken_grade)
+                                single_reason = f"Grade req ({grade})"
+                                #self.prerequisite_reason.append(single_reason)
+                             else:
+                                grade = number_to_letter.get(taken_grade)
+                                single_reason = f"Grade req ({grade} in {taken_code}{taken_num})"                                 
+                                #self.prerequisite_reason.append(single_reason)
                             
-                     """OLD VER
-                     if taken_grade>=letter_to_number.get(prereq_grade):
-                        #print(f"found: {prerequisite}")
-                        found = True
-                    
-                     else:
-                        self.prerequisite_reason = "Grade requirement not met"
-                     """
-                    
-            if self.prerequisite_reason == "":
-                self.prerequisite_reason = "Missing"
-                
-        return found
+
+            """        
+            if self.single_reason == "":
+                self.single_reason = "Missing"
+                self.prerequisite_reason.append(self.single_reason) 
+            """
+        requirement_pair.append(found)
+        requirement_pair.append(single_reason)
+
+        return requirement_pair
                     
     def check_requirements(self):
+        myReportFile = open("report.txt", "w")
+
         #for loop sui current course:
         info_list = [] #will contain the current courses that do not satisfy the requirements in addition to the missing requirements
         
@@ -826,31 +906,53 @@ class Student:
                 requirements = current_requirements[i] #either prerequisites or corequisites [[{}, {}], [{}], [{}]]
                 found = False
                 self.iteration = len(requirements)
-                self.prerequisite_reason = ""
-                
+                #missing
+                #self.prerequisite_reason.clear()
                 for requirement in requirements[:]: #[{}, {}, {}] # a single requirement, which is a list of the possible alternatives that satisfy it
-                    #print(requirement)
+                    #found = False    
+                #print(requirement)
                     #print(requirements)
                     #print("\n")
+                    #self.single_reason = ""
+                    reasons = []
+                    counter_alts = len(requirement)
+                    #self.prerequisite_reason.clear()
+                    #prerequisite_reason = []
                     
-                    for alternative in requirement[:]:
-                        if found == False:
+                    for alternative in requirement[:]: #one of the list of courses that satisfy the same requirement
+                        req_reason = ""    
+                    #self.single_reason = ""
+                        #counter_alts = len(requirement)
+                        if found == True:
+                            break
+                        
+                        elif found == False:
                             #print("not")
                             #if m.course.get_code() == "CL" and m.course.get_number() == 381:
                                 #print(alternative)
-                            #print("\n")
                             if i == "prerequisite":
-                                found = self.attributes_check(self.noncurrent_courses, alternative, i, m)
+                                requirement_pair = self.attributes_check(self.noncurrent_courses, alternative, i, counter_alts)
                             elif i == "corequisite":
-                                found = self.attributes_check(self.reduced_courses_list, alternative, i, m)
+                                requirement_pair = self.attributes_check(self.reduced_courses_list, alternative, i, counter_alts)
                         #else:
                             #break
-                    
+                            found = requirement_pair[0]
+                            req_reason = requirement_pair[1]
+                            if req_reason == "":
+                                req_reason = "Missing"
+                                                
+                        reasons.append(req_reason) 
+                        #print(req_reason)
+                        #print(reasons)
+
                     if found == False: #il requirement non è stato soddisfatto 
-                        if self.prerequisite_reason == "":
-                            self.prerequisite_reason = "Missing"
-                        
-                        missing_req[i].append([requirement, self.prerequisite_reason])
+                        if req_reason == "":
+                            req_reason = "Missing"
+                        #if self.single_reason == "":
+                            #self.single_reason = "Missing"
+                        #self.prerequisite_reason.append(self.single_reason)
+                        #stuff = self.prerequisite_reason
+                        missing_req[i].append([requirement, reasons])
                         #print("not found")
                         #break
                         
@@ -864,6 +966,13 @@ class Student:
                 info.append(m)
                 info.append(missing_req)
                 info_list.append(info)
+                #print(info_list)
+                myReportFile.write(f"\nCurrent course:  {m.course.get_name()}. Missing requirements: {missing_req}.")
+                #myReportFile.write("Current course: " + m.course.get_name() + "missing requirements " + missing_req + ". \nFinal structure: info_list" + "\n")
+        #myReportFile.close()
+        print("\n")
+        #print(info_list)
+        myReportFile.write(f"\n\n\n{info_list}")
 
         return info_list
                

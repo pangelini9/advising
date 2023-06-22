@@ -20,9 +20,10 @@ OPEN AND FORMAT THE EXCEL FILE
 workbook = prerequisites_formats.workbook
 worksheet = prerequisites_formats.worksheet
 
-prerequisites_formats.set_borders()
-prerequisites_formats.set_column_width()
-prerequisites_formats.set_contour_border()
+
+prerequisites_formats.set_borders() #to set the borders on the cells
+prerequisites_formats.set_column_width() #to set the right width of the columns
+prerequisites_formats.set_contour_border()  #to set the bold border
 
 #p_format = prerequisites_formats.border_left
 normal_border = prerequisites_formats.normal_border
@@ -186,13 +187,37 @@ for row_content in range(0, len(missing_courses)):
             
             cell_content = f"One {r_code} course" 
             requirement_reason = curr_requirement[0][1]
+            print(f"last part {requirement_reason}")
+            #print(requirement_reason)
             #print(curr_requirement)
             #requirement_reason = "problem"
-            print(f"\n{cell_content} in row={row_index} column={3}")
-
+            #print(f"\n{cell_content} in row={row_index} column={3}")
+            
+            #print(requirement_reason)
             
             worksheet.write(row_index, 3, cell_content, normal_noborder) #prints requirements one by one
-            worksheet.write(row_index, 4, requirement_reason, normal_border) #prints the reasoning
+            
+            r_motivation = ""
+            if len(requirement_reason) == 1:
+                r_motivation = requirement_reason[0]
+            else: 
+                for index in range(0, len(requirement_reason)):
+                    if requirement_reason[index] != "Missing": #missing
+                        if r_motivation == "":
+                            r_motivation = requirement_reason[index]
+                            #print(course_info + r_motivation)
+                        else:
+                            r_motivation += f", {requirement_reason[index]}"
+                            #print(course_info + r_motivation)
+                            
+                if r_motivation == "":
+                    r_motivation = "Missing"
+            """                
+            if r_motivation == "":
+                r_motivation = "Missing"
+                print(course_info + r_motivation)
+                  """  
+            worksheet.write(row_index, 4, r_motivation, normal_border) #prints the reasoning
             break
            
         #i corsi che non hanno bisogno di requirement strani    
@@ -210,6 +235,8 @@ for row_content in range(0, len(missing_courses)):
                
                 alternatives_list = single_requirement[0]
                 requirement_reason = single_requirement[1]
+                print(f"last part {requirement_reason}")
+                #print(requirement_reason)
     
                 r_code = 0
                 r_lowerbound = 0
@@ -279,6 +306,9 @@ for row_content in range(0, len(missing_courses)):
                             
                     #se il requirement è un corso o un range
                     else:
+                        """""""""""""""""""""""""""""""""""""""""
+                        PRINT THE REQUIREMENTS ALTERNATIVES
+                        """""""""""""""""""""""""""""""""""""""
                         #r_code = alternatives_list[list_index]["code"]
                         r_lowerbound = alternatives_list[list_index]["lower bound"]
                         r_upperbound =  alternatives_list[list_index]["upper bound"]
@@ -339,7 +369,7 @@ for row_content in range(0, len(missing_courses)):
                                 cell_content += f" or one {r_code} course from {r_lowerbound} to {r_upperbound}"                           
                         
                         
-                    print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
+                    #print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
     
                     """Version for alternatives on different rows
                     worksheet.write(row_index, 3 + 3*index_requirement, cell_content, p_format) #prints requirements one by one
@@ -352,71 +382,51 @@ for row_content in range(0, len(missing_courses)):
                         
                     row_index -= list_index  
                     """
-                    
+                                    
                 worksheet.write(row_index, 3 + 3*index_requirement, cell_content, normal_noborder) #prints requirements one by one
-                worksheet.write(row_index, 4 + 3*index_requirement, requirement_reason, normal_border) #prints the reasoning
+                
+                """""""""""""""""""""""""""""
+                PRINT THE REASONING
+                """""""""""""""""""""""""""
+                r_motivation = ""
+                if len(requirement_reason) == 1:
+                    r_motivation = requirement_reason[0]
+                    #print(course_info + r_motivation)
+                else: 
+                    for index in range(0, len(requirement_reason)):
+                        if requirement_reason[index] != "Missing":
+                            if r_motivation == "":
+                                r_motivation = requirement_reason[index]
+                                #print(course_info + r_motivation)
+                            else:
+                                r_motivation += f", {requirement_reason[index]}"
+                                #print(course_info + r_motivation)
+                                
+                    if r_motivation == "":
+                        r_motivation = "Missing"                                
+                """
+                if r_motivation == "":
+                    r_motivation = "Missing"
+                    """
+
+                worksheet.write(row_index, 4 + 3*index_requirement, r_motivation, normal_border) #prints the reasoning
                 
     #prev_row_lenght += loop_lenght        
     #print(f"\nprev_row_lenght= {prev_row_lenght}")
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+TO FIX THE FORMATS THAT APPLY FOR MORE CELLS THAN ACTUALLY USED
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 #will be needed when we will iterate over the students or the program will override rows
 prev_row_lenght += len(missing_courses)
 
 prerequisites_formats.print_fields_names(missing_num)
+
+row_max_len = len(missing_courses)
+prerequisites_formats.remove_borders_rows(row_max_len+1)
+prerequisites_formats.remove_borders_columns(missing_num)
+prerequisites_formats.closing_border(row_max_len+1, missing_num)
+
+
+
 workbook.close()
-
-"""
-#Exeptions: Drawing/Painting
-if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306):
-    print("Drawing/Painting")   
-    special_requirement = True
-    r_code = "Drawing or Painting"
-    
-#Exeptions: Graphic Design
-elif (course_name=="AS" and course_num==3330) or (course_name=="AS" and course_num==332):
-    print("Graphic Design")
-    special_requirement = True
-    r_code = "Graphic Design"
-    
-#Exeptions: Painting / Printmaking
-elif (course_name=="AS" and course_num==342):
-    print("Painting / Printmaking")
-    special_requirement = True
-    r_code = "Painting or Printmaking"
-    
-#Exeptions: 
-elif (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349):
-    print("Photography")
-    special_requirement = True
-    r_code = "Photography"
-
-#Exeptions: Italian literature
-elif (course_name=="IT" and course_num==349) or (course_name=="IT" and course_num==399):
-    print("Italian literature")
-    special_requirement = True
-    r_code = "Italian literature"
-    
-if special_requirement == True:
-    loop_lenght = 0
-    #row index should be okay ??
-    
-    
-    worksheet.write(row_index, 0, name, p_format) #prints student's name
-    worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
-    
-    worksheet.write(row_index, 2, j, p_format) #prints the type of the unfilled requirements
-    
-    cell_content = f"One {r_code} course" 
-    requirement_reason =
-    
-    print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
-
-    
-    worksheet.write(row_index, 3, cell_content, p_format) #prints requirements one by one
-    worksheet.write(row_index, 4, requirement_reason, p_format) #prints the reasoning
-    
-   
-#i corsi che non hanno bisogno di requirement strani    
-else:
-    print("Tutto il resto da riga 155")
-"""
