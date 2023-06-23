@@ -7,6 +7,7 @@ Created on Fri Nov  4 16:15:21 2022
 
 #from majors import Major
 from courses import Course, Course_taken
+from compareTerms import compare
 #from courses import letter_to_number
 #NB: major = Major(...)
 #    def __init__(self, name, surname, highschool_credits, major, minor1, minor2, courses_done):
@@ -734,6 +735,9 @@ class Student:
         """
         this function creates a list that contains only the courses that the student is taking currently 
         and one that contains all the courses that the student has done in the past semesters
+        NB the current courses done in semesters other than the last one are still dropped from the current list
+        rather they are put in the noncurrent_courses list
+        This is because otherwise it would raise problems on prerequisites that the student might fullfill in the active semester
         """
         copy_list = self.reduced_courses_list[:]
         self.noncurrent_courses = copy_list
@@ -742,7 +746,26 @@ class Student:
                 #print(f"adding {i.course.get_name()}")
                 self.current_courses.append(i)
                 self.noncurrent_courses.remove(i)
-                
+        
+    "To get rid of the current that the student is doing for the prerequisite check"
+    "To be proven"
+    def remove_not_finished(self):
+        for ccourse in self.current_courses[:]:
+            term1 = ccourse.get_term()
+            for comparison in self.current_courses[:]:
+                term2 = comparison.get_term()
+                result = compare(term1, term2)
+                if result == 1:
+                    if comparison in self.current_courses:
+                        self.current_courses.remove(comparison)
+                        self.noncurrent_courses.append(comparison)
+                        #print(f"dropping {comparison.course.get_name()}")
+                if result == 2:
+                    if ccourse in self.current_courses:
+                        self.current_courses.remove(ccourse)
+                        self.noncurrent_courses.append(ccourse)
+                        #print(f"dropping {ccourse.course.get_name()}")
+        
     
     def return_current(self):
         print(self.current_courses)
@@ -807,7 +830,7 @@ class Student:
                      #print(counter_alts)
                      #prerequisiti 
                      if req_type == "prerequisite":
-                         if taken_grade>=letter_to_number.get(prereq_grade):
+                         if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("current"):
                              #print(f"found: {prerequisite}")
                              found = True
                              #print("found")
@@ -885,7 +908,7 @@ class Student:
         return requirement_pair
                     
     def check_requirements(self):
-        myReportFile = open("report.txt", "w")
+        #myReportFile = open("report.txt", "w")
 
         #for loop sui current course:
         info_list = [] #will contain the current courses that do not satisfy the requirements in addition to the missing requirements
@@ -967,12 +990,12 @@ class Student:
                 info.append(missing_req)
                 info_list.append(info)
                 #print(info_list)
-                myReportFile.write(f"\nCurrent course:  {m.course.get_name()}. Missing requirements: {missing_req}.")
+                #myReportFile.write(f"\nCurrent course:  {m.course.get_name()}. Missing requirements: {missing_req}.")
                 #myReportFile.write("Current course: " + m.course.get_name() + "missing requirements " + missing_req + ". \nFinal structure: info_list" + "\n")
         #myReportFile.close()
         print("\n")
         #print(info_list)
-        myReportFile.write(f"\n\n\n{info_list}")
+        #myReportFile.write(f"\n\n\n{info_list}")
 
         return info_list
                

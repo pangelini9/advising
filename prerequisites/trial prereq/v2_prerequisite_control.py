@@ -82,6 +82,7 @@ curr_student.compute_nx_standing()
 CHECK THE PREREQUISITES
 """""""""""""""""""""""""""""""""""""""""""""""""""
 curr_student.create_curr_list()
+curr_student.remove_not_finished()
 missing_courses = []
 missing_courses = curr_student.check_requirements()
 
@@ -146,25 +147,25 @@ for row_content in range(0, len(missing_courses)):
         "LOOK FOR COURSES WITH UNUSUAL PREREQUSITES"
         #Exeptions: Drawing/Painting
         if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306):
-            print("Drawing/Painting")   
+            #print("Drawing/Painting")   
             special_requirement = True
             r_code = "Drawing or Painting"
             
         #Exeptions: Graphic Design
-        elif (course_name=="AS" and course_num==3330) or (course_name=="AS" and course_num==332):
-            print("Graphic Design")
+        elif (course_name=="AS" and course_num==330) or (course_name=="AS" and course_num==332):
+            #print("Graphic Design")
             special_requirement = True
             r_code = "Graphic Design"
             
         #Exeptions: Painting / Printmaking
         elif (course_name=="AS" and course_num==342):
-            print("Painting / Printmaking")
+            #print("Painting / Printmaking")
             special_requirement = True
             r_code = "Painting or Printmaking"
             
         #Exeptions: 
         elif (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349):
-            print("Photography")
+            #print("Photography")
             special_requirement = True
             r_code = "Photography"
 
@@ -187,13 +188,7 @@ for row_content in range(0, len(missing_courses)):
             
             cell_content = f"One {r_code} course" 
             requirement_reason = curr_requirement[0][1]
-            print(f"last part {requirement_reason}")
-            #print(requirement_reason)
-            #print(curr_requirement)
-            #requirement_reason = "problem"
             #print(f"\n{cell_content} in row={row_index} column={3}")
-            
-            #print(requirement_reason)
             
             worksheet.write(row_index, 3, cell_content, normal_noborder) #prints requirements one by one
             
@@ -212,11 +207,7 @@ for row_content in range(0, len(missing_courses)):
                             
                 if r_motivation == "":
                     r_motivation = "Missing"
-            """                
-            if r_motivation == "":
-                r_motivation = "Missing"
-                print(course_info + r_motivation)
-                  """  
+ 
             worksheet.write(row_index, 4, r_motivation, normal_border) #prints the reasoning
             break
            
@@ -229,14 +220,10 @@ for row_content in range(0, len(missing_courses)):
                     missing_num = len(curr_requirement)
                        
                 single_requirement = curr_requirement[index_requirement] #the list of alternatives for a single requirement + the problem
-                #[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], 'Grade']
-                #print(f"\nsingle_requirement: {single_requirement}")
-                
+                #[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], 'Grade'] 
                
                 alternatives_list = single_requirement[0]
                 requirement_reason = single_requirement[1]
-                print(f"last part {requirement_reason}")
-                #print(requirement_reason)
     
                 r_code = 0
                 r_lowerbound = 0
@@ -246,26 +233,13 @@ for row_content in range(0, len(missing_courses)):
                 worksheet.write(row_index, 0, name, normal_noborder) #prints student's name
                 worksheet.write(row_index, 1, course_info, normal_border) #prints name of the course
                 worksheet.write(row_index, 2 + 3*index_requirement, j, normal_noborder) #prints the type of the unfilled requirements
-                
-
-                    
+                         
                 #goes over all the alternatives for a requirement so control rows
                 for list_index in range(0, len(alternatives_list)): 
                     loop_lenght = 0
                     #row_index += list_index
                     #row_index += prev_row_lenght
                     
-                    """Version for alternatives on different rows 
-                    worksheet.write(row_index, 0, name, p_format) #prints student's name
-                    worksheet.write(row_index, 1, course_info, p_format) #prints name of the course
-                    
-                    
-                    if list_index != 0:
-                        worksheet.write(row_index, 2 + 3*index_requirement, "or", p_format) #prints "OR"
-                    else:
-                        worksheet.write(row_index, 2 + 3*index_requirement, j, p_format) #prints the type of the unfilled requirements
-                    
-                    """
                     r_code = alternatives_list[list_index]["code"]
                     
                     #print diverso per lo standing
@@ -273,16 +247,6 @@ for row_content in range(0, len(missing_courses)):
                         creds = alternatives_list[list_index]["lower bound"]
                         #Freshman  0-29, Sophomore 30-59, Junior    60-89, Senior    90-...
                         
-                        """Version for alternatives on different rows 
-                        if creds>= 90:
-                            cell_content = "Senior Standing"
-                        elif creds>= 60:    
-                            cell_content = "Junior Standing"
-                        elif creds>= 30:    
-                            cell_content = "Sophomore Standing"
-                        elif creds>= 0:    
-                            cell_content = "Freshman Standing"
-                        """
                         #version to concatenate strings
                         if creds>=90 and list_index==0:
                             cell_content = "Senior Standing"
@@ -312,34 +276,12 @@ for row_content in range(0, len(missing_courses)):
                         #r_code = alternatives_list[list_index]["code"]
                         r_lowerbound = alternatives_list[list_index]["lower bound"]
                         r_upperbound =  alternatives_list[list_index]["upper bound"]
-                        
-                        
-                        """Version for alternatives on different rows 
-                        if r_lowerbound == r_upperbound:
-                            cell_content = f"{r_code} {r_lowerbound}"
-                        else: 
-                            #if the upper and lower bounds are in place only for the execution
-                            if r_lowerbound == 1 and r_upperbound == 1000:
-                                cell_content = f"One {r_code} course" 
-                                
-                            #if the upper bound is in place only for the execution, but the lower bound exists
-                            elif r_lowerbound != 1 and r_upperbound == 1000:
-                                cell_content = f"One {r_code} course from {r_lowerbound} onwards" 
-                            
-                            #if the lower bound is in place only for the execution, but the upper bound exists
-                            elif r_lowerbound == 1 and r_upperbound != 1000: 
-                                cell_content = f"One {r_code} course up to {r_upperbound}"
-                                
-                            #both lower and upper bounds exist
-                            elif r_lowerbound != r_upperbound and r_upperbound != 1000:
-                                cell_content = f"One {r_code} course from {r_lowerbound} to {r_upperbound}"
-                        """      
 
                         #version to concatenate strings                          
                         if r_lowerbound==r_upperbound and list_index==0:
-                            cell_content = f"{r_code} {r_lowerbound}"
+                            cell_content = f"{r_code} {int(r_lowerbound)}"
                         elif r_lowerbound==r_upperbound and list_index!=0:
-                            cell_content += f" or {r_code} {r_lowerbound}"
+                            cell_content += f" or {r_code} {int(r_lowerbound)}"
                             
                         else: 
                             #if the upper and lower bounds are in place only for the execution
@@ -351,37 +293,25 @@ for row_content in range(0, len(missing_courses)):
                             
                             #if the upper bound is in place only for the execution, but the lower bound exists
                             elif (r_lowerbound != 1 and r_upperbound == 1000) and (list_index==0):
-                                cell_content = f"One {r_code} course from {r_lowerbound} onwards" 
+                                cell_content = f"One {r_code} course from {int(r_lowerbound)} onwards" 
                             elif (r_lowerbound != 1 and r_upperbound == 1000) and (list_index!=0):
-                                cell_content += f" or one {r_code} course from {r_lowerbound} onwards"                            
+                                cell_content += f" or one {r_code} course from {int(r_lowerbound)} onwards"                            
                                 
                             
                             #if the lower bound is in place only for the execution, but the upper bound exists
                             elif (r_lowerbound == 1 and r_upperbound != 1000) and (list_index==0): 
-                                cell_content = f"One {r_code} course up to {r_upperbound}"
+                                cell_content = f"One {r_code} course up to {int(r_upperbound)}"
                             elif (r_lowerbound == 1 and r_upperbound != 1000) and (list_index!=0):
-                                cell_content += f" or one {r_code} course up to {r_upperbound}"                            
+                                cell_content += f" or one {r_code} course up to {int(r_upperbound)}"                            
                                 
                             #both lower and upper bounds exist
-                            elif (r_lowerbound != r_upperbound and r_upperbound != 1000) and (list_index==0):
-                                cell_content = f"One {r_code} course from {r_lowerbound} to {r_upperbound}"         
-                            elif (r_lowerbound != r_upperbound and r_upperbound != 1000) and (list_index!=0):
-                                cell_content += f" or one {r_code} course from {r_lowerbound} to {r_upperbound}"                           
+                            elif (r_lowerbound != 1 and r_upperbound != 1000) and (list_index==0):
+                                cell_content = f"One {r_code} course from {int(r_lowerbound)} to {int(r_upperbound)}"         
+                            elif (r_lowerbound != 1 and r_upperbound != 1000) and (list_index!=0):
+                                cell_content += f" or one {r_code} course from {int(r_lowerbound)} to {int(r_upperbound)}"                           
                         
                         
                     #print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
-    
-                    """Version for alternatives on different rows
-                    worksheet.write(row_index, 3 + 3*index_requirement, cell_content, p_format) #prints requirements one by one
-                    worksheet.write(row_index, 4 + 3*index_requirement, requirement_reason, p_format) #prints the reasoning
-                    
-                    #column_index += 1
-                    if len(alternatives_list)>loop_lenght:
-                        loop_lenght = len(alternatives_list)
-                        #print(f"\nloop_lenght= {loop_lenght}")
-                        
-                    row_index -= list_index  
-                    """
                                     
                 worksheet.write(row_index, 3 + 3*index_requirement, cell_content, normal_noborder) #prints requirements one by one
                 
@@ -404,15 +334,9 @@ for row_content in range(0, len(missing_courses)):
                                 
                     if r_motivation == "":
                         r_motivation = "Missing"                                
-                """
-                if r_motivation == "":
-                    r_motivation = "Missing"
-                    """
 
                 worksheet.write(row_index, 4 + 3*index_requirement, r_motivation, normal_border) #prints the reasoning
                 
-    #prev_row_lenght += loop_lenght        
-    #print(f"\nprev_row_lenght= {prev_row_lenght}")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 TO FIX THE FORMATS THAT APPLY FOR MORE CELLS THAN ACTUALLY USED

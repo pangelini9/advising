@@ -84,7 +84,7 @@ for name in worksheets:
                 term = current_term
                 grade = grades[x]
             else:
-                term = "current"
+                term = current_term
                 grade = "current"
             new_course = [course_id, something, grade, term, honors]
             stud_courses.append(new_course)
