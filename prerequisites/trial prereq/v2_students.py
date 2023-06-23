@@ -747,9 +747,10 @@ class Student:
                 self.current_courses.append(i)
                 self.noncurrent_courses.remove(i)
         
-    "To get rid of the current that the student is doing for the prerequisite check"
-    "To be proven"
+
     def remove_not_finished(self):
+        """This function removes from the current list the courses that the student is following in the ongoing semester 
+        so the prerequisite check does not double check those prereuisites"""
         for ccourse in self.current_courses[:]:
             term1 = ccourse.get_term()
             for comparison in self.current_courses[:]:
@@ -765,8 +766,45 @@ class Student:
                         self.current_courses.remove(ccourse)
                         self.noncurrent_courses.append(ccourse)
                         #print(f"dropping {ccourse.course.get_name()}")
-        
+
     
+    def leave_chosen_curr(self, semester):
+        """This function removes from the current list all the courses that are not  
+        done in the semester of interest (aka the one provided by user input)"""
+        curr_semester = semester
+        for ccourse in self.current_courses[:]:
+            term1 = ccourse.get_term()
+            result = compare(curr_semester, term1)
+            if result == 1: #current after term 1
+                if ccourse in self.current_courses:
+                    self.current_courses.remove(ccourse)
+                    self.noncurrent_courses.append(ccourse)
+                    print(f"cause 1: dropping {ccourse.course.get_name()}")
+            if result == 2: #term 1 after current
+                if ccourse in self.current_courses:
+                    self.current_courses.remove(ccourse)
+                    print(f"cause 2: dropping {ccourse.course.get_name()}")
+    
+    def create_curr_ver2(self, semester):
+        curr_semester = semester
+        copy_list = self.reduced_courses_list[:]
+        self.noncurrent_courses = copy_list
+        for ccourse in self.reduced_courses_list[:]:
+            print(f"analyzing: {ccourse.course.get_name()}")
+            term1 = ccourse.get_term()
+            if term1 == "TR":
+                self.current_courses.append(ccourse)
+                self.noncurrent_courses.remove(ccourse)
+                print(f"cause TR: dropping {ccourse.course.get_name()}")
+            else:
+                result = compare(curr_semester, term1)
+                if ccourse.get_grade()==0.4 and result==0:
+                    self.current_courses.append(ccourse)
+                    self.noncurrent_courses.remove(ccourse)
+                    print(f"cause 1: dropping {ccourse.course.get_name()}")
+        print(self.current_courses)
+                
+                
     def return_current(self):
         print(self.current_courses)
         return self.current_courses
@@ -993,7 +1031,7 @@ class Student:
                 #myReportFile.write(f"\nCurrent course:  {m.course.get_name()}. Missing requirements: {missing_req}.")
                 #myReportFile.write("Current course: " + m.course.get_name() + "missing requirements " + missing_req + ". \nFinal structure: info_list" + "\n")
         #myReportFile.close()
-        print("\n")
+       # print("\n")
         #print(info_list)
         #myReportFile.write(f"\n\n\n{info_list}")
 
@@ -1022,7 +1060,7 @@ def create_student_list():
         student = Student(curr_student[0], curr_student[1], curr_student[2], curr_student[3], curr_student[4], curr_student[5])
         courses_t = curr_student[6]
         for course in courses_t:
-            print(course)
+            #print(course)
             student.add_course(course)
         #print(student.courses_done)
         student_obj.append(student)

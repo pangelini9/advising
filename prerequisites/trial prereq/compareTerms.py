@@ -1,4 +1,3 @@
-
 def compare(f, s):
     
     """
@@ -8,7 +7,9 @@ def compare(f, s):
     
     terms = {"Spring" : 1,
              "Sum I" : 2,
+             "Sum i" : 2,
              "Sum II" : 3,
+             "Sum ii" : 3,
              "Fall" : 4}
     
     larger = 0
@@ -32,10 +33,12 @@ def compare(f, s):
             larger = 1
         elif terms[f_term] < terms[s_term]:
             larger = 2
-
+        else:
+            larger = 0
+            
     return larger
     
-first = "Sum II 2023"
-second = "Sum I 2023"
+#first = "Sum II 2023"
+#second = "Sum I 2023"
 
-print(compare(first, second))
+#print(compare(first, second))

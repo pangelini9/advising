@@ -49,7 +49,7 @@ for name in worksheets:
                 current_term = "TR"
     
         if type(courses[x]) is str and courses[x] != "Course ID" and not courses[x].startswith("ADMIN"):
-            print(f"{current_term} - {courses[x]} - {course_names[x]}. Grade: {grades[x]}. Credits: {creds[x]}")
+            #print(f"{current_term} - {courses[x]} - {course_names[x]}. Grade: {grades[x]}. Credits: {creds[x]}")
             
             # search for the ID in the json file
             # SOME COURSES (ONLY EN?) HAVE i OR ii AT THE END OF THE CODE. ASK REGISTRAR
