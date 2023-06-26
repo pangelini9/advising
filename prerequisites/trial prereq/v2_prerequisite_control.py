@@ -81,6 +81,7 @@ curr_student.compute_nx_standing()
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 GET THE SEMESTER ONE WANTS TO ANALYZE
 """""""""""""""""""""""""""""""""""""""""""""""""""
+'''USER ID PER SEMESTRE
 #imput the semester that one wants to 
 print("Please insert the name of the semester you want to check the prerequisites of")
 print("\nType either: Spring, Sum I, Sum II, or Fall")
@@ -114,29 +115,18 @@ for i in years[::-1]:
         
 current_Semester = f"{actual_semester} {actual_year[0]}{actual_year[1]}{actual_year[2]}{actual_year[3]}"    
 print(current_Semester)
-
+'''
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 CHECK THE PREREQUISITES
 """""""""""""""""""""""""""""""""""""""""""""""""""
-curr_student.create_curr_ver2(current_Semester)
-#curr_student.create_curr_list()
+curr_student.create_curr_list()
+
+#curr_student.create_curr_ver2(current_Semester)
 #curr_student.remove_not_finished()
 #curr_student.leave_chosen_curr(current_Semester)
 missing_courses = []
 missing_courses = curr_student.check_requirements()
 
-#print(f"\n{missing_courses}")
-"""
-for i in course:
-    print("\n")
-    print(f"the student cannot take the course: \n{i[0].course.get_name()}")
-    print(f"because they have not fullfilled these prerequisites: \n{i[1]}")
-#current_courses=curr_student.return_current()
-"""
-
-#print(f"\n{course}")
-
-#prerequisites_formats.print_fields_names()
 
 """    
 course structure = [[courses, {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, 

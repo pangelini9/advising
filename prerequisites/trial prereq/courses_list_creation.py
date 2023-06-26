@@ -38,7 +38,7 @@ for x in range(0,len(names)):
                 current_cr = ""
                 req_grade = ""
                 
-            #print("Work on ", x, names[x])
+            print("Work on ", x, names[x])
     
             # initialize a new one
             course = [names[x], codes[x], int(numbers[x]), int(creds[x]), {"prerequisite":[], "corequisite":[]}, int(ids[x])]
@@ -88,6 +88,10 @@ for x in range(0,len(names)):
             else:
                 course[4]["corequisite"].append([c])
                 current_cr = split_string[1]
-                
+          
+# add the last course
+if course:
+    courses.append(course)                 
+          
 with open("courses.json", "w") as myFile:
     json.dump(courses, myFile, indent=2)

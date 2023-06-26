@@ -745,9 +745,9 @@ class Student:
             if i.get_grade() == 0.4:
                 #print(f"adding {i.course.get_name()}")
                 self.current_courses.append(i)
-                self.noncurrent_courses.remove(i)
+                #self.noncurrent_courses.remove(i)
         
-
+    '''
     def remove_not_finished(self):
         """This function removes from the current list the courses that the student is following in the ongoing semester 
         so the prerequisite check does not double check those prereuisites"""
@@ -803,14 +803,14 @@ class Student:
                     self.noncurrent_courses.remove(ccourse)
                     print(f"cause 1: dropping {ccourse.course.get_name()}")
         print(self.current_courses)
-                
+    '''                
                 
     def return_current(self):
         print(self.current_courses)
         return self.current_courses
     
 
-    def attributes_check(self, courses_taken, prerequisite, req_type, counter_alts):
+    def attributes_check(self, courses_taken, prerequisite, req_type, counter_alts, m):
         """
         this function gets one course out of all the courses that satisfy the same prerequisite
         and the list of all the courses that should be looked into to find the requirement
@@ -826,10 +826,15 @@ class Student:
         prerequisite = prerequisite #single alternative for the specific prerequisite
         req_type = req_type #either prerequisites or corequisites
         counter_alts = counter_alts #number of courses that satisfy the same requirement
+        current_course = m #the course we are checking the requirements of
+        #current_semester = current_semester #the semester in which the student is taking the class we are checking the prerequisites of
         
         single_reason = ""
         requirement_pair = []
-        
+        course_name = current_course.course.get_code()
+        course_num = current_course.course.get_number()
+        current_semester = current_course.get_term() #the semester in which the student is taking the class we are checking the prerequisites of
+
         #self.single_reason = "" #Appoggio per dare una reason a ciascuna delle alternative
         
         #missing_list = []
@@ -868,13 +873,28 @@ class Student:
                      #print(counter_alts)
                      #prerequisiti 
                      if req_type == "prerequisite":
-                         if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("current"):
+                         taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
+                         result = compare(current_semester, taken_semester) 
+                         if taken_grade>=letter_to_number.get(prereq_grade) or (taken_grade==letter_to_number.get("current") and result==1):
                              #print(f"found: {prerequisite}")
                              found = True
                              #print("found")
                              break
-                         else: 
-                             if taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("W"):
+                         else:
+                             if taken_grade==letter_to_number.get("current"):
+                                if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306) or (course_name=="AS" and course_num==330) or (course_name=="AS" and course_num==332) or (course_name=="AS" and course_num==342) or (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349) or (course_name=="IT" and course_num==349) or (course_name=="IT" and course_num==399):
+                                    single_reason = "Missing"
+                                else:
+                                    if counter_alts == 1:
+                                        single_reason = "Missing"
+                                        #self.prerequisite_reason.append(single_reason)
+                                        #print("append 1")
+                                    else:
+                                        single_reason = f"{taken_code}{taken_num} Missing"
+                                        #self.prerequisite_reason.append(single_reason)
+                                        #print("append 2")
+                             
+                             elif taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("W"):
                                  if counter_alts == 1:
                                      single_reason = "Failed"
                                      #self.prerequisite_reason.append(single_reason)
@@ -917,8 +937,9 @@ class Student:
                     
                      #corequisiti dovrebbero avere anche current ammissibile come voto
                      elif req_type == "corequisite":
-                        
-                        if (taken_grade>=letter_to_number.get(prereq_grade)) or (taken_grade == letter_to_number.get("current")):
+                        taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
+                        result = compare(current_semester, taken_semester) 
+                        if taken_grade>=letter_to_number.get(prereq_grade) or (taken_grade == letter_to_number.get("current") and (result==1 or result==0)):
                             #print(f"found: {prerequisite}")
                             found = True
                             #print("found")
@@ -992,9 +1013,9 @@ class Student:
                             #if m.course.get_code() == "CL" and m.course.get_number() == 381:
                                 #print(alternative)
                             if i == "prerequisite":
-                                requirement_pair = self.attributes_check(self.noncurrent_courses, alternative, i, counter_alts)
+                                requirement_pair = self.attributes_check(self.noncurrent_courses, alternative, i, counter_alts, m)
                             elif i == "corequisite":
-                                requirement_pair = self.attributes_check(self.reduced_courses_list, alternative, i, counter_alts)
+                                requirement_pair = self.attributes_check(self.reduced_courses_list, alternative, i, counter_alts, m)
                         #else:
                             #break
                             found = requirement_pair[0]

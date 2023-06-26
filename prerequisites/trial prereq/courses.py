@@ -41,10 +41,10 @@ class Course:
     def get_name(self): #full name
         return self.name
     
-    def get_code(self): #prefix letter
+    def get_code(self): #prefix letter aka letter part of the code
         return self.code
     
-    def get_number(self): #number
+    def get_number(self): #numerical part of the code
         return self.number
     
     def get_credits(self):
