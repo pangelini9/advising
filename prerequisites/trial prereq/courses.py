@@ -5,7 +5,6 @@ Created on Tue Oct  4 09:39:11 2022
 @author: ilda1
 """
 #from students import Student
-
 letter_to_number = {
     "A" : 4,
     "A-" : 3.67,
@@ -24,8 +23,8 @@ letter_to_number = {
     "NP" : 0.2,
     "W" : 0.3,
     "current" : 0.4,
-    "TR" : 0.5, # PA: added this entry, for Transfer credits
-    }
+    "TR" : 0.5, # PA: added this entry, for Transfer credits,
+    "AU" : 0.6}
 
 
 class Course:
@@ -44,7 +43,7 @@ class Course:
     def get_code(self): #prefix letter aka letter part of the code
         return self.code
     
-    def get_number(self): #numerical part of the code
+    def get_number(self): #numerical part of the 
         return self.number
     
     def get_credits(self):
@@ -63,25 +62,27 @@ student = Student(...)
 """
 class Course_taken:
     
-    def __init__(self, course, student, course_section, grade, term, c_type):
+    def __init__(self, course, student, creds, grade, term, c_type):
         self.course = course
         self.student = student
-        self.section = course_section
+        self.creds = creds
+        #self.section = course_section
         self.grade = letter_to_number.get(grade)
         self.term = term
         self.c_type = c_type #se è honor
         
+        
     def get_course(self):
         return self.course
         
-    def get_credits(self):
-        creds = self.course.credits
-        if self.c_type == 1:
-           creds += 1
-        return creds
+    #def get_credits(self):
+        #creds = self.course.credits
+        #if self.c_type == 1:
+           #creds += 1
+        #return creds
     
-    def get_section(self):
-        return self.section
+    #def get_section(self):
+        #return self.section
     
     def get_grade(self):
         return self.grade
@@ -95,3 +96,8 @@ class Course_taken:
         else:
             return ""
     
+    #has to be substituted because for credits we will consider the amount granted to the student
+    #for each of the courses under consideration
+    def get_credits(self):
+        return self.creds
+        

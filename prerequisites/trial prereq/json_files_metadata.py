@@ -23,7 +23,7 @@ number_to_letter = {
     0.3 : "W",
     0.4 : "current",
     0.5 : "TR", # PA: added this entry, for Transfer credits
-    }
+    0.6 : "AU"}
 
 letter_to_number = {
     "A" : 4,
@@ -44,7 +44,7 @@ letter_to_number = {
     "W" : 0.3,
     "current" : 0.4,
     "TR" : 0.5, # PA: added this entry, for Transfer credits
-    }
+    "AU" : 0.6}
 
 #Freshman  0-29, Sophomore 30-59, Junior    60-89, Senior    90-...
 

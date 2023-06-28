@@ -1,5 +1,5 @@
 def compare(f, s):
-    
+    #current_semester, taken_semester
     """
     Input f and s: strings
     returns 1 if term f is after s, 2 if s is after, and 0 if they are the same
@@ -33,7 +33,7 @@ def compare(f, s):
             larger = 1
         elif terms[f_term] < terms[s_term]:
             larger = 2
-        else:
+        elif terms[f_term] == terms[s_term]:
             larger = 0
             
     return larger

@@ -20,6 +20,7 @@ create_coursetaken_obj():
 import json
 from courses import Course, Course_taken
 
+
 #creates objects for each of the courses
 def create_course_obj():
     with open('courses.json', 'r') as myfile:
@@ -47,6 +48,8 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
             curr_course = courses_list[h]
             key_curr_course = curr_course.get_course_key()
             if key_course_taken == key_curr_course:
+                #structure of the course taken:
+                #                          course,        student,       creds,                   grade,               term,                c_type)
                 taken_obj = Course_taken(curr_course, curr_student, curr_course_taken[1], curr_course_taken[2], curr_course_taken[3], curr_course_taken[4])
                 courses_taken_obj.append(taken_obj)
                 #print(taken_obj.grade)
