@@ -95,6 +95,12 @@ class Course_taken:
             return " - Honor"
         else:
             return ""
+    
+    def get_course_type2(self):
+        if self.c_type == 1:
+            return " H"
+        else:
+            return ""        
         
     def return_honor(self):
         return self.c_type

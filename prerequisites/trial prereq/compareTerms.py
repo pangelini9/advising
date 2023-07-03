@@ -35,7 +35,7 @@ def compare(f, s):
             larger = 2
         elif terms[f_term] == terms[s_term]:
             larger = 0
-            
+    #print(larger)        
     return larger
     
 #first = "Sum II 2023"

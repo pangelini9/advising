@@ -107,6 +107,7 @@ class Student:
         #self.prerequisite_reason = ""
         self.single_reason = ""
         self.prerequisite_reason = []
+        self.retaken_classes =  []
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Return Functions
@@ -253,7 +254,7 @@ class Student:
                     to_insert = False # non è da inserire
                     #Report2.write(f"\ndropping {current_course.course.get_name()} because AU")
                     #print(f"\ndropping {current_course.course.get_name()} because AU")
-                    found_retake = True
+                    #found_retake = True
                 elif pd.isnull(current_course.get_grade()) == True:
                     to_insert = False
                     #Report2.write(f"\ndropping {current_course.course.get_name()} because null")
@@ -264,12 +265,15 @@ class Student:
                     #to_insert = False # non è da inserire
                     #print(f"dropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()}")
                     if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("NP") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current"):
+                        'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, NP, or W'
+                        'then does not have to be dropped nor added to the retake'
                         #Report2.write(f"\nbreak: {current_course.course.get_name()} done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}), kept because {number_to_letter.get(h.get_grade())} in {h.get_term()}")
                         #print(f"\nbreak: {current_course.course.get_name()} done in {current_course.get_term()} kept because {number_to_letter.get(h.get_grade())} in {h.get_term()}")
                         found_retake = True
                         break
                         
                     elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("NP") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current"):
+                        'you took a class twice, but the second time the grade was acceptable'
                         to_insert = False # non è da inserire
                         #Report2.write(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
                         found_retake = True
@@ -290,6 +294,12 @@ class Student:
             if to_insert:
                 #self.reduced_courses_list.insert(0, current_course)
                 self.reduced_courses_list.insert(0, current_course)
+                #self.retaken_classes.append(current_course)
+            
+            #elif found_retake==True:
+                #self.retaken_classes.append(current_course)
+        #if len(self.retaken_classes)!=0:
+            #print(f"{self.get_name()}, total:{len(self.courses_done)}, left:{len(self.reduced_courses_list)}, retaken:{len(self.retaken_classes)}")
         
         #if found_retake == True:
             #Report2.write("\n")
@@ -939,8 +949,8 @@ class Student:
         
         single_reason = ""
         requirement_pair = []
-        course_name = current_course.course.get_code()
-        course_num = current_course.course.get_number()
+        course_name = current_course.course.get_code() #letter part of code whose prerequisites we are checking
+        course_num = current_course.course.get_number() #number part of code whose prerequisites we are checking
         current_semester = current_course.get_term() #the semester in which the student is taking the class we are checking the prerequisites of
 
         prereq_code  = prerequisite["code"]
@@ -951,8 +961,8 @@ class Student:
             #specific for each course to mantain the structure
             #appoggio = {"course": [], "reason": []}
             
-            taken_code = c_taken.course.get_code()
-            taken_num = c_taken.course.get_number()
+            taken_code = c_taken.course.get_code() #letter part of code the student has taken
+            taken_num = c_taken.course.get_number() #number part of code the student has taken
             taken_grade = c_taken.get_grade()    
             
             prereq_code = prerequisite["code"]
@@ -973,12 +983,17 @@ class Student:
                     if creds>=lower_bound:
                         found = True
                         break
-
-                #se il prerequisito è un qualunque corso o range di corsi
+                    else:
+                        single_reason = f"Missing ({creds} credits)"
+                        found = False
+                        break
+                    
+                #elif course_name==taken_code or course_num==taken_num:
+                    #print(f"{self.get_name()} same course")
+                #to exclude the same course
+                #elif course_name!=taken_code or course_num!=taken_num: #
+                    #se il prerequisito è un qualunque corso o range di corsi
                 else:
-                    #print("entered 0")
-                    #if remove.course.get_code() == "CS" and remove.course.get_number() == 320:
-                        #print(f"analyzing for {remove.course.get_code()}{remove.course.get_number()}: {taken_code} {taken_num}") 
                     if (int(lower_bound)==int(upper_bound) and int(taken_num)==int(lower_bound) and taken_code == prereq_code) or (int(lower_bound)!=int(upper_bound) and (taken_code.startswith(prereq_code) or taken_code.endswith(prereq_code)) and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or int(taken_num)==int(lower_bound) or int(taken_num)==int(upper_bound))):
                     #if taken_code == prereq_code and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or (int(taken_num)==int(lower_bound) and int(taken_num)==int(upper_bound)) or (int(taken_num)==int(lower_bound) or int(taken_num)==int(upper_bound))):
                          #print("entered 1") 
@@ -997,7 +1012,7 @@ class Student:
                                  #myReportFile.write(f"\nokay {current_course.course.get_name()}: found {prerequisite} because {c_taken.course.get_name()} with {number_to_letter.get(taken_grade)}")
                                  break
                              
-                             elif taken_grade==letter_to_number.get("current") and result==1:
+                             elif taken_grade==letter_to_number.get("current") and result==1: #and result==1:
                                  found = True
                                  #myReportFile.write(f"\nfound: {prerequisite} because {c_taken.course.get_name()} is current")
                                  break
@@ -1013,7 +1028,7 @@ class Student:
                                          single_reason = "Failed"
 
                                      else:
-                                         single_reason = f"{taken_code}{taken_num} Failed"
+                                         single_reason = f"{taken_code} {taken_num} Failed"
                                         
                                  elif taken_grade==letter_to_number.get("INC"):
                                      #myReportFile.write("\nincomplete")
@@ -1021,7 +1036,7 @@ class Student:
                                          single_reason = "Incomplete"
                                          #self.prerequisite_reason.append(single_reason)
                                      else:
-                                         single_reason = f"{taken_code}{taken_num} Incomplete"
+                                         single_reason = f"{taken_code} {taken_num} Incomplete"
                                          #self.prerequisite_reason.append(single_reason)
                                 
                                  elif taken_grade==letter_to_number.get("F"):
@@ -1031,20 +1046,26 @@ class Student:
                                          #self.prerequisite_reason.append(single_reason)
                                          #print("append 1")
                                      else:
-                                         single_reason = f"{taken_code}{taken_num} Failed"
+                                         single_reason = f"{taken_code} {taken_num} Failed"
                                          #self.prerequisite_reason.append(single_reason)
                                          #print("append 2")
+                                         
                                  elif taken_grade<letter_to_number.get(prereq_grade):
                                     #myReportFile.write("\ngrade requirement is insufficient")
                                     #print("Grade requirement entered")
                                     if counter_alts == 1:
                                         grade = number_to_letter.get(taken_grade)
-    
-                                        single_reason = f"Grade req ({grade})"
+                                        if taken_grade == 0.4:
+                                            single_reason = f"Grade req ({grade} in {taken_semester})"
+                                        else:
+                                            single_reason = f"Grade req ({grade})"
                                         #self.prerequisite_reason.append(single_reason)
                                     else:
                                         grade = number_to_letter.get(taken_grade)
-                                        single_reason = f"Grade req ({grade} in {taken_code}{taken_num})"
+                                        if taken_grade == 0.4:
+                                            single_reason = f"Grade req ({grade} in {taken_semester} in {taken_code} {taken_num})"
+                                        else:
+                                            single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"
                                         #self.prerequisite_reason.append(single_reason)
                                      
                                  else:
@@ -1054,7 +1075,7 @@ class Student:
                                        #self.prerequisite_reason.append(single_reason)
                                        #print("append 1")
                                     else:
-                                       single_reason = f"{taken_code}{taken_num} Missing"
+                                       single_reason = f"{taken_code} {taken_num} Missing"
                                        #self.prerequisite_reason.append(single_reason)
                                        #print("append 2")   
 
@@ -1083,7 +1104,7 @@ class Student:
                                     #myReportFile.write("\ncorequisite grade insufficient")
                                  else:
                                     grade = number_to_letter.get(taken_grade)
-                                    single_reason = f"Grade req ({grade} in {taken_code}{taken_num})"            
+                                    single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"            
                                     #myReportFile.write("\ncorequisite grade insufficient")
 
                             #if found == False:
@@ -1091,15 +1112,15 @@ class Student:
 
         requirement_pair.append(found)
         requirement_pair.append(single_reason)    
-
+            
         return requirement_pair
                     
     
     def check_requirements(self):
         """
-        
-        
-        
+        this function extrapolates the alternatives for each prerequisites, calls the function that checks them
+        against the courses that the student has taken, and once received the pair reason and found
+        creates the list of missing prerequisites with the necessary reasons       
         """
         #myReportFile.write(f"\n\n{self.get_name()}\n")
         

@@ -205,6 +205,7 @@ def check_prerequisites():
                 req_type = ["prerequisite", "corequisite"]
                 requirements = missing_courses[row_content][1] # {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 'Missing']], 'corequisite': []}
                 current_course = missing_courses[row_content][0]
+
                 #print(f"\n{current_course}: {requirements}")
                 
                 #first picks prerequisites, then corequisites
@@ -222,7 +223,9 @@ def check_prerequisites():
                     course_name = current_course.course.get_code()
                     course_num = current_course.course.get_number()
                     course_semester = current_course.get_term()
-                    course_info = f"{course_name} {course_num}"
+                    
+                    honor_part = current_course.get_course_type2()
+                    course_info = f"{course_name} {course_num} {honor_part}"
                     
                     special_requirement = False
                     
