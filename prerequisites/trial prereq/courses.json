@@ -955,28 +955,6 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "EC",
-            "lower bound": 201.0,
-            "upper bound": 201.0,
-            "grade": "D-"
-          }
-        ],
-        [
-          {
-            "code": "EC",
-            "lower bound": 202.0,
-            "upper bound": 202.0,
-            "grade": "D-"
-          }
-        ],
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
           }
         ]
       ],
@@ -1583,20 +1561,6 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "FIN",
-            "lower bound": 301.0,
-            "upper bound": 301.0,
-            "grade": "D-"
-          }
-        ],
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
           }
         ]
       ],
@@ -1750,7 +1714,7 @@
         [
           {
             "code": "MA",
-            "lower bound": 280.0,
+            "lower bound": 208.0,
             "upper bound": 208.0,
             "grade": "C-"
           }
@@ -2339,21 +2303,21 @@
             "lower bound": 101.0,
             "upper bound": 101.0,
             "grade": "D-"
+          },
+          {
+            "code": "MA",
+            "lower bound": 197.0,
+            "upper bound": 197.0,
+            "grade": "D-"
+          },
+          {
+            "code": "MA",
+            "lower bound": 198.0,
+            "upper bound": 198.0,
+            "grade": "D-"
           }
         ],
         [
-          {
-            "code": "MA",
-            "lower bound": 100.0,
-            "upper bound": 100.0,
-            "grade": "D-"
-          },
-          {
-            "code": "MA",
-            "lower bound": 101.0,
-            "upper bound": 101.0,
-            "grade": "D-"
-          },
           {
             "code": "S",
             "lower bound": 60.0,
@@ -2693,12 +2657,6 @@
     {
       "prerequisite": [
         [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          },
           {
             "code": "S",
             "lower bound": 60.0,
@@ -3323,16 +3281,7 @@
     368,
     3,
     {
-      "prerequisite": [
-        [
-          {
-            "code": "S",
-            "lower bound": 90.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          }
-        ]
-      ],
+      "prerequisite": [],
       "corequisite": []
     },
     131
@@ -3951,12 +3900,6 @@
             "lower bound": 110.0,
             "upper bound": 110.0,
             "grade": "C"
-          },
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "C"
           }
         ]
       ],
@@ -4526,26 +4469,6 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "C"
-          }
-        ],
-        [
-          {
-            "code": "EN",
-            "lower bound": 200.0,
-            "upper bound": 1000.0,
-            "grade": "D-"
-          },
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
           }
         ]
       ],
@@ -5108,20 +5031,6 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "MGT",
-            "lower bound": 301.0,
-            "upper bound": 330.0,
-            "grade": "D-"
-          }
-        ],
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
           }
         ]
       ],
@@ -5140,7 +5049,7 @@
           {
             "code": "MGT",
             "lower bound": 301.0,
-            "upper bound": 330.0,
+            "upper bound": 301.0,
             "grade": "D-"
           }
         ]
@@ -5160,7 +5069,7 @@
           {
             "code": "MGT",
             "lower bound": 301.0,
-            "upper bound": 330.0,
+            "upper bound": 301.0,
             "grade": "D-"
           }
         ],
@@ -5168,7 +5077,7 @@
           {
             "code": "MKT",
             "lower bound": 301.0,
-            "upper bound": 330.0,
+            "upper bound": 301.0,
             "grade": "D-"
           }
         ]
@@ -5691,20 +5600,6 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "MKT",
-            "lower bound": 301.0,
-            "upper bound": 301.0,
-            "grade": "D-"
-          }
-        ],
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
           }
         ]
       ],
@@ -5821,22 +5716,6 @@
     3,
     {
       "prerequisite": [
-        [
-          {
-            "code": "MKT",
-            "lower bound": 301.0,
-            "upper bound": 301.0,
-            "grade": "D-"
-          }
-        ],
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          }
-        ],
         [
           {
             "code": "MKT",
@@ -6566,12 +6445,6 @@
     {
       "prerequisite": [
         [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          },
           {
             "code": "S",
             "lower bound": 60.0,
@@ -8857,12 +8730,6 @@
             "code": "S",
             "lower bound": 60.0,
             "upper bound": NaN,
-            "grade": "D-"
-          },
-          {
-            "code": "AH",
-            "lower bound": 1.0,
-            "upper bound": 1000.0,
             "grade": "D-"
           }
         ]
@@ -11800,26 +11667,8 @@
     398,
     3,
     {
-      "prerequisite": [
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          }
-        ]
-      ],
-      "corequisite": [
-        [
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "D-"
-          }
-        ]
-      ]
+      "prerequisite": [],
+      "corequisite": []
     },
     593
   ],
@@ -12266,26 +12115,8 @@
     323,
     3,
     {
-      "prerequisite": [
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          }
-        ]
-      ],
-      "corequisite": [
-        [
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "D-"
-          }
-        ]
-      ]
+      "prerequisite": [],
+      "corequisite": []
     },
     611
   ],
@@ -12372,17 +12203,11 @@
   [
     "Contemporary Italian Narrative in Translation",
     "ITS",
-    291,
+    292,
     3,
     {
       "prerequisite": [
         [
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "C"
-          },
           {
             "code": "EN",
             "lower bound": 110.0,
@@ -13078,12 +12903,6 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "COM",
-            "lower bound": 220.0,
-            "upper bound": 220.0,
-            "grade": "D-"
           }
         ]
       ],
@@ -13652,23 +13471,11 @@
             "lower bound": 60.0,
             "upper bound": NaN,
             "grade": "D-"
-          },
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
           }
         ]
       ],
       "corequisite": [
         [
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "D-"
-          },
           {
             "code": "EN",
             "lower bound": 110.0,
@@ -13866,26 +13673,8 @@
     225,
     3,
     {
-      "prerequisite": [
-        [
-          {
-            "code": "S",
-            "lower bound": 60.0,
-            "upper bound": NaN,
-            "grade": "D-"
-          }
-        ]
-      ],
-      "corequisite": [
-        [
-          {
-            "code": "EN",
-            "lower bound": 110.0,
-            "upper bound": 110.0,
-            "grade": "D-"
-          }
-        ]
-      ]
+      "prerequisite": [],
+      "corequisite": []
     },
     721
   ],
@@ -14715,12 +14504,6 @@
             "lower bound": 101.0,
             "upper bound": 101.0,
             "grade": "D-"
-          },
-          {
-            "code": "COM",
-            "lower bound": 220.0,
-            "upper bound": 220.0,
-            "grade": "D-"
           }
         ]
       ],
@@ -15347,7 +15130,16 @@
     299,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "C"
+          }
+        ]
+      ],
       "corequisite": []
     },
     905
@@ -15512,7 +15304,16 @@
     299,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "C"
+          }
+        ]
+      ],
       "corequisite": []
     },
     921
@@ -40526,7 +40327,16 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "AH",
+            "lower bound": 1.0,
+            "upper bound": 1000.0,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3196
@@ -40570,7 +40380,16 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3200
@@ -40592,7 +40411,16 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "COM",
+            "lower bound": 220.0,
+            "upper bound": 220.0,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3202
@@ -40658,7 +40486,32 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "EC",
+            "lower bound": 201.0,
+            "upper bound": 201.0,
+            "grade": "D-"
+          }
+        ],
+        [
+          {
+            "code": "EC",
+            "lower bound": 202.0,
+            "upper bound": 202.0,
+            "grade": "D-"
+          }
+        ],
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3208
@@ -40669,7 +40522,30 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "C"
+          }
+        ],
+        [
+          {
+            "code": "EN",
+            "lower bound": 200.0,
+            "upper bound": 1000.0,
+            "grade": "D-"
+          },
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3209
@@ -40724,7 +40600,24 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "FIN",
+            "lower bound": 301.0,
+            "upper bound": 301.0,
+            "grade": "D-"
+          }
+        ],
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3214
@@ -40801,8 +40694,26 @@
     399,
     3,
     {
-      "prerequisite": [],
-      "corequisite": []
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
+      "corequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "D-"
+          }
+        ]
+      ]
     },
     3221
   ],
@@ -40823,8 +40734,26 @@
     399,
     3,
     {
-      "prerequisite": [],
-      "corequisite": []
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
+      "corequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "D-"
+          }
+        ]
+      ]
     },
     3223
   ],
@@ -40933,7 +40862,24 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "MGT",
+            "lower bound": 301.0,
+            "upper bound": 301.0,
+            "grade": "D-"
+          }
+        ],
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3233
@@ -40944,7 +40890,24 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "MKT",
+            "lower bound": 301.0,
+            "upper bound": 301.0,
+            "grade": "D-"
+          }
+        ],
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3234
@@ -40966,8 +40929,26 @@
     399,
     3,
     {
-      "prerequisite": [],
-      "corequisite": []
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
+      "corequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "D-"
+          }
+        ]
+      ]
     },
     3236
   ],
@@ -40977,7 +40958,16 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3237
@@ -40999,7 +40989,16 @@
     399,
     3,
     {
-      "prerequisite": [],
+      "prerequisite": [
+        [
+          {
+            "code": "COM",
+            "lower bound": 220.0,
+            "upper bound": 220.0,
+            "grade": "D-"
+          }
+        ]
+      ],
       "corequisite": []
     },
     3239
@@ -116580,8 +116579,26 @@
     399,
     3,
     {
-      "prerequisite": [],
-      "corequisite": []
+      "prerequisite": [
+        [
+          {
+            "code": "S",
+            "lower bound": 60.0,
+            "upper bound": NaN,
+            "grade": "D-"
+          }
+        ]
+      ],
+      "corequisite": [
+        [
+          {
+            "code": "EN",
+            "lower bound": 110.0,
+            "upper bound": 110.0,
+            "grade": "D-"
+          }
+        ]
+      ]
     },
     147
   ],

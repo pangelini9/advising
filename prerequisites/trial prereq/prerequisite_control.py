@@ -10,12 +10,12 @@ Created on Wed Jun  7 13:09:38 2023
 import json
 import xlsxwriter
 from courses import Course, Course_taken
-from students import Student, create_student_list, close_file
+from students import Student, create_student_list #, close_file
 from majors import Major, create_major_list
 from create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
 import prerequisites_formats
 
-#print
+#print, removeretake, write
 
 letter_to_number = {
     "A" : 4,
@@ -83,8 +83,8 @@ def check_prerequisites():
     """""""""""""""""""""""""""""""""""""""""""""""""""
     courses_list = create_course_obj()
     
-    myReportFile = open("prereq_students.txt", "w")
-    report_2 = open("students_gpa.txt", "w")
+    #myReportFile = open("prereq_students.txt", "w")
+    #report_2 = open("students_gpa.txt", "w")
     """"""""""""""""""""""
     IMPORT THE STUDENT
     """""""""""""""""""""
@@ -104,7 +104,8 @@ def check_prerequisites():
     #print(len(students_list))
     row_max_len = 0
     prev_row_lenght = 1 #counter so that stuff does  not override eachoter   
-
+    recall_num = 0
+    
     for index in range(0, len(students_list)):
         curr_student = students_list[index]
         #print(f"\n{curr_student.get_name()}")
@@ -171,8 +172,10 @@ def check_prerequisites():
         #curr_student.leave_chosen_curr(current_Semester)
         missing_courses = []
         missing_courses = curr_student.check_requirements()
-        report_2.write(f"\n{curr_student.get_name()} has {curr_student.return_gpa()} GPA, {curr_student.return_creds_done()} credits. {curr_student.return_courses_information()}\n")
-        
+        #report_2.write(f"\n{curr_student.get_name()} has {curr_student.return_gpa()} GPA, {curr_student.return_creds_done()} credits. {curr_student.return_courses_information()}\n")
+        #if len(missing_courses)!= 0:
+            #report_2.write(f"\n{curr_student.get_name()} has {len(missing_courses)} missing prerequisites\n")
+
         """    
         course structure = [[courses, {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, 
                                                           {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 
@@ -190,13 +193,12 @@ def check_prerequisites():
         missing_num = 0 #counter to print the right number of field names 
         if len(missing_courses) != 0:
             #print(f"{curr_student.get_name()}: no missing prerequisites")
-            myReportFile.write(f"{curr_student.get_name()} has {len(curr_student.get_coursesReduced())} courses done and {len(missing_courses)} missing prerequisites\n")
+            #myReportFile.write(f"{curr_student.get_name()} has {len(curr_student.get_coursesReduced())} courses done and {len(missing_courses)} missing prerequisites\n")
         #else:
             #for loop over the list of courses whose requirements are not satisfied
             for row_content in range(0, len(missing_courses)): 
-                           
-                #row_index = row_content + prereq_num + 1
-                #row_index = row_content + 1
+                
+                #print(f"{curr_student.get_name()} loop num {row_content}")
                 row_index = row_content + prev_row_lenght
                 
                 
@@ -207,11 +209,14 @@ def check_prerequisites():
                 
                 #first picks prerequisites, then corequisites
                 for j in req_type: 
+                    cell_content = ""
                     curr_requirement = requirements[j] #the list of missing requirements:
+                    #print(curr_requirement)
                     #[[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 'Missing']]
                     
-                    #row_index = prev_row_lenght + 1 #prev_row_lenght should account for the last row the program has written, while 1 accounts for the title line
-                    
+                    if len(curr_requirement)>= missing_num:
+                        missing_num = len(curr_requirement)
+                                          
                     "INFO STUDENT"
                     name = f"{curr_student.get_name()} {curr_student.get_surname()}"
                     course_name = current_course.course.get_code()
@@ -224,31 +229,26 @@ def check_prerequisites():
                     "LOOK FOR COURSES WITH UNUSUAL PREREQUSITES"
                     #Exeptions: Drawing/Painting
                     if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306):
-                        #print("Drawing/Painting")   
                         special_requirement = True
                         r_code = "Drawing or Painting"
                         
                     #Exeptions: Graphic Design
                     elif (course_name=="AS" and course_num==330) or (course_name=="AS" and course_num==332):
-                        #print("Graphic Design")
                         special_requirement = True
                         r_code = "Graphic Design"
                         
                     #Exeptions: Painting / Printmaking
                     elif (course_name=="AS" and course_num==342):
-                        #print("Painting / Printmaking")
                         special_requirement = True
                         r_code = "Painting or Printmaking"
                         
                     #Exeptions: 
                     elif (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349):
-                        #print("Photography")
                         special_requirement = True
                         r_code = "Photography"
             
                     #Exeptions: Italian literature
                     elif (course_name=="IT" and course_num==349) or (course_name=="IT" and course_num==399):
-                        #print("Italian literature")
                         special_requirement = True
                         r_code = "Italian literature" 
                     
@@ -266,7 +266,6 @@ def check_prerequisites():
                         
                         cell_content = f"One {r_code} course" 
                         requirement_reason = curr_requirement[0][1]
-                        #print(f"\n{cell_content} in row={row_index} column={3}")
                         
                         worksheet.write(row_index, 4, cell_content, normal_noborder) #prints requirements one by one
                         
@@ -278,10 +277,8 @@ def check_prerequisites():
                                 if requirement_reason[index] != "Missing": #missing
                                     if r_motivation == "":
                                         r_motivation = requirement_reason[index]
-                                        #print(course_info + r_motivation)
                                     else:
                                         r_motivation += f", {requirement_reason[index]}"
-                                        #print(course_info + r_motivation)
                                         
                             if r_motivation == "":
                                 r_motivation = "Missing"
@@ -291,14 +288,13 @@ def check_prerequisites():
                        
                     #i corsi che non hanno bisogno di requirement strani    
                     else:
-                    
+                        cell_content = ""
                         #colum lenght because goes over all the missing requirements for the same course
                         for index_requirement in range(0,len(curr_requirement)):
-                            if len(curr_requirement)>= missing_num:
-                                missing_num = len(curr_requirement)
+
                                    
                             single_requirement = curr_requirement[index_requirement] #the list of alternatives for a single requirement + the problem
-                            #[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], 'Grade'] 
+                            #[[{'code': 'FIN', 'lower bound': 301.0, 'upper bound': 301.0, 'grade': 'D-'}], ['Grade']] 
                            
                             alternatives_list = single_requirement[0]
                             requirement_reason = single_requirement[1]
@@ -349,7 +345,9 @@ def check_prerequisites():
                                         
                                 #se il requirement è un corso o un range
                                 
-
+                                    #elif r_code == "HONOR":
+                                        #cell_content = "3.5 cum GPA (honor classes requirement)"
+                                    
                                 else: 
                                     """""""""""""""""""""""""""""""""""""""""
                                     PRINT THE REQUIREMENTS ALTERNATIVES
@@ -360,7 +358,10 @@ def check_prerequisites():
             
                                     #version to concatenate strings                          
                                     if r_lowerbound==r_upperbound and list_index==0:
-                                        cell_content = f"{r_code} {int(r_lowerbound)}"
+                                        if r_lowerbound == 0:
+                                            cell_content = f"{r_code}"
+                                        else:
+                                            cell_content = f"{r_code} {int(r_lowerbound)}"
                                     elif r_lowerbound==r_upperbound and list_index!=0:
                                         cell_content += f" or {r_code} {int(r_lowerbound)}"
                                         
@@ -413,8 +414,8 @@ def check_prerequisites():
                                             r_motivation += f", {requirement_reason[index]}"
                                             #print(course_info + r_motivation)
                                             
-                                #if r_motivation == "":
-                                 #   r_motivation = "Missing"                                
+                                if r_motivation == "":
+                                    r_motivation = "Missing"                                
             
                             worksheet.write(row_index, 5 + 3*index_requirement, r_motivation, normal_border) #prints the reasoning
             prev_row_lenght += len(missing_courses)                    
@@ -425,16 +426,23 @@ def check_prerequisites():
             #will be needed when we will iterate over the students or the program will override rows
         #prev_row_lenght += len(missing_courses)
         row_max_len += len(missing_courses)
-        prerequisites_formats.print_fields_names(missing_num)
+        end_column = prerequisites_formats.print_fields_names(missing_num)
+        if end_column >= recall_num:
+            recall_num = end_column
         
+        #print(recall_num)
         #row_max_len = len(missing_courses)
-    #prerequisites_formats.remove_borders_rows(row_max_len+1)
-    #prerequisites_formats.remove_borders_columns(missing_num)
-    #prerequisites_formats.closing_border(row_max_len+1, missing_num)
+        
+    prerequisites_formats.remove_borders_rows(row_max_len+1)
+    prerequisites_formats.remove_borders_columns(recall_num+1)
+    #print(f"end {}")
+    prerequisites_formats.closing_border(row_max_len+1, recall_num)
     
-    
-    print("\nDone. \nPlease open the file called prerequisites.xlsx")
+    if row_max_len == 0:
+        print("\nThere are no students with missing prerequisites")
+    else:
+        print("\nDone. \nPlease open the file called '00 prerequisites.xlsx' ")
     
     workbook.close()
-    report_2.close()
-    close_file()
+    #report_2.close()
+    #close_file()

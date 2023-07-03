@@ -95,6 +95,9 @@ class Course_taken:
             return " - Honor"
         else:
             return ""
+        
+    def return_honor(self):
+        return self.c_type
     
     #has to be substituted because for credits we will consider the amount granted to the student
     #for each of the courses under consideration

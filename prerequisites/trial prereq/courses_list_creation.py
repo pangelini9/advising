@@ -7,7 +7,7 @@ def create_courses_list():
     
     df = pd.read_excel(filename, "lista corsi")
     
-    print(df.keys())
+    #print(df.keys())
     
     names = df["A"] # also PR or CR
     codes = df["B"] # also codes of pre/co req
@@ -90,6 +90,7 @@ def create_courses_list():
                     course[4]["corequisite"].append([c])
                     current_cr = split_string[1]
     
+    #print("")
     # add the last course
     if course:
         courses.append(course)            
