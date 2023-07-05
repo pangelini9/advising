@@ -9,8 +9,8 @@ Created on Fri Nov  4 16:15:21 2022
 
 
 #from majors import Major
-from courses import Course, Course_taken
-from compareTerms import compare
+from execution_files.courses import Course, Course_taken
+from execution_files.compareTerms import compare
 #from courses import letter_to_number
 #NB: major = Major(...)
 #    def __init__(self, name, surname, highschool_credits, major, minor1, minor2, courses_done):
@@ -263,7 +263,7 @@ class Student:
                         'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W'
                         'then does not have to be dropped nor added to the retake'
                         found_retake = True
-                        print(f"not dropped because second time {h.get_grade()}")
+                        #print(f"not dropped because second time {h.get_grade()}")
                         break
                         
                     elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current"):

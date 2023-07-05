@@ -9,11 +9,11 @@ Created on Wed Jun  7 13:09:38 2023
 
 import json
 import xlsxwriter
-from courses import Course, Course_taken
-from students import Student, create_student_list #, close_file
-from majors import Major, create_major_list
-from create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
-import prerequisites_formats
+from execution_files.courses import Course, Course_taken
+from execution_files.students import Student, create_student_list #, close_file
+from execution_files.majors import Major, create_major_list
+from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
+import execution_files.prerequisites_formats as prerequisites_formats
 
 #print, removeretake, write
 
@@ -91,7 +91,7 @@ def check_prerequisites():
     new_list = []
     students = []
     
-    with open('students_list.json', 'r') as myfile:
+    with open('execution_files\students_list.json', 'r') as myfile:
        students = json.load(myfile)
        #print(len(students))
        
@@ -444,7 +444,7 @@ def check_prerequisites():
     if row_max_len == 0:
         print("\nThere are no students with missing prerequisites")
     else:
-        print("\nDone. \nPlease open the file called '00 prerequisites.xlsx' ")
+        print("\nDone. \nPlease open the file called 'prerequisites_report.xlsx' ")
     
     workbook.close()
     #report_2.close()

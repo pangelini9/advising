@@ -18,12 +18,12 @@ create_coursetaken_obj():
 """
 
 import json
-from courses import Course, Course_taken
-
+from execution_files.courses import Course, Course_taken
+#from execution_files import courses
 
 #creates objects for each of the courses
 def create_course_obj():
-    with open('courses.json', 'r') as myfile:
+    with open('execution_files\courses.json', 'r') as myfile:
       general_courses = json.load(myfile)
       
     courses_obj = []
