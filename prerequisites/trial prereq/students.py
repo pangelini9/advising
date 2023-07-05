@@ -952,7 +952,11 @@ class Student:
             taken_num = other_course.course.get_number() #number part of code the student has taken
             other_semester = other_course.get_term()
             taken_grade = other_course.get_grade()
-            result = compare(current_semester, other_semester)
+            result = 0
+            if other_semester=="TR":
+                result == 1
+            else: 
+                result = compare(current_semester, other_semester)
             
             if taken_grade==0.4 and result == 1 and not (curr_name==taken_code and curr_num==taken_num):
                 curr_cred += other_course.get_credits()
