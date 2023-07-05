@@ -52,7 +52,9 @@ def print_fields_informations(row, index, information_list):
 
 def set_column_width():
     #columns = []
-    for index in range(5, 44, 3):
+    worksheet.set_column(4, 4, 20)
+    worksheet.set_column(5, 5, 70)
+    for index in range(8, 44, 3):
         worksheet.set_column(index-1, index-1, 20)
         worksheet.set_column(index, index, 20)
 

@@ -23,7 +23,7 @@ from prerequisite_control import check_prerequisites #does the check on fullfill
 
 "START THE ANALYSIS"
 print("Importing courses' data...")
-#create_courses_list()
+create_courses_list()
 
 print("\nConverting students' data...")
 #create_student_json(file_name)

@@ -1474,16 +1474,28 @@
         [
           {
             "code": "FIN",
-            "lower bound": 101.0,
-            "upper bound": 101.0,
+            "lower bound": 201.0,
+            "upper bound": 201.0,
+            "grade": "D-"
+          },
+          {
+            "code": "ACCT",
+            "lower bound": 201.0,
+            "upper bound": 201.0,
             "grade": "D-"
           }
         ],
         [
           {
             "code": "FIN",
-            "lower bound": 102.0,
-            "upper bound": 102.0,
+            "lower bound": 202.0,
+            "upper bound": 202.0,
+            "grade": "D-"
+          },
+          {
+            "code": "ACCT",
+            "lower bound": 202.0,
+            "upper bound": 202.0,
             "grade": "D-"
           }
         ],
