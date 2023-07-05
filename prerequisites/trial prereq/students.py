@@ -1045,17 +1045,19 @@ class Student:
                              else:
                                  result = 1
                                  
+                             #se il grade requirement è satisfied    
                              if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("P"):
                                  found = True
                                  #myReportFile.write(f"\nokay {current_course.course.get_name()}: found {prerequisite} because {c_taken.course.get_name()} with {number_to_letter.get(taken_grade)}")
                                  #break
                              
+                            #se il corso è senza voto ma preso un semestre prima
                              elif taken_grade==letter_to_number.get("current") and result==1: #and result==1:
                                  found = True
                                  #myReportFile.write(f"\nfound: {prerequisite} because {c_taken.course.get_name()} is current")
                                  #break
                              else:
-                                 #if taken_grade==letter_to_number.get("current"):
+                                 #se il corso ha un prerequisito strano
                                  if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306) or (course_name=="AS" and course_num==330) or (course_name=="AS" and course_num==332) or (course_name=="AS" and course_num==342) or (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349) or (course_name=="IT" and course_num==349) or (course_name=="IT" and course_num==399):
                                     if single_reason == "":
                                         single_reason = "Missing"
@@ -1063,8 +1065,8 @@ class Student:
                                         single_reason += ", missing"
                                     #myReportFile.write("\nstrange")
                                  
-                                 elif taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("W"):
-                                     #myReportFile.write("\nfailed")
+                                 #se il corso è stato proprio fallito   
+                                 elif taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("W") or taken_grade==letter_to_number.get("F"):
                                      if counter_alts == 1:
                                          if single_reason == "":
                                              single_reason = f"Failed in {taken_semester}"  
@@ -1076,9 +1078,9 @@ class Student:
                                              single_reason = f"{taken_code} {taken_num} failed in {taken_semester}"  
                                          else:
                                             single_reason += f", {taken_code} {taken_num} failed in {taken_semester}"
-                                        
+                                 
+                                 #se il corso è incomplete    
                                  elif taken_grade==letter_to_number.get("INC"):
-                                     #myReportFile.write("\nincomplete")
                                      if counter_alts == 1:
                                          if single_reason == "":
                                              single_reason = f"Incomplete in {taken_semester}"
@@ -1091,34 +1093,19 @@ class Student:
                                          else:
                                              single_reason += f", {taken_code} {taken_num} incomplete in {taken_semester}"
                                          #self.prerequisite_reason.append(single_reason)
-                                
-                                 elif taken_grade==letter_to_number.get("F"):
-                                     #myReportFile.write("\nfailed")
-                                     if counter_alts == 1:
-                                         if single_reason == "":
-                                             single_reason = f"Failed in {taken_semester}"
-                                         else:
-                                             single_reason += f", failed in {taken_semester}"
-                                         #self.prerequisite_reason.append(single_reason)
-                                         #print("append 1")
-                                     else:
-                                        if single_reason == "":
-                                            single_reason = f"{taken_code} {taken_num} failed in {taken_semester}"
-                                        else:
-                                            single_reason += f", {taken_code} {taken_num} failed in {taken_semester}"                                         
-                                         #self.prerequisite_reason.append(single_reason)
-                                         #print("append 2")
+                
+                                #rimosso failed, aggiunto prima
                                          
                                  elif taken_grade<letter_to_number.get(prereq_grade):
-                                    #myReportFile.write("\ngrade requirement is insufficient")
-                                    #print("Grade requirement entered")
+
                                     if counter_alts == 1:
                                         grade = number_to_letter.get(taken_grade)
-                                        if taken_grade == 0.4:
-                                            if single_reason == "":
-                                                single_reason = f"Grade req ({grade} in {taken_semester})"
-                                            else:
-                                                single_reason += f", grade req ({grade} in {taken_semester})"
+                                        if taken_grade == letter_to_number.get("current"):
+                                            if not (taken_code==course_name and taken_num==course_num):
+                                                if single_reason == "":
+                                                    single_reason = f"Grade req ({grade} in {taken_semester})"
+                                                else:
+                                                    single_reason += f", grade req ({grade} in {taken_semester})"
                                         else:
                                             if single_reason == "":
                                                 single_reason = f"Grade req ({grade} in {taken_semester})"
@@ -1126,12 +1113,14 @@ class Student:
                                                 single_reason += f", grade req ({grade} in {taken_semester})"
                                         #self.prerequisite_reason.append(single_reason)
                                     else:
+                                        
                                         grade = number_to_letter.get(taken_grade)
-                                        if taken_grade == 0.4:
-                                            if single_reason == "":
-                                                single_reason = f"Grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
-                                            else:
-                                                single_reason += f", grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
+                                        if taken_grade == letter_to_number.get("current"):
+                                            if not (taken_code==course_name and taken_num==course_num):
+                                                if single_reason == "":
+                                                    single_reason = f"Grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
+                                                else:
+                                                    single_reason += f", grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
                                         else:
                                             if single_reason == "":
                                                 single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"
@@ -1143,16 +1132,16 @@ class Student:
                                     #myReportFile.write("\nmissing")
                                     if counter_alts == 1:
                                         if single_reason == "":
-                                            single_reason = f"Missing in {taken_semester}" 
+                                            single_reason = f"Missing" 
                                         else:
-                                            single_reason += f", missing in {taken_semester}"
+                                            single_reason += f", missing"
                                        #self.prerequisite_reason.append(single_reason)
                                        #print("append 1")
                                     else:
                                         if single_reason == "":
-                                            single_reason = f"{taken_code} {taken_num} missing in {taken_semester}"
+                                            single_reason = f"{taken_code} {taken_num} missing"
                                         else:
-                                            single_reason += f", {taken_code} {taken_num} missing in {taken_semester}"
+                                            single_reason += f", {taken_code} {taken_num} missing"
                                        #self.prerequisite_reason.append(single_reason)
                                        #print("append 2")   
 
