@@ -26,7 +26,7 @@ print("Importing courses' data...")
 #create_courses_list()
 
 print("\nConverting students' data...")
-#create_student_json(file_name)
+create_student_json(file_name)
 
 print("\nStarting the check on prerequisites...")
 check_prerequisites()

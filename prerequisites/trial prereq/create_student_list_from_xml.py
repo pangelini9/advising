@@ -82,8 +82,17 @@ def create_student_json(file_name):
                     current_term = t.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject/ns:Value", namespace).text
                     #print(current_term)
                     
+                    in_residence = 1 # Whether the course has been taken at JCU. Initially, always 1
+
                     if not (current_term.startswith("Fall") or current_term.startswith("Spring") or current_term.startswith("Sum")):
                         current_term = "TR"
+                        in_residence = 0
+                    
+                    school = t.find("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{@OutsideSchoolName}']/ns:Value", namespace)
+                    
+                    if school.text != None:
+                        print("School", school.text)
+                        in_residence = 0
                     
                     courses = t.findall(".//ns:FormattedAreaPair[@Level='9']", namespace)
                     
@@ -158,7 +167,7 @@ def create_student_json(file_name):
                                 
                                 #new_course = [course_id, in_residence, grade, current_term, honors]
                                 #had to substitute in residence with credits because in the GPA computation and in the standing it needs the actual amount of credits that the student has
-                                new_course = [course_id, course_creds, grade, current_term, honors]
+                                new_course = [course_id, course_creds, grade, current_term, honors, in_residence]
 
                                 stud_courses.append(new_course)
                     
