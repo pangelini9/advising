@@ -179,7 +179,7 @@ class Student:
             # PA: I am excluding the grades that should not be counted:
             # P (5), W, NP, current, INC, TR (between 0.1 and 0.5 - using 0.6 just in case)
             # We should also consider the possible retake (if two grades, only consider the second)
-            if grade != 5 and not (0.1 <= grade <= 0.6):
+            if grade != 5 and grade != 0.01 and not (0.1 <= grade <= 0.6):
                 course_credit = i.get_credits()
                 creds += course_credit
                 weighted_total += course_credit*grade
@@ -236,71 +236,48 @@ class Student:
     
     #removes from the list of courses that the student has done, and that the program uses
     #for the check, the courses that the student has taken again 
-    
     def remove_retake(self):
         found_retake = False
-        #poi da modificare perchè rimuova non rimuova l'old course se il nuovo voto è W, NP, INC
         #non deve togliere i duplicates dei corsi fatti non in residence
         special_courses = [0, 281, 299, 381, 399]
-        #Report2.write(f"\n\n{self.get_name()}")
-        #print(f"\n{self.get_name()}")
         for i in range(len(self.courses_done)-1, -1, -1):
-            
-            #for current_course in self.courses_done:
             current_course = self.courses_done[i] #first time around
             to_insert = True #è da inserire in reduced
+            
             for h in self.reduced_courses_list[:]: #second time around
+            
+                #se la seconda volta era come Auditor la prima rimane perchè AU non conta ne sui crediti ne sui voti
                 if current_course.get_grade() == letter_to_number.get("AU"):
                     to_insert = False # non è da inserire
-                    #Report2.write(f"\ndropping {current_course.course.get_name()} because AU")
-                    #print(f"\ndropping {current_course.course.get_name()} because AU")
                     #found_retake = True
+                    
+                #se nel transcript è già presente la R allora il corso viene rimosso   
                 elif pd.isnull(current_course.get_grade()) == True:
                     to_insert = False
-                    #Report2.write(f"\ndropping {current_course.course.get_name()} because null")
-                    #print(f"\ndropping {current_course.course.get_name()} because null")
                     found_retake = True
                     break
+                                
                 elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number() not in special_courses or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
                     #to_insert = False # non è da inserire
-                    #print(f"dropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()}")
-                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("NP") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current"):
-                        'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, NP, or W'
+                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current"):
+                        'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W'
                         'then does not have to be dropped nor added to the retake'
-                        #Report2.write(f"\nbreak: {current_course.course.get_name()} done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}), kept because {number_to_letter.get(h.get_grade())} in {h.get_term()}")
-                        #print(f"\nbreak: {current_course.course.get_name()} done in {current_course.get_term()} kept because {number_to_letter.get(h.get_grade())} in {h.get_term()}")
                         found_retake = True
+                        print(f"not dropped because second time {h.get_grade()}")
                         break
                         
-                    elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("NP") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current"):
+                    elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current"):
                         'you took a class twice, but the second time the grade was acceptable'
                         to_insert = False # non è da inserire
                         #Report2.write(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
+                        #print(f"\nDropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
+
                         found_retake = True
-                        #print(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()}")
-                #elif h.get_grade()!="INC" and h.get_grade()!="NP" and h.get_grade()!="W" and current_course.get_grade()!="INC" and current_course.get_grade()!="NP" and current_course.get_grade()!="W":
-                    #if current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number() not in special_courses or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
-                        #to_insert = False # non è da inserire
-                        #print(f"dropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()}")
-                    """
-                    (if h.get_grade()=="INC" or h.get_grade()=="NP" or h.get_grade()=="W") or current_course.get_grade()=="INC" or current_course.get_grade()=="NP" or current_course.get_grade()=="W":
-                        to_insert = True
-                        print("Warning! repeated and not finished")
-                    else:
-                        to_insert = False # non è da inserire
-                        print(f"dropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()}")
-                        """
+                        #print(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()} with ")
                         
             if to_insert:
-                #self.reduced_courses_list.insert(0, current_course)
                 self.reduced_courses_list.insert(0, current_course)
-                #self.retaken_classes.append(current_course)
-            
-            #elif found_retake==True:
-                #self.retaken_classes.append(current_course)
-        #if len(self.retaken_classes)!=0:
-            #print(f"{self.get_name()}, total:{len(self.courses_done)}, left:{len(self.reduced_courses_list)}, retaken:{len(self.retaken_classes)}")
-        
+                    
         #if found_retake == True:
             #Report2.write("\n")
             #self.print_courses()
