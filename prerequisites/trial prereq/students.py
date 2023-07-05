@@ -914,21 +914,54 @@ class Student:
         #print(f"{message}\n")
         #myReportFile.write(f"{message}\n")
         
-    def count_specific_creds(self, current_semester):
+    def count_specific_creds_v1(self, current_semester, course_name, course_num):
+        """
+        Only considers if the current course is done in the semester before the course that we are checking the prerequisite of
+        However if the current is a course that the student is taking again it gives the student the double amount of credits
+        """
+        #other course is one of the courses taken
         curr_cred = 0
-        for other_course in self.current_courses:
+                
+        for other_course in self.current_courses:            
             other_semester = other_course.get_term()
-            #if 
+            
             result = compare(current_semester, other_semester)
-            if result == 1:
-                #curr_cred += other_course.course.get_credits()
+            
+            if result == 1: 
                 curr_cred += other_course.get_credits()
+                
         app = self.credits_earned
         specific_creds = app + curr_cred
         #print(f"got: {self.credits_earned}, while considered:{specific_creds}")
         return specific_creds
             
+    def count_specific_creds(self, current_semester, course_name, course_num):
+        """
+        This function establishes the potential standing of the person, if the student has not received some grades
+        of courses taken the semester before the semester in which is taking the class we are checking the prerequisite
+        then those credits are taken in consideration. Yet once the grades are received, theyu will either be added to
+        the total amount of credit done, or they will be taken out.
+        This version considers if the student is retaking a class and only adds the credits once
+        """
+        curr_name = course_name #the letter part of the code of the current course
+        curr_num = course_num #the number part of the code of the current course
+        curr_cred = 0
+        
+        for other_course in self.reduced_courses_list:
+            taken_code = other_course.course.get_code() #letter part of code the student has taken
+            taken_num = other_course.course.get_number() #number part of code the student has taken
+            other_semester = other_course.get_term()
+            taken_grade = other_course.get_grade()
+            result = compare(current_semester, other_semester)
             
+            if taken_grade==0.4 and result == 1 and not (curr_name==taken_code and curr_num==taken_num):
+                curr_cred += other_course.get_credits()
+        app = self.credits_earned
+        specific_creds = app + curr_cred
+        #print(f"got: {self.credits_earned}, while considered:{specific_creds}")
+        return specific_creds
+
+        
     def attributes_check(self, courses_taken, prerequisite, req_type, counter_alts, m):
         """
         this function gets one course out of all the courses that satisfy the same prerequisite
@@ -979,7 +1012,7 @@ class Student:
             if found == False: #and taken_semester != "TR":
                 #se il prerequisito è lo standing
                 if prereq_code == "S":
-                    creds = self.count_specific_creds(current_semester)
+                    creds = self.count_specific_creds(current_semester, course_name, course_num)
                     if creds>=lower_bound:
                         found = True
                         break
