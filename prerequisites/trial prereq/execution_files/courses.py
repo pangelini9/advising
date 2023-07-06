@@ -62,7 +62,7 @@ student = Student(...)
 """
 class Course_taken:
     
-    def __init__(self, course, student, creds, grade, term, c_type):
+    def __init__(self, course, student, creds, grade, term, c_type, in_residence):
         self.course = course
         self.student = student
         self.creds = creds
@@ -70,7 +70,7 @@ class Course_taken:
         self.grade = letter_to_number.get(grade)
         self.term = term
         self.c_type = c_type #se è honor
-        
+        self.in_residence = in_residence #=1 se il corso è stato fatto in JCU, =0 se è stato fatto col direct exchange
         
     def get_course(self):
         return self.course
@@ -105,6 +105,9 @@ class Course_taken:
     def return_honor(self):
         return self.c_type
     
+    def return_in_residence(self):
+        return self.in_residence
+     
     #has to be substituted because for credits we will consider the amount granted to the student
     #for each of the courses under consideration
     def get_credits(self):

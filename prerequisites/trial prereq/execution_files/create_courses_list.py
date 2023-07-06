@@ -50,7 +50,7 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
             if key_course_taken == key_curr_course:
                 #structure of the course taken:
                 #                          course,        student,       creds,                   grade,               term,                c_type)
-                taken_obj = Course_taken(curr_course, curr_student, curr_course_taken[1], curr_course_taken[2], curr_course_taken[3], curr_course_taken[4])
+                taken_obj = Course_taken(curr_course, curr_student, curr_course_taken[1], curr_course_taken[2], curr_course_taken[3], curr_course_taken[4], curr_course_taken[5])
                 courses_taken_obj.append(taken_obj)
                 #print(taken_obj.grade)
                 break

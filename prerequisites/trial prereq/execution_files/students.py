@@ -73,18 +73,29 @@ class Student:
         self.name = name
         self.surname = surname
         self.language_waived = language_waived #=1 if yes
+        
+        
+        #attributes for the type of degrees the student is taking
         self.major = major
         self.minor1 = minor1
         self.minor2 = minor2
+        
+        
+        #attributes for the courses that the student has done
         self.courses_done = []
+        self.reduced_courses_list = [] #created with the actual list gets reduced as requirements are checked
+        
+        
+        #attributesfor credits and standings
         self.credits_earned = 0
         self.credits_nxsem = 0
-        #must be changed to account for double major
-        self.credits_missing = 120
+        self.credits_missing = 120 #must be changed to account for double major
         self.gpa = 0
         self.curr_standing = ""
         self.nx_standing = ""
-        self.reduced_courses_list = [] #created with the actual list gets reduced as requirements are checked
+        
+        
+        #attributes for the degree planner
         self.m_en = {"courses remaining": [["EN", 103],["EN", 105],["EN", 110]], "courses prov" : [], "output courses":[]}
         self.m_ma = {"courses missing"  : 1, "courses done" : []}
         self.m_sci = {"courses missing"  : 2, "courses done" : []}
@@ -104,9 +115,11 @@ class Student:
         self.req_satisfied = []
         self.req_not_satisfied = []
         self.iteration = 0
-        #self.prerequisite_reason = ""
         self.single_reason = ""
         self.prerequisite_reason = []
+        
+        
+        #attributes for the check retake
         self.retaken_classes =  []
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -156,17 +169,6 @@ class Student:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Action Functions
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #adds to the lit of courses the list for each course done by the student
-    def add_course(self, course):
-        self.courses_done.append(course)
-    
-    #change major key into major object
-    def change_major(self, majorobj):
-        self.major = majorobj
-        
-    #change list of courses into the list of objects of the class Courses_taken
-    def change_courses(self, courses_taken_obj):
-        self.courses_done = courses_taken_obj
         
     def cumpute_gpa(self):
         #do they compure it on the semester and then they do the total or it's
@@ -227,17 +229,42 @@ class Student:
             self.nx_standing = "Sophomore"
         else:
             self.nx_standing = "Freshman"
+    
             
-    #returns a list of informations to be printed in the additional information        
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    Action Functions
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
     def create_info_list(self):
+        """"
+        Returns a list of informations to be printed in the additional information        
+        part of the degree planner
+        """
         #["GPA", "Credits(earned)", "Current Standing", "Credits following semester", "Standing following semester", "Credits missing"]
         info_list = [self.gpa, self.credits_earned, self.curr_standing, self.credits_nxsem, self.nx_standing, self.credits_missing]
         return info_list
     
-    #removes from the list of courses that the student has done, and that the program uses
-    #for the check, the courses that the student has taken again 
+    #adds to the lit of courses the list for each course done by the student
+    def add_course(self, course):
+        self.courses_done.append(course)
+    
+
+    def change_major(self, majorobj):
+        "changes the major key (passed by the json file of the student into the major object"
+        self.major = majorobj
+        
+
+    def change_courses(self, courses_taken_obj):
+        "change list of courses into the list of objects of the class Courses_taken"
+        self.courses_done = courses_taken_obj
+        
     def remove_retake(self):
-        found_retake = False
+        """
+        Removes from the list of courses that the student has done (that the program uses
+        for the check) the courses that the student has taken more than once
+        Removes the first instance of the class whenever the second grade is not AU, W, INC, or current
+        """
+        in_residence = 0
+        #found_retake = False
         #non deve togliere i duplicates dei corsi fatti non in residence
         special_courses = [0, 281, 299, 381, 399]
         for i in range(len(self.courses_done)-1, -1, -1):
@@ -245,7 +272,8 @@ class Student:
             to_insert = True #è da inserire in reduced
             
             for h in self.reduced_courses_list[:]: #second time around
-            
+                in_residence = h.return_in_residence()
+                
                 #se la seconda volta era come Auditor la prima rimane perchè AU non conta ne sui crediti ne sui voti
                 if current_course.get_grade() == letter_to_number.get("AU"):
                     to_insert = False # non è da inserire
@@ -254,25 +282,28 @@ class Student:
                 #se nel transcript è già presente la R allora il corso viene rimosso   
                 elif pd.isnull(current_course.get_grade()) == True:
                     to_insert = False
-                    found_retake = True
+                    #found_retake = True
                     break
-                                
+                
+                #finds the same course in the list                
                 elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number() not in special_courses or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
                     #to_insert = False # non è da inserire
-                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current"):
-                        'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W'
+                    
+                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current") or in_residence == 0:
+                        'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W, or retaken the course abroad'
                         'then does not have to be dropped nor added to the retake'
-                        found_retake = True
+                        #found_retake = True
                         #print(f"not dropped because second time {h.get_grade()}")
                         break
                         
-                    elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current"):
-                        'you took a class twice, but the second time the grade was acceptable'
+                    elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current") and in_residence == 1:
+                        'you took a class twice, but the second time the grade was acceptable and you took it again at JCU'
                         to_insert = False # non è da inserire
+                        self.retaken_classes.append(current_course)
                         #Report2.write(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
                         #print(f"\nDropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
 
-                        found_retake = True
+                        #found_retake = True
                         #print(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()} with ")
                         
             if to_insert:

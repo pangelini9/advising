@@ -3,7 +3,7 @@ import json
 
 def create_courses_list():
     #name of the excel file that contains the data of the courses done by the student
-    filename = "course list.xlsx"
+    filename = "execution_files\course list.xlsx"
     
     df = pd.read_excel(filename, "lista corsi")
     

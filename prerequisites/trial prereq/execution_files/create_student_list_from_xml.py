@@ -91,7 +91,7 @@ def create_student_json(file_name):
                     school = t.find("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{@OutsideSchoolName}']/ns:Value", namespace)
                     
                     if school.text != None:
-                        print("School", school.text)
+                        #print("School", school.text)
                         in_residence = 0
                     
                     courses = t.findall(".//ns:FormattedAreaPair[@Level='9']", namespace)
@@ -196,7 +196,7 @@ def create_student_json(file_name):
     
     # myReportFile.write(str(data_list))
     
-    with open("students_list.json", "w") as myFile:
+    with open("execution_files\students_list.json", "w") as myFile:
         # DUMPING A LIST CONTAINING THE LIST DATA, AS IN THE ORIGINAL JSON
         # CHECK WHETHER THIS IS NEEDED. IF NOT, REMOVE []
         json.dump(data_list, myFile, indent=2)
