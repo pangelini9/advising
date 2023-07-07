@@ -8,8 +8,10 @@ Created on Wed Jun 14 17:06:06 2023
 import xlsxwriter
 #import asposecells
 
+#excel file for the prerequsite check
 workbook = xlsxwriter.Workbook('prerequisites_report.xlsx')
 worksheet = workbook.add_worksheet()
+
 
 """""""""""""""""""""""""""""""""
 DEFINE SOME PRINTING FORMATS
@@ -30,22 +32,23 @@ bold_noborder = workbook.add_format({'font_size': 11, 'font_name': 'calibri ligh
 bold_leftborder = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'left': 5})
 
 #B9EAF9
+#nb: right, left, center are the position of the border not the cell in the trio
 blue_right = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'right': 5, 'bottom': 5, 'fg_color': '#B9EAF9'})
 blue_center = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'bottom': 5, 'fg_color': '#B9EAF9'})
 blue_left = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'left': 5, 'bottom': 5, 'fg_color': '#B9EAF9'})
-
 
 #CAF6D4
 green_right = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'right': 5, 'bottom': 5, 'fg_color': '#CAF6D4'})
 green_center = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'bottom': 5, 'fg_color': '#CAF6D4'})
 green_left = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 1, 'left': 5, 'bottom': 5, 'fg_color': '#CAF6D4'})
 
+#to print the cells that are not field names
 normal_border = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'border': 1, 'right': 5})
 normal_noborder = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'border': 1})
 no_format = workbook.add_format({'font_size': 11, 'font_name': 'calibri light'})
 
 """""""""""""""""""""""""""""""""
-DEFINE SOME PRINTING SHORTCUTS
+DEFINE PRINTING SHORTCUTS
 """""""""""""""""""""""""""""""""   
 def print_fields_informations(row, index, information_list):
     worksheet.write(row, index, information_list[index], border_left)
@@ -93,7 +96,7 @@ def print_fields_names(maxlen):
             
 
 """""""""""""""""""""""""""""""""""
-FUNZIONE PER TOGLIERE I FORMATI 
+FUNZIONI PER TOGLIERE I FORMATI 
 """""""""""""""""""""""""""""""""""
 def remove_borders_rows(row_max_len):
     for column_index in range(0, 46):
@@ -113,5 +116,11 @@ def closing_border(row_max_len, column_max):
     
     for column_index in range(0, columnmax):
         worksheet.write(rowmax, column_index, "", above_border)
+        
+        
+  
 
-#workbook.close()
+
+
+
+

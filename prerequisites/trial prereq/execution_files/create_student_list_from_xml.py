@@ -9,7 +9,8 @@ def create_student_json(file_name):
     # JSON file to read the course id's from
     json_file_courses = "courses.json"
     
-    myReportFile = open("report.txt", "w")
+    report_name = "execution_files/report.txt"
+    myReportFile = open(report_name, "w")
     
     #1 if the student has the language waived, 0 if the student does not have the language courses waived
     language_waived = 1 # For now, fixed to 1 for everybody - we cannot know it
@@ -48,6 +49,7 @@ def create_student_json(file_name):
         for obj in objects:
             if obj.get("FieldName") == "{@SupressNameBreakForStudent}":
                 student = obj.find("ns:Value", namespace).text
+                #myReportFile.write(student + "\n")
                 #print("Name: " + student)
             if obj.get("FieldName") == "{EA.StudentInfoString4}":
                 major1 = obj.find("ns:Value", namespace).text
@@ -152,8 +154,8 @@ def create_student_json(file_name):
                                             course_id = c[5]
     
                                 if course_id == "error":
-                                    myReportFile.write("ID not found for: " + current_course + ", creds: " + cr + ", in " + current_term + "\n")
-                   
+                                    myReportFile.write(student + " ID not found for: " + current_course + ", creds: " + cr + ", in " + current_term + "\n")
+                                    
                                 # reads the grade
                                 g = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn4}']/ns:Value", namespace)
     

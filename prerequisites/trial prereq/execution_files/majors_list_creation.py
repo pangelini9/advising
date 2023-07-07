@@ -3,7 +3,9 @@ import json
 
 def create_majors_dict():
     #name of the excel file that contains the data of the courses done by the student
-    filename = "../Majors-pat.xlsx"
+    #filename = "../Majors-pat.xlsx"
+    #filename = 'majors list.xlsx'
+    filename = 'Majors list.xlsx'
     
     df = pd.read_excel(filename, "Esempi")
     
@@ -35,7 +37,7 @@ def create_majors_dict():
         if type(names[x]) is not float:
             
             split_name = names[x].split()
-            
+            print(split_name)
             if split_name[0] != "ADD" and split_name[0] != "COR" and split_name[0] != "ELC":
     
                 # in this case, we are starting a new major
@@ -78,8 +80,10 @@ def create_majors_dict():
                 upper_bound = int(upper[x])
                 
                 if split_name[0] == "ADD":
-                                
-                    # if a new requirement is starting, we create a new list and remember the current
+                    print(f"{curr_add}")          
+                    
+                    #if a new requirement is starting, we create a new list and remember the current
+                    #if len(split_name)<1:
                     if curr_add != split_name[1]:
                         number = int(reqs_nums[x])
                         add_reqs.append([number, []])

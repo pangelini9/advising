@@ -14,6 +14,7 @@ from execution_files.students import Student, create_student_list #, close_file
 from execution_files.majors import Major, create_major_list
 from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
 import execution_files.prerequisites_formats as prerequisites_formats
+import execution_files.retake_formats as retake_formats
 
 #print, removeretake, write
 
@@ -60,12 +61,11 @@ number_to_letter = {
     0.01 : "AU"}
 
 def check_prerequisites():
-    """""""""""""""""""""""""""""""""
-    OPEN AND FORMAT THE EXCEL FILE
-    """""""""""""""""""""""""""""""""
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    OPEN AND FORMAT THE EXCEL FILE FOR PREREQUISITES
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""
     workbook = prerequisites_formats.workbook
     worksheet = prerequisites_formats.worksheet
-    
     
     prerequisites_formats.set_borders() #to set the borders on the cells
     prerequisites_formats.set_column_width() #to set the right width of the columns
@@ -75,9 +75,19 @@ def check_prerequisites():
     normal_border = prerequisites_formats.normal_border
     normal_noborder = prerequisites_formats.normal_noborder
     
-    #[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}], [{'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}]]
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    OPEN AND FORMAT THE EXCEL FILE FOR RETAKE
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    rworkbook = retake_formats.rworkbook
+    rworksheet = retake_formats.rworksheet
     
+    rnormal_border = retake_formats.rnormal_border
+    rnormal_noborder = retake_formats.rnormal_noborder
     
+    retake_formats.rset_column_width()
+    retake_formats.rprint_fields_names()
+    
+
     """""""""""""""""""""""""""""""""""""""""""""""""""""
     IMPORT THE LIST OF ALL COURSES THE UNIVERSITY OFFERS
     """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -102,9 +112,15 @@ def check_prerequisites():
        
     students_list = create_student_list(new_list)
     #print(len(students_list))
+    
+    #for the prerequisites
     row_max_len = 0
     prev_row_lenght = 1 #counter so that stuff does  not override eachoter   
     recall_num = 0
+    
+    #for the retake
+    rlast_row = 1 #needed to know where to close the border on the remove retake output
+    
     
     for index in range(0, len(students_list)):
         curr_student = students_list[index]
@@ -113,6 +129,7 @@ def check_prerequisites():
         courses_taken_obj = create_coursetaken_obj(curr_student, courses_taken_list, courses_list)
         curr_student.change_courses(courses_taken_obj)
         curr_student.remove_retake() #toglie retake
+                
         #curr_student.compute_transfer_credits() #counts how many credits the student has not done in residency
         #curr_student.change_credits_total() #sets the total amounts of credis equal to 150 id the student has a double degree
         #curr_student.add_transfer_credits() #if the student has done more than 60 credits out of residency, then it add them to the total amount of credits
@@ -123,6 +140,48 @@ def check_prerequisites():
         curr_student.compute_credits_missing()
         curr_student.compute_cur_standing()
         curr_student.compute_nx_standing()
+        
+        """""""""""""""""""""""""""""""""""""""""""""""""""""
+        REMOVE RETAKE
+        """""""""""""""""""""""""""""""""""""""""""""""""""
+        retake_list = curr_student.return_retakes()
+        
+        
+        rcourse_name = ""
+        for row_num in range(0, len(retake_list)):
+           #retake list = [{retake 1}, {retake 2}, {retake 3}]
+           
+           retaken_pair = retake_list[row_num]
+           
+           old_course = retaken_pair["old_course"]
+           new_course = retaken_pair["new_course"]
+           
+           """HONORS/CHANGE OF NAME
+           Should one print both the old and new name?, or just the second course's name?
+           Because, one of the two might have been taken as honor, or the course might have changed name
+           But if it is printed only once, then the distinction is not going to appear
+           rhonor_part1 = old_course.get_course_type2()
+           rhonor_part2 = new_course.get_course_type2()
+           """
+           #rnormal_border
+           #rnormal_noborder
+           rcourse_name = f"{old_course.course.get_code()} {old_course.course.get_number()}"
+        
+           old_term = old_course.get_term()
+           old_grade = number_to_letter.get(old_course.get_grade())
+                      
+           new_term = new_course.get_term()
+           new_grade = number_to_letter.get(new_course.get_grade())
+           
+           rworksheet.write(rlast_row+row_num, 0, curr_student.get_name(), rnormal_noborder) #name
+           rworksheet.write(rlast_row+row_num, 1, rcourse_name, rnormal_border) #course retaken
+           rworksheet.write(rlast_row+row_num, 2, old_term, rnormal_noborder) #old semester
+           rworksheet.write(rlast_row+row_num, 3, old_grade, rnormal_border) #old grade
+           rworksheet.write(rlast_row+row_num, 4, new_term, rnormal_noborder) #new semester
+           rworksheet.write(rlast_row+row_num, 5, new_grade, rnormal_border) #new grade
+           #rworksheet.write(rlast_row+row_num, 6, "", formato)
+           
+        rlast_row += len(retake_list)   
         
         """""""""""""""""""""""""""""""""""""""""""""""""""""
         GET THE SEMESTER ONE WANTS TO ANALYZE
@@ -444,8 +503,22 @@ def check_prerequisites():
     if row_max_len == 0:
         print("\nThere are no students with missing prerequisites")
     else:
-        print("\nDone. \nPlease open the file called 'prerequisites_report.xlsx' ")
+        print("\nDone.")
+        #print("\nTo see students enrolled for classes whose prerequisites they are not fullfilling open the file called 'prerequisites_report.xlsx' ")
+        print("\nTo see students who do not fullfil prerequisites of the classes they are enrolled into open the file called 'prerequisites_report.xlsx' ")
+
+    if rlast_row==0:
+        print("\nThere are no students that are retaking classes")
+    else:
+        print("\nOr, to see which courses the students are repeating, open the file called 'retaken_courses.xlsx' ")
+    retake_formats.rclose_border(rlast_row)
+
     
+    
+    #close prerequisites
     workbook.close()
+    
+    #close retake
+    rworkbook.close()
     #report_2.close()
     #close_file()

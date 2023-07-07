@@ -95,5 +95,5 @@ def create_courses_list():
     if course:
         courses.append(course)            
                     
-    with open("courses.json", "w") as myFile:
+    with open("execution_files\courses.json", "w") as myFile:
         json.dump(courses, myFile, indent=2)

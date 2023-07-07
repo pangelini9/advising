@@ -121,6 +121,7 @@ class Student:
         
         #attributes for the check retake
         self.retaken_classes =  []
+        self.text = ""
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Return Functions
@@ -267,6 +268,7 @@ class Student:
         #found_retake = False
         #non deve togliere i duplicates dei corsi fatti non in residence
         special_courses = [0, 281, 299, 381, 399]
+        self.text = ""
         for i in range(len(self.courses_done)-1, -1, -1):
             current_course = self.courses_done[i] #first time around
             to_insert = True #è da inserire in reduced
@@ -286,20 +288,31 @@ class Student:
                     break
                 
                 #finds the same course in the list                
-                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number() not in special_courses or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
+                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
                     #to_insert = False # non è da inserire
                     
                     if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current") or in_residence == 0:
                         'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W, or retaken the course abroad'
                         'then does not have to be dropped nor added to the retake'
-                        #found_retake = True
                         #print(f"not dropped because second time {h.get_grade()}")
                         break
                         
                     elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current") and in_residence == 1:
                         'you took a class twice, but the second time the grade was acceptable and you took it again at JCU'
                         to_insert = False # non è da inserire
-                        self.retaken_classes.append(current_course)
+                        
+                        if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("P") and current_course.get_grade()!=letter_to_number.get("NP"):
+                            """
+                            Out of all the courses that a student has repeated, only the ones in which the student has
+                            not taken W, P, NP must be reported
+                            This is a check on the grade of the course taken the first time, not the second
+                            """
+                            retaken_pair = {"old_course" : current_course,
+                                            "new_course" : h
+                                            }
+                            self.retaken_classes.append(retaken_pair)
+                            #self.retaken_classes.append(current_course)
+                            self.text += f"{current_course.course.get_name()} done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}, {current_course.get_credits()} creds) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())}, {h.get_credits()} creds)"
                         #Report2.write(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
                         #print(f"\nDropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
 
@@ -308,7 +321,9 @@ class Student:
                         
             if to_insert:
                 self.reduced_courses_list.insert(0, current_course)
-                    
+        #print(f"{self.get_name()} is retaking {len(self.retaken_classes)}\n {self.retaken_classes}\n\n")     
+        #self.print_retake()
+        
         #if found_retake == True:
             #Report2.write("\n")
             #self.print_courses()
@@ -1140,9 +1155,9 @@ class Student:
                                     #myReportFile.write("\nmissing")
                                     if counter_alts == 1:
                                         if single_reason == "":
-                                            single_reason = f"Missing" 
+                                            single_reason = "Missing" 
                                         else:
-                                            single_reason += f", missing"
+                                            single_reason += ", missing"
                                        #self.prerequisite_reason.append(single_reason)
                                        #print("append 1")
                                     else:
@@ -1283,7 +1298,21 @@ class Student:
     #def check_minor2
     #"English Composition and Literature", "Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"    
     
-
+    
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    Remove Retake
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
+    def return_retakes(self):
+        return self.retaken_classes
+    
+    def print_retake(self):
+        text = f"{self.get_name()} is retaking {len(self.retaken_classes)} courses: "
+        #for i in  self.retaken_classes:
+            #text += f"{i.course.get_name()}, "
+        if len(self.retaken_classes) != 0:
+            final_text = f"{text} {self.text}\n\n"
+            print(final_text)
+    
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Uses the data retrived from the json file to create the list of students
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""   
