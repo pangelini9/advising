@@ -319,34 +319,81 @@ def check_prerequisites():
                         loop_lenght = 0
                         #row index should be okay ??
                         
-                        
                         worksheet.write(row_index, 0, name, normal_noborder) #prints student's name
                         worksheet.write(row_index, 1, course_semester, normal_noborder) 
                         worksheet.write(row_index, 2, course_info, normal_border) #prints name of the course
                         
-                        worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
-                        
-                        cell_content = f"One {r_code} course" 
-                        requirement_reason = curr_requirement[0][1]
-                        
-                        worksheet.write(row_index, 4, cell_content, normal_noborder) #prints requirements one by one
-                        
-                        r_motivation = ""
-                        if len(requirement_reason) == 1:
-                            r_motivation = requirement_reason[0]
-                        else: 
-                            for index in range(0, len(requirement_reason)):
-                                if requirement_reason[index] != "Missing": #missing
-                                    if r_motivation == "":
-                                        r_motivation = requirement_reason[index]
-                                    else:
-                                        r_motivation += f", {requirement_reason[index]}"
-                                        
-                            if r_motivation == "":
+                        if current_course.return_honor()==1:
+                            if curr_student.return_gpa() < 3.50:
+                                #prima parte da far apparire è i missing honor, poi i coris
+                                honor_content = f"Missing GPA ({curr_student.return_gpa()})"
+                                worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
+                                worksheet.write(row_index, 4, "Honors", normal_noborder)
+                                worksheet.write(row_index, 5, honor_content, normal_border)
+                             
+                                #now print the actual prerequisite missing
+                                worksheet.write(row_index, 6, j, normal_noborder) #prints the type of the unfilled requirements
+                                
+                                cell_content = f"One {r_code} course" 
+                                worksheet.write(row_index, 7, cell_content, normal_noborder) #prints requirements one by one
+                                
                                 r_motivation = "Missing"
-             
-                        worksheet.write(row_index, 5, r_motivation, normal_border) #prints the reasoning
-                        break
+                                worksheet.write(row_index, 8, r_motivation, normal_border) #prints the reasoning
+                                break
+                            
+                            
+                            #il corso è honor ma lo studente ha il GPA giusto
+                            else:
+                                worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
+                                
+                                cell_content = f"One {r_code} course" 
+                                requirement_reason = curr_requirement[0][1]
+                                
+                                worksheet.write(row_index, 4, cell_content, normal_noborder) #prints requirements one by one
+                                
+                                r_motivation = ""
+                                if len(requirement_reason) == 1:
+                                    r_motivation = requirement_reason[0]
+                                else: 
+                                    for index in range(0, len(requirement_reason)):
+                                        if requirement_reason[index] != "Missing": #missing
+                                            if r_motivation == "":
+                                                r_motivation = requirement_reason[index]
+                                            else:
+                                                r_motivation += f", {requirement_reason[index]}"
+                                                
+                                    if r_motivation == "":
+                                        r_motivation = "Missing"
+                     
+                                worksheet.write(row_index, 5, r_motivation, normal_border) #prints the reasoning
+                                break
+                        
+                        
+                        #se il corso non è honor        
+                        else:
+                            worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
+                            
+                            cell_content = f"One {r_code} course" 
+                            requirement_reason = curr_requirement[0][1]
+                            
+                            worksheet.write(row_index, 4, cell_content, normal_noborder) #prints requirements one by one
+                            
+                            r_motivation = ""
+                            if len(requirement_reason) == 1:
+                                r_motivation = requirement_reason[0]
+                            else: 
+                                for index in range(0, len(requirement_reason)):
+                                    if requirement_reason[index] != "Missing": #missing
+                                        if r_motivation == "":
+                                            r_motivation = requirement_reason[index]
+                                        else:
+                                            r_motivation += f", {requirement_reason[index]}"
+                                            
+                                if r_motivation == "":
+                                    r_motivation = "Missing"
+                 
+                            worksheet.write(row_index, 5, r_motivation, normal_border) #prints the reasoning
+                            break
                        
                     #i corsi che non hanno bisogno di requirement strani    
                     else:

@@ -23,10 +23,10 @@ from execution_files.prerequisite_control import check_prerequisites #does the c
 
 "START THE ANALYSIS"
 print("Importing courses' data...")
-create_courses_list()
+#create_courses_list()
 
-print("\nConverting students' data...")
-create_student_json(file_name)
+print("\nConverting students' data...")#
+#create_student_json(file_name)
 
-print("\nStarting the check on prerequisites...")
+print("\nStarting the check on prerequisites and retakes...")
 check_prerequisites()
