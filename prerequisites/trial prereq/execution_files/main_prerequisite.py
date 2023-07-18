@@ -557,7 +557,7 @@ def check_prerequisites():
     if rlast_row==0:
         print("\nThere are no students that are retaking classes")
     else:
-        print("\nOr, to see which courses the students are repeating, open the file called 'retaken_courses.xlsx' ")
+        print("\nOr, to see which courses students are repeating, open the file called 'retaken_courses.xlsx' ")
     retake_formats.rclose_border(rlast_row)
 
     

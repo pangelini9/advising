@@ -37,6 +37,10 @@ class Course:
         self.requirements_dict = req_list
         self.course_key = course_key
         
+        self.course_periods = [] 
+        self.course_concentrations = []
+        self.on_site = []
+        
     def get_name(self): #full name
         return self.name
     
@@ -54,6 +58,16 @@ class Course:
     
     def get_course_key(self):
         return self.course_key
+    
+    def get_course_periods(self):
+        return self.course_periods
+    
+    def get_course_concentrations(self):
+        return self.course_concentrations
+
+    def get_on_site(self):
+        return self.on_site
+
 
 """
 NB:
@@ -71,6 +85,7 @@ class Course_taken:
         self.term = term
         self.c_type = c_type #se è honor
         self.in_residence = in_residence #=1 se il corso è stato fatto in JCU, =0 se è stato fatto col direct exchange
+        
         
     def get_course(self):
         return self.course

@@ -7,7 +7,7 @@ def create_student_json(file_name):
     xml_file = file_name
     
     # JSON file to read the course id's from
-    json_file_courses = "courses.json"
+    json_file_courses = "execution_files/courses.json"
     
     report_name = "execution_files/report.txt"
     myReportFile = open(report_name, "w")

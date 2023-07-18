@@ -5,7 +5,7 @@ Created on Fri Nov  4 16:15:21 2022
 @author: ilda1
 """
 #KEYWORDS
-#get_credits
+#get_credits compute_transfer_credits
 
 
 #from majors import Major
@@ -108,6 +108,8 @@ class Student:
         self.m_majorelectives = {"courses missing"  : 0, "courses done" : []}
         self.m_genelectives = []
         
+        #this counter accounts for the number of courses in the core section that the student has passed with grade below C- 
+        self.counter_core_grades = 0 
         
         #attributes for the prerequisites check
         self.current_courses = []
@@ -171,6 +173,9 @@ class Student:
     Action Functions
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         
+    def change_reduced(self, new_reduced):
+        self.reduced_courses_list = new_reduced
+    
     def cumpute_gpa(self):
         #do they compure it on the semester and then they do the total or it's
         #the average of the courses' grades?
@@ -288,13 +293,24 @@ class Student:
                     break
                 
                 #finds the same course in the list                
-                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
+                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=373 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=372 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=367 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=283 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=272 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=267 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=346 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=306 and current_course.course.get_code()!="EN") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
                     #to_insert = False # non è da inserire
                     
                     if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current") or in_residence == 0:
                         'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W, or retaken the course abroad'
                         'then does not have to be dropped nor added to the retake'
                         #print(f"not dropped because second time {h.get_grade()}")
+                        if h.get_grade()==letter_to_number.get("INC"):
+                            if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("P") and current_course.get_grade()!=letter_to_number.get("NP"):
+                                """
+                                Out of all the courses that a student has repeated, only the ones in which the student has
+                                not taken W, P, NP must be reported
+                                This is a check on the grade of the course taken the first time, not the second
+                                """
+                                retaken_pair = {"old_course" : current_course,
+                                                "new_course" : h
+                                                }
+                                self.retaken_classes.append(retaken_pair)   
                         break
                         
                     elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current") and in_residence == 1:
@@ -410,6 +426,7 @@ class Student:
 
     def check_core(self):
         core_courses = self.major.get_core_courses()
+        self.counter_core_grades = 0
         #print(core_courses)
         for i in core_courses[:]:
             counter = i[0] 
@@ -425,7 +442,7 @@ class Student:
                             core_courses.remove(i)
                             counter -= 1
                             self.m_core["courses missing"] -= 1
-                        elif j.get_grade() > letter_to_number.get("D"):
+                        elif j.get_grade() >= letter_to_number.get("C-"):
                             #print(j.course.get_code())
                             #print(j.course.get_number())
                             self.m_core["courses done"].append([j,1])
@@ -433,9 +450,10 @@ class Student:
                             core_courses.remove(i)
                             counter -= 1
                             self.m_core["courses missing"] -= 1
-                        elif j.get_grade() == letter_to_number.get("D"):
+                        elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("NP"):
                             #print(j.course.get_code())
                             #print(j.course.get_number())
+                            self.counter_core_grades += 1
                             self.m_core["courses done"].append([j,3])
                             self.reduced_courses_list.remove(j)
                             core_courses.remove(i)
@@ -1326,6 +1344,7 @@ def create_student_list(students_list):
     for i in range(0, len(students_list)): 
         curr_student = students_list[i]
          #print(curr_student)
+        #                       name,            surname,   language_waived,      major,            minor1,          minor2
         student = Student(curr_student[0], curr_student[1], curr_student[2], curr_student[3], curr_student[4], curr_student[5])
         courses_t = curr_student[6]
         for course in courses_t:

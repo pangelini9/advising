@@ -1,5 +1,7 @@
 import pandas as pd
 import json
+import numpy as np
+
 
 def create_courses_list():
     #name of the excel file that contains the data of the courses done by the student
@@ -15,17 +17,48 @@ def create_courses_list():
     creds = df["D"] # also upper for pre/co req
     ids = df["E"] # also required grade
     
+    period = df["F"]
+    concentration = df["G"]
+    on_site = df["H"]
+    
+    
     courses = []
     course = ""
     current = ""
     current_cr = ""
     req_grade = ""
     
+
+    
     for x in range(0,len(names)):
         #print("Analyzing: ", names[x])    
         if type(names[x]) is not float:
             
+            course_periods = []
+            course_concentrations = []
+            course_onsite = []
+            
             split_string = names[x].split()
+            
+            if type(period[x]) is not float:
+                #split_string1 = period[x].split()
+                split_string1 = np.array(period[x].split(', '))
+                course_periods = split_string1.tolist()
+                print(f"\n{names[x]} has period: {course_periods}")
+                
+            if type(concentration[x]) is not float:    
+                #split_string2 = concentration[x].split()
+                split_string2 = np.array(concentration[x].split(', '))
+                course_concentrations = split_string2.tolist()
+                print(f"\n{names[x]} has concentrations: {course_concentrations}")
+
+            
+            if type(on_site[x]) is not float:
+                #split_string3 = on_site[x].split()
+                split_string3 = np.array(on_site[x].split(','))
+                course_onsite = split_string3.tolist()
+                print(f"\n{names[x]} has onsite: {course_onsite}")
+
             
             if split_string[0] != "PR" and split_string[0] != "CR":
     
@@ -42,7 +75,7 @@ def create_courses_list():
                 #print("Work on ", x, names[x])
         
                 # initialize a new one
-                course = [names[x], codes[x], int(numbers[x]), int(creds[x]), {"prerequisite":[], "corequisite":[]}, int(ids[x])]
+                course = [names[x], codes[x], int(numbers[x]), int(creds[x]), {"prerequisite":[], "corequisite":[]}, int(ids[x]), course_periods, course_concentrations, course_onsite]
                 
             elif split_string[0] == "PR":
                 
