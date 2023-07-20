@@ -7,15 +7,16 @@ def create_majors_dict():
     #filename = 'majors list.xlsx'
     filename = 'Majors list.xlsx'
     
-    df = pd.read_excel(filename, "Esempi")
+    df = pd.read_excel(filename, "Majors actual")
     
     print(df.keys())
 
     names = df["Major Name"] # Major name or type of entry (ADD, COR, ELC)
     reqs_nums = df["Math requirement"] # Math requirement 0/1 or number of courses
     elect_codes = df["Electives Description"] # Elective descriptions or code
-    keys_lower = df["Major Key"] # Key of the major or lower bound
-    upper = df["Unnamed: 4"] # None or upper bound
+    type_lower = df["Planner Type"] # Type of the planner or lower bound
+    keys_upper = df["Major Key"] # Key of the major or upper bound
+    descriptions = df["next id"] # None or text description
     
     majors_dict = {} # the general dictionary with all majors
     major = {} # the dict for each single major
@@ -62,13 +63,15 @@ def create_majors_dict():
                     
                 # store the values into appropriate variables
                 name = names[x]
-                math = reqs_nums[x]
+                math = int(reqs_nums[x])
                 description = elect_codes[x]
-                key = int(keys_lower[x])
+                pl_type = int(type_lower[x])
+                key = int(keys_upper[x])
                 
                 major = {
                     "math requirement" : math,
                     "electives description" : description,
+                    "planner_type" : pl_type,
                     "major key" : key
                     }
                                 
@@ -76,8 +79,23 @@ def create_majors_dict():
                 # this is one of the requirements, so we store the values into variables
                 
                 code = str(elect_codes[x])
-                lower_bound = int(keys_lower[x])
-                upper_bound = int(upper[x])
+
+                if type(type_lower[x]) is int:
+                    lower_bound = int(type_lower[x])
+                else:
+                    lower_bound = -1
+
+                if type(keys_upper[x]) is int:
+                    upper_bound = int(keys_upper[x])
+                else:
+                    upper_bound = -1
+                    
+                if type(descriptions[x]) is str:
+                    desc = descriptions[x]
+                    print(desc)
+                else:
+                    desc = ""
+                      
                 
                 if split_name[0] == "ADD":
                     print(f"{curr_add}")          
@@ -90,18 +108,20 @@ def create_majors_dict():
                         curr_add = split_name[1]
                         
                     # we now add the current requirement to the list of additional requirements
-                    add_reqs[-1][1].append([code, lower_bound, upper_bound])
+                    add_reqs[-1][1].append([code, lower_bound, upper_bound, desc])
                         
                 elif split_name[0] == "COR":
                 
                     # if a new requirement is starting, we create a new list and remember the current
                     if curr_core != split_name[1]:
+                        
+                        
                         number = int(reqs_nums[x])
                         core_courses.append([number, []])
                         curr_core = split_name[1]
                         
                     # we now add the current requirement to the list of core requirements                
-                    core_courses[-1][1].append([code, lower_bound, upper_bound])
+                    core_courses[-1][1].append([code, lower_bound, upper_bound, desc])
 
                 elif split_name[0] == "ELC":
                     
@@ -112,7 +132,7 @@ def create_majors_dict():
                         curr_el = split_name[1]
                         
                     # we now add the current requirement to the list of elective requirements
-                    electives[-1][1].append([code, lower_bound, upper_bound])
+                    electives[-1][1].append([code, lower_bound, upper_bound, desc])
         
     # add the last major
     if name != "":
