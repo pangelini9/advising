@@ -79,7 +79,7 @@ class Student:
         self.major = major
         self.minor1 = minor1
         self.minor2 = minor2
-        
+        #self_degrees
         
         #attributes for the courses that the student has done
         self.courses_done = []
