@@ -247,7 +247,17 @@ class Student:
         part of the degree planner
         """
         #["GPA", "Credits(earned)", "Current Standing", "Credits following semester", "Standing following semester", "Credits missing"]
-        info_list = [self.gpa, self.credits_earned, self.curr_standing, self.credits_nxsem, self.nx_standing, self.credits_missing]
+        #info_list = [self.gpa, self.credits_earned, self.curr_standing, self.credits_nxsem, self.nx_standing, self.credits_missing]
+        #["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+        info_list = {
+            "Cumulative GPA" : self.gpa,
+            "Credits (earned)" : self.credits_earned,
+            "Current Standing" : self.curr_standing,
+            "Tentative Credits following semester" : self.credits_nxsem,
+            "Tentative Standing following semester" : self.nx_standing, 
+            "Credits missing" : self.credits_missing         
+            }
+        
         return info_list
     
     #adds to the lit of courses the list for each course done by the student
@@ -1201,8 +1211,23 @@ class Student:
         return self.m_flang
     
     def return_missing(self):
-        #"Math", "Math, Science, Computer Science", "Foreign Language", "Sosc", "Hum", "FA", "Additional Requirements", "Core Courses", "Major Electives", "Major 1", "Major 2"
-        missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_majorelectives["courses missing"], "NA", "NA"]
+        #["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
+        #missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_majorelectives["courses missing"], "NA", "NA"]
+        missing_numcourses = {
+            "Math Proficiency" : self.m_ma["courses missing"],
+            "Math, Science, Computer Science" : self.m_sci["courses missing"],
+            "Foreign Language" : self.m_flang["courses missing"],
+            "Social Sciences" : self.m_sosc["courses missing"],
+            "Humanities" : self.m_hum["courses missing"],
+            "Fine Arts" : self.m_fa["courses missing"],
+            "Additional Requirements" : self.m_additional["courses missing"],
+            "Core Courses" : self.m_core["courses missing"],
+            "Concentration" : "NA",
+            "Major Electives" : self.m_majorelectives["courses missing"],
+            "Minor 1" : "NA",
+            "Minor 2" : "NA"            
+            }
+        
         return missing_numcourses
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

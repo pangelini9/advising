@@ -96,9 +96,6 @@ class Course_taken:
            #creds += 1
         #return creds
     
-    #def get_section(self):
-        #return self.section
-    
     def get_grade(self):
         return self.grade
     

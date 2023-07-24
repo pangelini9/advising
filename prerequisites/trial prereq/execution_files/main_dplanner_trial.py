@@ -166,24 +166,24 @@ def create_dplanners():
 
         if major_structure == 1:
             banner = banner_list["structure_one"]
-            additional_courses(planner_name, curr_student, courses_list, banner)
+            legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]   
+            additional_courses(planner_name, curr_student, courses_list, banner, legend_keys)
             
         elif major_structure == 2:
             banner = banner_list["structure_two"]
-            core_courses(planner_name, curr_student, courses_list, banner)
+            legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]   
+            core_courses(planner_name, curr_student, courses_list, banner, legend_keys)
             
         elif major_structure == 3:  
             banner = banner_list["structure_three"]
-            core_tracks(planner_name, curr_student, courses_list, banner)
+            legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Concentration", "Major Electives", "Minor 1", "Minor 2"]   
+            core_tracks(planner_name, curr_student, courses_list, banner, legend_keys)
             
         elif major_structure == 4:
             banner = banner_list["structure_two"]
-            electives_tracks(planner_name, curr_student, courses_list, banner)
+            legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]   
+            electives_tracks(planner_name, curr_student, courses_list, banner, legend_keys)
 
-    
-    
-    
-    
     
     
     

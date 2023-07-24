@@ -101,27 +101,31 @@ def legend_merge(row, arg, worksheet, merge_format1):
     position = (("O" + str(row)) + (":") + ("P" + str(row)))
     worksheet.merge_range(position, arg, merge_format1)
 
-def legend_structure(name_list, data_list, row, worksheet, border_left):
-    if data_list == "":
-        for i in range(0, len(name_list)):
-            position = int(row + i)
-            worksheet.write(position, 14, str(name_list[i]), border_left)
-            worksheet.write(position, 15, "", border_left)
-            i = +1
-    else: 
-        for i in range(0, len(name_list)):
-            position = int(row + i)
-            worksheet.write(position, 14, str(name_list[i]), border_left)
-            worksheet.write(position, 15, str(data_list[i]), border_left)
-            i = +1
 
+def legend_structure(legend_keys, num_missing, row, worksheet, border_left):
+    if num_missing == "":
+        for i in range(0, len(legend_keys)):
+            curr_key = legend_keys[i]
+            position = int(row + i)
+            worksheet.write(position, 14, str(curr_key), border_left)
+            worksheet.write(position, 15, "", border_left)
+            #i = +1
+    else: 
+
+        for i in range(0, len(legend_keys)):
+            curr_key = legend_keys[i]
+            position = int(row + i)
+            worksheet.write(position, 14, str(curr_key), border_left)
+            worksheet.write(position, 15, str(num_missing[curr_key]), border_left)
+            #i = +1
+        
 
 """""""""""""""""""""""""""
 CREATE THE STRUCTURES
 """""""""""""""""""""""
 
 #planner structure #1
-def additional_courses(planner_name, curr_student, courses_list, banner_content):
+def additional_courses(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
     workbook = xlsxwriter.Workbook(path)
@@ -669,18 +673,18 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content)
     legend_merge(row, banner_list[0], worksheet, merge_format1)
     worksheet.write(row, 15, "Total", bold_left)
     worksheet.write(row, 14, "", bold_left)
-    missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
+    #missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
     num_missing = curr_student.return_missing()
     row = row + 1
-    legend_structure(missing_list, num_missing, row, worksheet, border_left)
-    
+    legend_structure(legend_keys, num_missing, row, worksheet, border_left)
+
     #CLOSE THE PLANNER!
     workbook.close() 
     
 
     
 #planner structure #2    
-def core_courses(planner_name, curr_student, courses_list, banner_content):
+def core_courses(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
     workbook = xlsxwriter.Workbook(path)
@@ -760,29 +764,418 @@ def core_courses(planner_name, curr_student, courses_list, banner_content):
     
     
     course_info_format = border_left
+
+    """""""""""""""""""""""""""""""""""""""
+    START THE PRINT
+    """""""""""""""""""""""""""""""""""""""
+    #print student name, surname, and major
+    row = 1
+    column = 0
+    student_name = curr_student.get_name() + " " + curr_student.get_surname()
+    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    long_merge(row, student_major, 1) #major
+    long_merge(row+1, student_name, 0)  #name and surname
+    banner_list = banner["A"]
+    long_merge(row+3, banner_list[0], 1)
+
+
+    """""""""""""""""""""""""""""""""""""""
+    PRINT ENGLISH COMP and LIT REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  5
+    banner_list = banner["eng"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    course_det_left(row+1, worksheet, bold_left)
+
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+    en_list = eng_requirement.get("output courses")
+    #eng_requirement = curr_student.check_eng_requirement()
+
+    for i in range(0, len(en_list)):
+        en_course = en_list[i]
+        if en_course[1] == 1:
+            grade_format = border_center
+        elif en_course[1] == 2:
+            grade_format = color_cell3
+        elif en_course[1] == 3:
+            grade_format = color_cell4
+        row = 7+i
+        worksheet.write(row, 0, en_course[0].course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, en_course[0].course.get_code(), course_info_format)
+        worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
+        worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
+        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
     
-    font_size
-    bold_center
-    bold_left
-    border_center
-    border_left
-    merge_format1
-    merge_format2
-    color_cell1
-    color_cell2
-    color_cell3
-    color_cell4
-    course_info_format
-    banner
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MA REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  13
+    banner_list = banner["math"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
+    ma_requirement = curr_student.check_ma_req()
+    course_det_left(row+1, worksheet, bold_left)
+       
+    m_list = ma_requirement.get("courses done")
+    if len(m_list) != 0:
+        ma_course = m_list[0][0]
+        if m_list[0] [1] == 0:
+            grade_format = color_cell3
+        elif m_list[0] [1] == 1:
+            grade_format = border_center
+        elif m_list[0] [1] == 2:
+            grade_format = color_cell4
+            
+        row = 15
+        worksheet.write(row, 0, ma_course.course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, ma_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, ma_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
+        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK CORE COURSES AND GENERAL ELECTIVES
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
+    #print(obj_core_remaining)
     
+    major_electives = curr_student.check_major_electives()
+        
+    """""""""""""""""""""""""""""""""""""""
+    PRINT FOREIGN LANGUAGE REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 22
+    banner_list = banner["fl"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
+    fl_requirement = curr_student.check_flanguage(curr_student)
+    course_det_left(row+1, worksheet, bold_left)
+       
+    fl_list = fl_requirement.get("courses done")
+    for i in range(0, len(fl_list)):
+        fl_course = fl_list[i][0]
+        #different format depending on the stile
+        if fl_list[i] [1] == 0: 
+            grade_format = color_cell3
+        elif fl_list[i] [1] == 1:
+            grade_format = border_center
+        elif fl_list[i] [1] == 2:
+            grade_format = color_cell4
+        row = 24+i
+        worksheet.write(row, 0, fl_course.course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, fl_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, fl_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
+        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        
+    lenght_left = row
+    print(f"languages end at {lenght_left}")
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT SOCIAL SCIENCES REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  5
+    banner_list = banner["sosc"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
+    sosc_req = curr_student.check_sosc(curr_student)
+    course_det_right(row+1, worksheet, bold_left)
+
+    sosc_list = sosc_req.get("courses done")
+    for i in range(0, len(sosc_list)):
+        sosc_course = sosc_list[i][0]
+        course_grade = sosc_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+            
+        row = 7+i
+        worksheet.write(row, 7, sosc_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, sosc_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
+        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT HUMANITIES REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 10
+    banner_list = banner["hum"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
+    hum_req = curr_student.check_hum(curr_student) 
+    course_det_right(row+1, worksheet, bold_left)
+
+    hum_list = hum_req.get("courses done")
+    for i in range(0, len(hum_list)):
+        hum_course = hum_list[i][0]
+        course_grade = hum_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+            
+        row = 12+i
+        worksheet.write(row, 7, hum_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, hum_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, hum_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
+        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT FINE ARTS REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 15
+    banner_list = banner["fa"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
+    fa_req = curr_student.check_arts(curr_student) 
+    course_det_right(row+1, worksheet, bold_left)
+
+    fa_list = fa_req.get("courses done")
+    for i in range(0, len(fa_list)):
+        fa_course = fa_list[i][0]
+        course_grade = fa_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+
+        row = 17+i
+        worksheet.write(row, 7, fa_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, fa_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, fa_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
+        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MA, SCI, COMP SCI REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  17
+    banner_list = banner["sci"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
+    sci_requirement = curr_student.check_sci(curr_student)
+    course_det_left(row+1, worksheet, bold_left)
+
+
+    #if len(sci_requirement.get("courses missing")) != 2:
+    sci_list = sci_requirement.get("courses done")
+    for i in range(0, len(sci_list)):
+        sci_course = sci_list[i][0]
+        course_grade = sci_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+
+        row = 19+i
+        worksheet.write(row, 0, sci_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 1, sci_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, sci_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
+        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT GENERAL ELECTIVES
+    """""""""""""""""""""""""""""""""""""""
+    row = 19
+    banner_list = banner["genel"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
+    genel_list = curr_student.check_genelectives()
+    course_det_right(row+1, worksheet, bold_left)
+
+
+    for i in range(0, len(genel_list)):
+        genel_course = genel_list[i][0]
+        course_grade = genel_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: 
+            grade_format = color_cell3
+        elif course_grade == 1:
+            grade_format = border_center
+        elif course_grade == 2:
+            grade_format = color_cell4
+            
+        row = 21+i
+        worksheet.write(row, 7, genel_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, genel_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, genel_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
+        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    DECIDE WHAT LENGHT TO PRINT
+    """""""""""""""""""""""""""""""""""""""
+    lengt_first_part = 0
+    #if (21+len(genel_list)) >= 26:
+    if (21+len(genel_list)) >= (lenght_left+1):        
+        lengt_first_part = len(genel_list)
+    else:
+        lengt_first_part = len(fl_list)+1 
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT CORE COURSES
+    """""""""""""""""""""""""""""""""""""""
+    #row = 24+len(genel_list)
+    row = 24+lengt_first_part
+    banner_list = banner["B"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
+    course_det_right(row+1, worksheet, bold_left)
+    
+    core_list = core_courses.get("courses done")
+    for i in range(0, len(core_list)):
+        
+        if core_list[i][0] == "":
+            row = 26+lengt_first_part+i
+            if core_list[i][0] == "":
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+            else:
+                worksheet.write(row, 0, core_list[i][2], course_info_format) 
+        else:
+            core_course = core_list[i][0]
+            course_grade = core_list[i][1]
+            #different format depending on the stile
+            if course_grade == 0: #failed
+                grade_format = color_cell3
+            elif course_grade == 1: #passed
+                grade_format = border_center
+            elif course_grade == 2: #current
+                grade_format = color_cell4
+            elif course_grade == 3: #highlights the grades that are not failed, but lower than C-
+                grade_format = color_cell2
+            
+            #row = 26+len(genel_list)+i
+            row = 26+lengt_first_part+i
+            worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+            worksheet.write(row, 1, core_course.course.get_code(), course_info_format)
+            worksheet.write(row, 2, core_course.course.get_number(), course_info_format)
+            worksheet.write(row, 3, core_course.get_term(), course_info_format)
+            worksheet.write(row, 4, number_to_letter.get(core_course.get_grade()), grade_format)
+            worksheet.write(row, 5, core_course.course.get_credits(), course_info_format)
+        
+    #to print the courses that the student has not done in this category 
+    for i in range(0,len(obj_core_remaining)):
+        core_course = obj_core_remaining[i]
+        
+        row = 26+lengt_first_part+len(core_list)+i
+
+        worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 1, core_course.get_code(), course_info_format)
+        worksheet.write(row, 2, core_course.get_number(), course_info_format)
+        worksheet.write(row, 3, "", course_info_format)
+        worksheet.write(row, 4, "", course_info_format)
+        worksheet.write(row, 5, core_course.get_credits(), course_info_format)    
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MAJOR ELECTIVES
+    """""""""""""""""""""""""""""""""""""""
+    #set the row depending on the longest between core and additional requirements
+    
+    row = 30 + lengt_first_part + (len(obj_core_remaining)+len(core_list))
+    
+    banner_list = banner["C"] 
+    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+    course_det_left(row+1, worksheet, bold_left)
+
+    electives_list = major_electives.get("courses done")
+    for i in range(0, len(electives_list)):
+        elective_course = electives_list[i][0]
+        course_grade = electives_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: #failed
+            grade_format = color_cell3
+        elif course_grade == 1: #passed
+            grade_format = border_center
+        elif course_grade == 2: #current
+            grade_format = color_cell4
+            
+        #row = 32+len(genel_list)+len(core_list)+i
+        row = 32+lengt_first_part+len(core_list)+i
+        worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, elective_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
+        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #legend
+    row = 4 
+    banner_list = banner["G"] 
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    legend_list = ["No more than two core courses with a grade below C-", "Grade requirement not satisfied", "Courses that the student is taking the current semester"]
+    legend_structure(legend_list, "", row, worksheet, border_left)
+
+
+    legend_format = [color_cell2, color_cell3, color_cell4]
+    for i in range(0, len(legend_format)):
+        position = int(row + i)
+        worksheet.write(position, 15, "", legend_format[i])
+
+    #general information
+    row = row + 2 +  len(legend_list)
+    banner_list = banner["H"] 
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    worksheet.write(row, 15, "Total", bold_left)
+    worksheet.write(row, 14, "", bold_left)
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    data_list = curr_student.create_info_list()
+    row = row + 1
+    legend_structure(info_list, data_list, row, worksheet, border_left)
+
+    #courses missing by section
+    row = row + len(legend_list) + len(info_list) - 1
+    banner_list = banner["I"]
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    worksheet.write(row, 15, "Total", bold_left)
+    worksheet.write(row, 14, "", bold_left)
+    #missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
+    num_missing = curr_student.return_missing()
+    row = row + 1
+    legend_structure(legend_keys, num_missing, row, worksheet, border_left)
     
     #CLOSE THE PLANNER!
-    workbook.close()
+    workbook.close() 
     
     
     
 #planner structure #3    
-def core_tracks(planner_name, curr_student, courses_list, banner_content):
+def core_tracks(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
     workbook = xlsxwriter.Workbook(path)
@@ -860,41 +1253,417 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content):
         })
     
     course_info_format = border_left
+
+    """""""""""""""""""""""""""""""""""""""
+    START THE PRINT
+    """""""""""""""""""""""""""""""""""""""
+    #print student name, surname, and major
+    row = 1
+    column = 0
+    student_name = curr_student.get_name() + " " + curr_student.get_surname()
+    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    long_merge(row, student_major, 1) #major
+    long_merge(row+1, student_name, 0)  #name and surname
+    banner_list = banner["A"]
+    long_merge(row+3, banner_list[0], 1)
+
+
+    """""""""""""""""""""""""""""""""""""""
+    PRINT ENGLISH COMP and LIT REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  5
+    banner_list = banner["eng"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    course_det_left(row+1, worksheet, bold_left)
+
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+    en_list = eng_requirement.get("output courses")
+    #eng_requirement = curr_student.check_eng_requirement()
+
+    for i in range(0, len(en_list)):
+        en_course = en_list[i]
+        if en_course[1] == 1:
+            grade_format = border_center
+        elif en_course[1] == 2:
+            grade_format = color_cell3
+        elif en_course[1] == 3:
+            grade_format = color_cell4
+        row = 7+i
+        worksheet.write(row, 0, en_course[0].course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, en_course[0].course.get_code(), course_info_format)
+        worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
+        worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
+        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
     
-    font_size
-    bold_center
-    bold_left
-    border_center
-    border_left
-    merge_format1
-    merge_format2
-    color_cell1
-    color_cell2
-    color_cell3
-    color_cell4
-    course_info_format
-    banner
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MA REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  13
+    banner_list = banner["math"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
+    ma_requirement = curr_student.check_ma_req()
+    course_det_left(row+1, worksheet, bold_left)
+       
+    m_list = ma_requirement.get("courses done")
+    if len(m_list) != 0:
+        ma_course = m_list[0][0]
+        if m_list[0] [1] == 0:
+            grade_format = color_cell3
+        elif m_list[0] [1] == 1:
+            grade_format = border_center
+        elif m_list[0] [1] == 2:
+            grade_format = color_cell4
+            
+        row = 15
+        worksheet.write(row, 0, ma_course.course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, ma_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, ma_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
+        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK CORE COURSES AND GENERAL ELECTIVES
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
+    #print(obj_core_remaining)
+    
+    major_electives = curr_student.check_major_electives()
+        
+    """""""""""""""""""""""""""""""""""""""
+    PRINT FOREIGN LANGUAGE REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 22
+    banner_list = banner["fl"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
+    fl_requirement = curr_student.check_flanguage(curr_student)
+    course_det_left(row+1, worksheet, bold_left)
+       
+    fl_list = fl_requirement.get("courses done")
+    for i in range(0, len(fl_list)):
+        fl_course = fl_list[i][0]
+        #different format depending on the stile
+        if fl_list[i] [1] == 0: 
+            grade_format = color_cell3
+        elif fl_list[i] [1] == 1:
+            grade_format = border_center
+        elif fl_list[i] [1] == 2:
+            grade_format = color_cell4
+        row = 24+i
+        worksheet.write(row, 0, fl_course.course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, fl_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, fl_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
+        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        
+    lenght_left = row
+    print(f"languages end at {lenght_left}")
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT SOCIAL SCIENCES REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  5
+    banner_list = banner["sosc"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
+    sosc_req = curr_student.check_sosc(curr_student)
+    course_det_right(row+1, worksheet, bold_left)
+
+    sosc_list = sosc_req.get("courses done")
+    for i in range(0, len(sosc_list)):
+        sosc_course = sosc_list[i][0]
+        course_grade = sosc_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+            
+        row = 7+i
+        worksheet.write(row, 7, sosc_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, sosc_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
+        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT HUMANITIES REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 10
+    banner_list = banner["hum"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
+    hum_req = curr_student.check_hum(curr_student) 
+    course_det_right(row+1, worksheet, bold_left)
+
+    hum_list = hum_req.get("courses done")
+    for i in range(0, len(hum_list)):
+        hum_course = hum_list[i][0]
+        course_grade = hum_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+            
+        row = 12+i
+        worksheet.write(row, 7, hum_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, hum_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, hum_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
+        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT FINE ARTS REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 15
+    banner_list = banner["fa"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
+    fa_req = curr_student.check_arts(curr_student) 
+    course_det_right(row+1, worksheet, bold_left)
+
+    fa_list = fa_req.get("courses done")
+    for i in range(0, len(fa_list)):
+        fa_course = fa_list[i][0]
+        course_grade = fa_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+
+        row = 17+i
+        worksheet.write(row, 7, fa_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, fa_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, fa_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
+        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MA, SCI, COMP SCI REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  17
+    banner_list = banner["sci"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
+    sci_requirement = curr_student.check_sci(curr_student)
+    course_det_left(row+1, worksheet, bold_left)
 
 
+    #if len(sci_requirement.get("courses missing")) != 2:
+    sci_list = sci_requirement.get("courses done")
+    for i in range(0, len(sci_list)):
+        sci_course = sci_list[i][0]
+        course_grade = sci_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+
+        row = 19+i
+        worksheet.write(row, 0, sci_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 1, sci_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, sci_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
+        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT GENERAL ELECTIVES
+    """""""""""""""""""""""""""""""""""""""
+    row = 19
+    banner_list = banner["genel"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
+    genel_list = curr_student.check_genelectives()
+    course_det_right(row+1, worksheet, bold_left)
+
+
+    for i in range(0, len(genel_list)):
+        genel_course = genel_list[i][0]
+        course_grade = genel_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: 
+            grade_format = color_cell3
+        elif course_grade == 1:
+            grade_format = border_center
+        elif course_grade == 2:
+            grade_format = color_cell4
+            
+        row = 21+i
+        worksheet.write(row, 7, genel_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, genel_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, genel_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
+        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    DECIDE WHAT LENGHT TO PRINT
+    """""""""""""""""""""""""""""""""""""""
+    lengt_first_part = 0
+    #if (21+len(genel_list)) >= 26:
+    if (21+len(genel_list)) >= (lenght_left+1):        
+        lengt_first_part = len(genel_list)
+    else:
+        lengt_first_part = len(fl_list)+1 
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT CORE COURSES
+    """""""""""""""""""""""""""""""""""""""
+    #row = 24+len(genel_list)
+    row = 24+lengt_first_part
+    banner_list = banner["B"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
+    course_det_right(row+1, worksheet, bold_left)
+    
+    core_list = core_courses.get("courses done")
+    for i in range(0, len(core_list)):
+        
+        if core_list[i][0] == "":
+            row = 26+lengt_first_part+i
+            if core_list[i][0] == "":
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+            else:
+                worksheet.write(row, 0, core_list[i][2], course_info_format) 
+        else:
+            core_course = core_list[i][0]
+            course_grade = core_list[i][1]
+            #different format depending on the stile
+            if course_grade == 0: #failed
+                grade_format = color_cell3
+            elif course_grade == 1: #passed
+                grade_format = border_center
+            elif course_grade == 2: #current
+                grade_format = color_cell4
+            elif course_grade == 3: #highlights the grades that are not failed, but lower than C-
+                grade_format = color_cell2
+            
+            #row = 26+len(genel_list)+i
+            row = 26+lengt_first_part+i
+            worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+            worksheet.write(row, 1, core_course.course.get_code(), course_info_format)
+            worksheet.write(row, 2, core_course.course.get_number(), course_info_format)
+            worksheet.write(row, 3, core_course.get_term(), course_info_format)
+            worksheet.write(row, 4, number_to_letter.get(core_course.get_grade()), grade_format)
+            worksheet.write(row, 5, core_course.course.get_credits(), course_info_format)
+        
+    #to print the courses that the student has not done in this category 
+    for i in range(0,len(obj_core_remaining)):
+        core_course = obj_core_remaining[i]
+        
+        row = 26+lengt_first_part+len(core_list)+i
+
+        worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 1, core_course.get_code(), course_info_format)
+        worksheet.write(row, 2, core_course.get_number(), course_info_format)
+        worksheet.write(row, 3, "", course_info_format)
+        worksheet.write(row, 4, "", course_info_format)
+        worksheet.write(row, 5, core_course.get_credits(), course_info_format)    
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MAJOR ELECTIVES
+    """""""""""""""""""""""""""""""""""""""
+    #set the row depending on the longest between core and additional requirements
+    
+    row = 30 + lengt_first_part + (len(obj_core_remaining)+len(core_list))
+    
+    banner_list = banner["C"] 
+    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+    course_det_left(row+1, worksheet, bold_left)
+
+    electives_list = major_electives.get("courses done")
+    for i in range(0, len(electives_list)):
+        elective_course = electives_list[i][0]
+        course_grade = electives_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: #failed
+            grade_format = color_cell3
+        elif course_grade == 1: #passed
+            grade_format = border_center
+        elif course_grade == 2: #current
+            grade_format = color_cell4
+            
+        #row = 32+len(genel_list)+len(core_list)+i
+        row = 32+lengt_first_part+len(core_list)+i
+        worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, elective_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
+        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #legend
+    row = 4 
+    banner_list = banner["G"] 
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    legend_list = ["No more than two core courses with a grade below C-", "Grade requirement not satisfied", "Courses that the student is taking the current semester"]
+    legend_structure(legend_list, "", row, worksheet, border_left)
+
+
+    legend_format = [color_cell2, color_cell3, color_cell4]
+    for i in range(0, len(legend_format)):
+        position = int(row + i)
+        worksheet.write(position, 15, "", legend_format[i])
+
+    #general information
+    row = row + 2 +  len(legend_list)
+    banner_list = banner["H"] 
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    worksheet.write(row, 15, "Total", bold_left)
+    worksheet.write(row, 14, "", bold_left)
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    data_list = curr_student.create_info_list()
+    row = row + 1
+    legend_structure(info_list, data_list, row, worksheet, border_left)
+
+    #courses missing by section
+    row = row + len(legend_list) + len(info_list) - 1
+    banner_list = banner["I"]
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    worksheet.write(row, 15, "Total", bold_left)
+    worksheet.write(row, 14, "", bold_left)
+    #missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
+    num_missing = curr_student.return_missing()
+    row = row + 1
+    legend_structure(legend_keys, num_missing, row, worksheet, border_left)
+    
     #CLOSE THE PLANNER!
-    workbook.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
+    workbook.close() 
 
 
 #planner structure #4 
-def electives_tracks(planner_name, curr_student, courses_list, banner_content):
+def electives_tracks(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
     workbook = xlsxwriter.Workbook(path)
@@ -972,21 +1741,410 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content):
         })
     
     course_info_format = border_left
+
+    """""""""""""""""""""""""""""""""""""""
+    START THE PRINT
+    """""""""""""""""""""""""""""""""""""""
+    #print student name, surname, and major
+    row = 1
+    column = 0
+    student_name = curr_student.get_name() + " " + curr_student.get_surname()
+    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    long_merge(row, student_major, 1) #major
+    long_merge(row+1, student_name, 0)  #name and surname
+    banner_list = banner["A"]
+    long_merge(row+3, banner_list[0], 1)
+
+
+    """""""""""""""""""""""""""""""""""""""
+    PRINT ENGLISH COMP and LIT REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  5
+    banner_list = banner["eng"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    course_det_left(row+1, worksheet, bold_left)
+
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+    en_list = eng_requirement.get("output courses")
+    #eng_requirement = curr_student.check_eng_requirement()
+
+    for i in range(0, len(en_list)):
+        en_course = en_list[i]
+        if en_course[1] == 1:
+            grade_format = border_center
+        elif en_course[1] == 2:
+            grade_format = color_cell3
+        elif en_course[1] == 3:
+            grade_format = color_cell4
+        row = 7+i
+        worksheet.write(row, 0, en_course[0].course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, en_course[0].course.get_code(), course_info_format)
+        worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
+        worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
+        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
     
-    font_size
-    bold_center
-    bold_left
-    border_center
-    border_left
-    merge_format1
-    merge_format2
-    color_cell1
-    color_cell2
-    color_cell3
-    color_cell4
-    course_info_format
-    banner
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MA REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  13
+    banner_list = banner["math"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
+    ma_requirement = curr_student.check_ma_req()
+    course_det_left(row+1, worksheet, bold_left)
+       
+    m_list = ma_requirement.get("courses done")
+    if len(m_list) != 0:
+        ma_course = m_list[0][0]
+        if m_list[0] [1] == 0:
+            grade_format = color_cell3
+        elif m_list[0] [1] == 1:
+            grade_format = border_center
+        elif m_list[0] [1] == 2:
+            grade_format = color_cell4
+            
+        row = 15
+        worksheet.write(row, 0, ma_course.course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, ma_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, ma_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
+        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK CORE COURSES AND GENERAL ELECTIVES
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
+    #print(obj_core_remaining)
     
+    major_electives = curr_student.check_major_electives()
+        
+    """""""""""""""""""""""""""""""""""""""
+    PRINT FOREIGN LANGUAGE REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 22
+    banner_list = banner["fl"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
+    fl_requirement = curr_student.check_flanguage(curr_student)
+    course_det_left(row+1, worksheet, bold_left)
+       
+    fl_list = fl_requirement.get("courses done")
+    for i in range(0, len(fl_list)):
+        fl_course = fl_list[i][0]
+        #different format depending on the stile
+        if fl_list[i] [1] == 0: 
+            grade_format = color_cell3
+        elif fl_list[i] [1] == 1:
+            grade_format = border_center
+        elif fl_list[i] [1] == 2:
+            grade_format = color_cell4
+        row = 24+i
+        worksheet.write(row, 0, fl_course.course.get_name(), course_info_format) #col A=0
+        worksheet.write(row, 1, fl_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, fl_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
+        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        
+    lenght_left = row
+    print(f"languages end at {lenght_left}")
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT SOCIAL SCIENCES REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  5
+    banner_list = banner["sosc"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
+    sosc_req = curr_student.check_sosc(curr_student)
+    course_det_right(row+1, worksheet, bold_left)
+
+    sosc_list = sosc_req.get("courses done")
+    for i in range(0, len(sosc_list)):
+        sosc_course = sosc_list[i][0]
+        course_grade = sosc_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+            
+        row = 7+i
+        worksheet.write(row, 7, sosc_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, sosc_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
+        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT HUMANITIES REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 10
+    banner_list = banner["hum"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
+    hum_req = curr_student.check_hum(curr_student) 
+    course_det_right(row+1, worksheet, bold_left)
+
+    hum_list = hum_req.get("courses done")
+    for i in range(0, len(hum_list)):
+        hum_course = hum_list[i][0]
+        course_grade = hum_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+            
+        row = 12+i
+        worksheet.write(row, 7, hum_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, hum_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, hum_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
+        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT FINE ARTS REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row = 15
+    banner_list = banner["fa"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
+    fa_req = curr_student.check_arts(curr_student) 
+    course_det_right(row+1, worksheet, bold_left)
+
+    fa_list = fa_req.get("courses done")
+    for i in range(0, len(fa_list)):
+        fa_course = fa_list[i][0]
+        course_grade = fa_list[i][1]
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+
+        row = 17+i
+        worksheet.write(row, 7, fa_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, fa_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, fa_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
+        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MA, SCI, COMP SCI REQUIREMENT
+    """""""""""""""""""""""""""""""""""""""
+    row =  17
+    banner_list = banner["sci"] 
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
+    sci_requirement = curr_student.check_sci(curr_student)
+    course_det_left(row+1, worksheet, bold_left)
+
+
+    #if len(sci_requirement.get("courses missing")) != 2:
+    sci_list = sci_requirement.get("courses done")
+    for i in range(0, len(sci_list)):
+        sci_course = sci_list[i][0]
+        course_grade = sci_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: #course failed
+            grade_format = color_cell3
+        elif course_grade == 1: #course passed
+            grade_format = border_center
+        elif course_grade == 2: #current course
+            grade_format = color_cell4
+
+        row = 19+i
+        worksheet.write(row, 0, sci_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 1, sci_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, sci_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
+        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT GENERAL ELECTIVES
+    """""""""""""""""""""""""""""""""""""""
+    row = 19
+    banner_list = banner["genel"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
+    genel_list = curr_student.check_genelectives()
+    course_det_right(row+1, worksheet, bold_left)
+
+
+    for i in range(0, len(genel_list)):
+        genel_course = genel_list[i][0]
+        course_grade = genel_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: 
+            grade_format = color_cell3
+        elif course_grade == 1:
+            grade_format = border_center
+        elif course_grade == 2:
+            grade_format = color_cell4
+            
+        row = 21+i
+        worksheet.write(row, 7, genel_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 8, genel_course.course.get_code(), course_info_format)
+        worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
+        worksheet.write(row, 10, genel_course.get_term(), course_info_format)
+        worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
+        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""
+    DECIDE WHAT LENGHT TO PRINT
+    """""""""""""""""""""""""""""""""""""""
+    lengt_first_part = 0
+    #if (21+len(genel_list)) >= 26:
+    if (21+len(genel_list)) >= (lenght_left+1):        
+        lengt_first_part = len(genel_list)
+    else:
+        lengt_first_part = len(fl_list)+1 
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT CORE COURSES
+    """""""""""""""""""""""""""""""""""""""
+    #row = 24+len(genel_list)
+    row = 24+lengt_first_part
+    banner_list = banner["B"] 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
+    course_det_right(row+1, worksheet, bold_left)
+    
+    core_list = core_courses.get("courses done")
+    for i in range(0, len(core_list)):
+        
+        if core_list[i][0] == "":
+            row = 26+lengt_first_part+i
+            if core_list[i][0] == "":
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+            else:
+                worksheet.write(row, 0, core_list[i][2], course_info_format) 
+        else:
+            core_course = core_list[i][0]
+            course_grade = core_list[i][1]
+            #different format depending on the stile
+            if course_grade == 0: #failed
+                grade_format = color_cell3
+            elif course_grade == 1: #passed
+                grade_format = border_center
+            elif course_grade == 2: #current
+                grade_format = color_cell4
+            elif course_grade == 3: #highlights the grades that are not failed, but lower than C-
+                grade_format = color_cell2
+            
+            #row = 26+len(genel_list)+i
+            row = 26+lengt_first_part+i
+            worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+            worksheet.write(row, 1, core_course.course.get_code(), course_info_format)
+            worksheet.write(row, 2, core_course.course.get_number(), course_info_format)
+            worksheet.write(row, 3, core_course.get_term(), course_info_format)
+            worksheet.write(row, 4, number_to_letter.get(core_course.get_grade()), grade_format)
+            worksheet.write(row, 5, core_course.course.get_credits(), course_info_format)
+        
+    #to print the courses that the student has not done in this category 
+    for i in range(0,len(obj_core_remaining)):
+        core_course = obj_core_remaining[i]
+        
+        row = 26+lengt_first_part+len(core_list)+i
+
+        worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 1, core_course.get_code(), course_info_format)
+        worksheet.write(row, 2, core_course.get_number(), course_info_format)
+        worksheet.write(row, 3, "", course_info_format)
+        worksheet.write(row, 4, "", course_info_format)
+        worksheet.write(row, 5, core_course.get_credits(), course_info_format)    
+    
+    
+    """""""""""""""""""""""""""""""""""""""
+    PRINT MAJOR ELECTIVES
+    """""""""""""""""""""""""""""""""""""""
+    #set the row depending on the longest between core and additional requirements
+    
+    row = 30 + lengt_first_part + (len(obj_core_remaining)+len(core_list))
+    
+    banner_list = banner["C"] 
+    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+    course_det_left(row+1, worksheet, bold_left)
+
+    electives_list = major_electives.get("courses done")
+    for i in range(0, len(electives_list)):
+        elective_course = electives_list[i][0]
+        course_grade = electives_list[i][1]
+        #different format depending on the stile
+        if course_grade == 0: #failed
+            grade_format = color_cell3
+        elif course_grade == 1: #passed
+            grade_format = border_center
+        elif course_grade == 2: #current
+            grade_format = color_cell4
+            
+        #row = 32+len(genel_list)+len(core_list)+i
+        row = 32+lengt_first_part+len(core_list)+i
+        worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
+        worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
+        worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
+        worksheet.write(row, 3, elective_course.get_term(), course_info_format)
+        worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
+        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+    
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #legend
+    row = 4 
+    banner_list = banner["G"] 
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    legend_list = ["No more than two core courses with a grade below C-", "Grade requirement not satisfied", "Courses that the student is taking the current semester"]
+    legend_structure(legend_list, "", row, worksheet, border_left)
+
+
+    legend_format = [color_cell2, color_cell3, color_cell4]
+    for i in range(0, len(legend_format)):
+        position = int(row + i)
+        worksheet.write(position, 15, "", legend_format[i])
+
+    #general information
+    row = row + 2 +  len(legend_list)
+    banner_list = banner["H"] 
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    worksheet.write(row, 15, "Total", bold_left)
+    worksheet.write(row, 14, "", bold_left)
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    data_list = curr_student.create_info_list()
+    row = row + 1
+    legend_structure(info_list, data_list, row, worksheet, border_left)
+
+    #courses missing by section
+    row = row + len(legend_list) + len(info_list) - 1
+    banner_list = banner["I"]
+    legend_merge(row, banner_list[0], worksheet, merge_format1)
+    worksheet.write(row, 15, "Total", bold_left)
+    worksheet.write(row, 14, "", bold_left)
+    #missing_list = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
+    num_missing = curr_student.return_missing()
+    row = row + 1
+    legend_structure(legend_keys, num_missing, row, worksheet, border_left)
     
     #CLOSE THE PLANNER!
-    workbook.close()
+    workbook.close() 
