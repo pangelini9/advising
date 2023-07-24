@@ -10,7 +10,7 @@ json_file_courses = "courses.json"
 myReportFile = open("report.txt", "w")
 
 #1 if the student has the language waived, 0 if the student does not have the language courses waived
-language_waived = 1 # For now, fixed to 1 for everybody - we cannot know it
+language_waived = 0 # For now, fixed to 0 for everybody - we cannot know it
 #key corresponding to the major of the student under consideration
 major_code = 0 # For now, fixed to 0 for everybody - IT DOES NOT MATTER FOR PRE-REQ, IT WILL CHANGE FOR THE GENERAL PROGRAM
 
@@ -58,7 +58,7 @@ for s in students:
             #print("Second Major: " + str(major2))
         if obj.get("FieldName") == "{EA.StudentInfoString7}":
             minor2 = obj.find("ns:Value", namespace).text
-            #print("Second Minor: " + str(minor2))
+            print("Second Minor: " + str(minor2))
             #print()
 
     
@@ -80,8 +80,17 @@ for s in students:
                 current_term = t.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject/ns:Value", namespace).text
                 #print(current_term)
                 
+                in_residence = 1 # Whether the course has been taken at JCU. Initially, always 1
+
                 if not (current_term.startswith("Fall") or current_term.startswith("Spring") or current_term.startswith("Sum")):
                     current_term = "TR"
+                    in_residence = 0
+                
+                school = t.find("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{@OutsideSchoolName}']/ns:Value", namespace)
+                
+                if school.text != None:
+                    print("School", school.text)
+                    in_residence = 0
                 
                 courses = t.findall(".//ns:FormattedAreaPair[@Level='9']", namespace)
                 
@@ -149,9 +158,7 @@ for s in students:
                             grade = "current"
                             if g.text != None:
                                 grade = g.text
-                            
-                            in_residence = 1 # Whether the course has been taken at JCU. For now, always 1
-                        
+                                                    
                             new_course = [course_id, in_residence, grade, current_term, honors]
                             stud_courses.append(new_course)
                 
@@ -168,13 +175,24 @@ for s in students:
 #    data.append(student[student.index(" ", 5)+1:]) # add student's last name
     data.append(student) # add student's name (first and last, we may clean from Ms. Mr. etc. but have to be careful with cases)
     data.append("") # add student's last name - TO BE REMOVED OR ADJUSTED FOR SPECIAL CASES
-    data.append(language_waived) # for now, fixed to 1
+    data.append(language_waived) # for now, fixed to 0
     data.append(major_code) # for now, fixed to 0. WE SHOULD GET THE ID FROM JSON
+    
     data.append("") # Minor 1 - NOT IMPLEMENTED YET
     data.append("") # Minor 2 - NOT IMPLEMENTED YET
+    
     data.append(stud_courses)
     
+    data.append(0) # whether double degree (2), double major (1), or normal (0)
+    
     data_list.append(data)
+    
+    # name, surname, language, major, minor 1, minor 2, courses_list, double_flag
+    
+    # get major ID from json (only works for single majors)
+    # if double major/degree, create two distinct data structures
+    # add minor names - check with new xml structure?
+    # handle the double major/degree/normal flag
     
 # print(data_list)
 

@@ -5,20 +5,21 @@ def create_student_json(file_name):
     # XML file to read the transcripts from
     #xml_file = "students.xml"
     xml_file = file_name
-    
-    # JSON file to read the course id's from
-    json_file_courses = "execution_files/courses.json"
-    
-    report_name = "execution_files/report.txt"
+        
+    report_name = "report.txt"
     myReportFile = open(report_name, "w")
-    
-    #1 if the student has the language waived, 0 if the student does not have the language courses waived
-    language_waived = 1 # For now, fixed to 1 for everybody - we cannot know it
-    #key corresponding to the major of the student under consideration
-    major_code = 0 # For now, fixed to 0 for everybody - IT DOES NOT MATTER FOR PRE-REQ, IT WILL CHANGE FOR THE GENERAL PROGRAM
+
+    # JSON file to read the course id's from
+    json_file_courses = "courses.json"
     
     with open(json_file_courses) as myFile:
         course_id_list = json.load(myFile)
+
+    # JSON file to read the course id's from
+    json_file_majors = "majors-new.json"
+
+    with open(json_file_majors) as myFile:
+        major_id_list = json.load(myFile)
     
     data_list = [] # to store the list of students
     
@@ -35,9 +36,13 @@ def create_student_json(file_name):
     students = root.findall("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair", namespace)
     
     print("Students:", len(students))
+    myReportFile.write("Students:" + str(len(students)) + "\n")
     print()
     
     for s in students:
+        
+        # majors - to iterate over
+        majors = []
         
         # gets the sections in the header
         sections = s.findall("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection", namespace)
@@ -49,158 +54,202 @@ def create_student_json(file_name):
         for obj in objects:
             if obj.get("FieldName") == "{@SupressNameBreakForStudent}":
                 student = obj.find("ns:Value", namespace).text
-                #myReportFile.write(student + "\n")
+                myReportFile.write("\n" + student + "\n")
                 #print("Name: " + student)
             if obj.get("FieldName") == "{EA.StudentInfoString4}":
                 major1 = obj.find("ns:Value", namespace).text
+                myReportFile.write("Major 1:" + str(major1) + "\n")
                 #print("Major: " + str(major1))
             if obj.get("FieldName") == "{EA.StudentInfoString5}":
-                minor = obj.find("ns:Value", namespace).text
+                minor1 = obj.find("ns:Value", namespace).text
+                myReportFile.write("Minor:" + str(minor1) + "\n")
                 #print("Minor: " + str(minor))
             if obj.get("FieldName") == "{EA.StudentInfoString6}":
                 major2 = obj.find("ns:Value", namespace).text
+                myReportFile.write("Major 2:" + str(major2) + "\n")
                 #print("Second Major: " + str(major2))
             if obj.get("FieldName") == "{EA.StudentInfoString7}":
                 minor2 = obj.find("ns:Value", namespace).text
+                myReportFile.write("Minor 2:" + str(minor2) + "\n")
                 #print("Second Minor: " + str(minor2))
                 #print()
-    
         
-        # To contain the list of courses for the current student
-        stud_courses = []
+        
+        # 2 (double-degree), 1 (double-major), or 0 (normal).
+        if "/" in major1:
+            majors = major1.split("/")
+            double_degree = 1
+        else:
+            majors.append(major1)
+            if major2 is not None:
+                majors.append(major2)
+                double_degree = 2
+            else:
+                double_degree = 0
+        
+        print(double_degree, majors)
+        
+        #1 if the student has the language waived, 0 if the student does not have the language courses waived
+        language_waived = 0 # For now, fixed to 0 for everybody - we cannot know it
+        
+        # TODO: we may do this loop after having created the list of courses!
+        for maj in majors:
+
+            #key corresponding to the major of the student under consideration
+            #major_code = 0 # For now, fixed to 0 for everybody - get the code from the json using the "maj" variable
             
-        # gets the sections in the details
-        sections = s.findall("./ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection", namespace)
-        
-        # only section 0 is relevant, as it contains the courses info
-        for sect in sections:
-            if sect.get("SectionNumber") == "0":
-                terms = sect.findall("./ns:FormattedReportObjects/ns:FormattedReportObject/ns:FormattedAreaPair/ns:FormattedAreaPair", namespace)
-                
-                #print(len(terms))
-                
-                for t in terms:
-                    
-                    current_term = t.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject/ns:Value", namespace).text
-                    #print(current_term)
-                    
-                    in_residence = 1 # Whether the course has been taken at JCU. Initially, always 1
+            m = major_id_list.get(maj, -1)
+            if m != -1:
+                major_code = m.get("major key")
+            else:
+                major_code = 0 # giving 0 whenever the major is not found!
+            
+            print(f"Major: {maj}, code {major_code}")
 
-                    if not (current_term.startswith("Fall") or current_term.startswith("Spring") or current_term.startswith("Sum")):
-                        current_term = "TR"
-                        in_residence = 0
+            # To contain the list of courses for the current student
+            stud_courses = []
+                
+            # gets the sections in the details
+            sections = s.findall("./ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection", namespace)
+            
+            # only section 0 is relevant, as it contains the courses info
+            for sect in sections:
+                if sect.get("SectionNumber") == "0":
+                    terms = sect.findall("./ns:FormattedReportObjects/ns:FormattedReportObject/ns:FormattedAreaPair/ns:FormattedAreaPair", namespace)
                     
-                    school = t.find("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{@OutsideSchoolName}']/ns:Value", namespace)
+                    #print(len(terms))
                     
-                    if school.text != None:
-                        #print("School", school.text)
-                        in_residence = 0
-                    
-                    courses = t.findall(".//ns:FormattedAreaPair[@Level='9']", namespace)
-                    
-                    #print("Courses", len(courses))
-                    
-                    for x in courses:
+                    for t in terms:
                         
-                        curr_course = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn2}']/ns:Value", namespace)
+                        current_term = t.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject/ns:Value", namespace).text
+                        #print(current_term)
                         
-                        if curr_course != None:
-                            current_course = curr_course.text
-                            # print(current_course)
+                        in_residence = 1 # Whether the course has been taken at JCU. Initially, always 1
+    
+                        if not (current_term.startswith("Fall") or current_term.startswith("Spring") or current_term.startswith("Sum")):
+                            current_term = "TR"
+                            in_residence = 0
+                        
+                        school = t.find("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{@OutsideSchoolName}']/ns:Value", namespace)
+                        
+                        if school.text != None:
+                            #print("School", school.text)
+                            in_residence = 0
+                        
+                        courses = t.findall(".//ns:FormattedAreaPair[@Level='9']", namespace)
+                        
+                        #print("Courses", len(courses))
+                        
+                        for x in courses:
                             
-                            if not current_course.startswith("ENLUS") and not current_course.startswith("ADMIN") and not current_course.startswith("Semester")  and not current_course.startswith("Cumulative"):
+                            curr_course = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn2}']/ns:Value", namespace)
+                            
+                            if curr_course != None:
+                                current_course = curr_course.text
+                                # print(current_course)
                                 
-                                # remove the H for the honors, and remember if we do it
-                                honors = 0
-                                
-                                # remove possible final characters, like i, ii, -A, and variations
-                                end = len(current_course)-1
-                                while end > 0:
-                                    if current_course[end].isdigit() and current_course[end-1].isdigit():
-                                        current_course = current_course[:end+1]
-                                        end = 0
-                                    else:
-                                        if current_course[end] == "H":
-                                            honors = 1
-                                        end = end - 1
-                                        
-                                end = len(current_course)-1
-                                general = False
-                                while end > 0:
-                                    if current_course[end].isdigit():
-                                        end = end - 1
-                                        general = True
-                                    else:
-                                        if current_course[end] != " " and general == True:
-                                            current_course = current_course[:end+1] + " " + current_course[end+1:]
-                                            #print("Adjusted", current_course)
-                                        end = 0
-                                
-                                
-                                        
-                                # reads the credits
-                                # now it is not used, but we will probably need to add it in the course
-                                cr = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn5}']/ns:Value", namespace).text
-    
-                                # Read the course_id from the JSON file
-                                course_id = "error"
-                                for c in course_id_list:
-                                    if c[2] != 0:
-    #                                    if cou == f"{c[1]} {c[2]}" and float(cr) - honors == float(c[3]):
-                                        if current_course == f"{c[1]} {c[2]}":
-                                            course_id = c[5]
-                                    else:
-                                        if current_course == f"{c[1]}":
-                                            course_id = c[5]
-    
-                                if course_id == "error":
-                                    myReportFile.write(student + " ID not found for: " + current_course + ", creds: " + cr + ", in " + current_term + "\n")
+                                if not current_course.startswith("ENLUS") and not current_course.startswith("ADMIN") and not current_course.startswith("Semester")  and not current_course.startswith("Cumulative"):
                                     
-                                # reads the grade
-                                g = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn4}']/ns:Value", namespace)
+                                    # remove the H for the honors, and remember if we do it
+                                    honors = 0
+                                    
+                                    # remove possible final characters, like i, ii, -A, and variations
+                                    end = len(current_course)-1
+                                    while end > 0:
+                                        if current_course[end].isdigit() and current_course[end-1].isdigit():
+                                            current_course = current_course[:end+1]
+                                            end = 0
+                                        else:
+                                            if current_course[end] == "H":
+                                                honors = 1
+                                            end = end - 1
+                                            
+                                    end = len(current_course)-1
+                                    general = False
+                                    while end > 0:
+                                        if current_course[end].isdigit():
+                                            end = end - 1
+                                            general = True
+                                        else:
+                                            if current_course[end] != " " and general == True:
+                                                current_course = current_course[:end+1] + " " + current_course[end+1:]
+                                                #print("Adjusted", current_course)
+                                            end = 0
+                                    
+                                    
+                                            
+                                    # reads the credits
+                                    # now it is not used, but we will probably need to add it in the course
+                                    cr = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn5}']/ns:Value", namespace).text
+        
+                                    # Read the course_id from the JSON file
+                                    course_id = "error"
+                                    for c in course_id_list:
+                                        if c[2] != 0:
+        #                                    if cou == f"{c[1]} {c[2]}" and float(cr) - honors == float(c[3]):
+                                            if current_course == f"{c[1]} {c[2]}":
+                                                course_id = c[5]
+                                        else:
+                                            if current_course == f"{c[1]}":
+                                                course_id = c[5]
+        
+                                    if course_id == "error":
+                                        myReportFile.write(student + " ID not found for: " + current_course + ", creds: " + cr + ", in " + current_term + "\n")
+                                        
+                                    # reads the grade
+                                    g = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn4}']/ns:Value", namespace)
+        
+                                    grade = "current"
+                                    if g.text != None:
+                                        #grade = g.text
+                                        grade = g.text
+                                    
+                                    #in_residence = 1 # Whether the course has been taken at JCU. For now, always 1
+                                    course_creds = float(cr)
+                                    
+                                    #new_course = [course_id, in_residence, grade, current_term, honors]
+                                    #had to substitute in residence with credits because in the GPA computation and in the standing it needs the actual amount of credits that the student has
+                                    new_course = [course_id, course_creds, grade, current_term, honors, in_residence]
     
-                                grade = "current"
-                                if g.text != None:
-                                    #grade = g.text
-                                    grade = g.text
-                                
-                                #in_residence = 1 # Whether the course has been taken at JCU. For now, always 1
-                                course_creds = float(cr)
-                                
-                                #new_course = [course_id, in_residence, grade, current_term, honors]
-                                #had to substitute in residence with credits because in the GPA computation and in the standing it needs the actual amount of credits that the student has
-                                new_course = [course_id, course_creds, grade, current_term, honors, in_residence]
-
-                                stud_courses.append(new_course)
-                    
-                    # print("END OF TERM\n")
+                                    stud_courses.append(new_course)
                         
+                        # print("END OF TERM\n")
+                            
+                        
+                        
+                    #print("------\n")
                     
-                    
-                #print("------\n")
-                
-        data = []
-        #name, highschool_credits, major, minor1, minor2
-        
-    #    data.append(student[4:student.index(" ", 5)]) # add student's first name (ASSUMING SINGLE NAME - IT DOES NOT REALLY MATTER, I THINK)
-    #    data.append(student[student.index(" ", 5)+1:]) # add student's last name
-        data.append(student) # add student's name (first and last, we may clean from Ms. Mr. etc. but have to be careful with cases)
-        data.append("") # add student's last name - TO BE REMOVED OR ADJUSTED FOR SPECIAL CASES
-        data.append(language_waived) # for now, fixed to 1
-        data.append(major_code) # for now, fixed to 0. WE SHOULD GET THE ID FROM JSON
-        data.append("") # Minor 1 - NOT IMPLEMENTED YET
-        data.append("") # Minor 2 - NOT IMPLEMENTED YET
-        data.append(stud_courses)
-        
-        data_list.append(data)
+            data = []
+            #name, highschool_credits, major, minor1, minor2
+            
+        #    data.append(student[4:student.index(" ", 5)]) # add student's first name (ASSUMING SINGLE NAME - IT DOES NOT REALLY MATTER, I THINK)
+        #    data.append(student[student.index(" ", 5)+1:]) # add student's last name
+            data.append(student) # add student's name (first and last, we may clean from Ms. Mr. etc. but have to be careful with cases)
+            data.append("") # add student's last name - TO BE REMOVED OR ADJUSTED FOR SPECIAL CASES
+            data.append(language_waived) # for now, fixed to 1
+            data.append(major_code) # for now, fixed to 0. WE SHOULD GET THE ID FROM JSON
+            data.append(minor1) # Minor 1 - NOT IMPLEMENTED YET - For now, only the name
+            data.append(minor2) # Minor 2 - NOT IMPLEMENTED YET - For now, only the name
+            data.append(stud_courses)
+            
+            data.append(double_degree) # whether double degree (2), double major (1), or normal (0)
+            
+            data_list.append(data)
+            
+            # name, surname, language, major, minor 1, minor 2, courses_list, double_flag
+            
+            # get major ID from json (only works for single majors) 
+            # if double major/degree, create two distinct data structures - TODO
+            # add minor names - OK but we need to split them (here or later). If here, we need to 
+            # double-degree flag - OK but we need to split the majors
         
     # print(data_list)
     
     # myReportFile.write(str(data_list))
     
-    with open("execution_files\students_list.json", "w") as myFile:
-        # DUMPING A LIST CONTAINING THE LIST DATA, AS IN THE ORIGINAL JSON
-        # CHECK WHETHER THIS IS NEEDED. IF NOT, REMOVE []
+    with open("students_list.json", "w") as myFile:
         json.dump(data_list, myFile, indent=2)
         
     myReportFile.close()
+    
+create_student_json("../pochi_studenti.xml")

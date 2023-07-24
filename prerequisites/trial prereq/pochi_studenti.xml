@@ -6137,8 +6137,10 @@
 <FormattedSection SectionNumber="2">
 <FormattedReportObjects>
 <FormattedReportObject xsi:type="CTFormattedField" Type="xsd:string" FieldName="{EA.SpecialMemoField}"><ObjectName>Field16</ObjectName>
-<FormattedValue>Topic: Design for Publishing</FormattedValue>
-<Value>Topic: Design for Publishing</Value>
+<FormattedValue>Topic: Design for Publishing
+</FormattedValue>
+<Value>Topic: Design for Publishing
+</Value>
 </FormattedReportObject>
 </FormattedReportObjects>
 </FormattedSection>
