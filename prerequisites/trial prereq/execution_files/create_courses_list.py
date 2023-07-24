@@ -30,8 +30,10 @@ def create_course_obj():
 
     for i in range(0, len(general_courses)):
         curr_course = general_courses[i]
-        course = Course(curr_course[0], curr_course[1], curr_course[2], curr_course[3], curr_course[4], curr_course[5])
-        #namecourse, code, number, credits_num, req_list, course_key
+        
+        #                namecourse,         code,          number,      credits_num,     req_list,       course_key,      period,      concentration,     on site
+        course = Course(curr_course[0], curr_course[1], curr_course[2], curr_course[3], curr_course[4], curr_course[5], curr_course[6], curr_course[7], curr_course[8])
+        
         courses_obj.append(course)
         i = i+1
     
@@ -49,7 +51,7 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
             key_curr_course = curr_course.get_course_key()
             if key_course_taken == key_curr_course:
                 #structure of the course taken:
-                #                          course,        student,       creds,                   grade,               term,                c_type)
+                #                          course,        student,       creds,                   grade,               term,                c_type,              in_residence
                 taken_obj = Course_taken(curr_course, curr_student, curr_course_taken[1], curr_course_taken[2], curr_course_taken[3], curr_course_taken[4], curr_course_taken[5])
                 courses_taken_obj.append(taken_obj)
                 #print(taken_obj.grade)

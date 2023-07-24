@@ -13,6 +13,10 @@ from execution_files.courses import Course, Course_taken
 from execution_files.students import Student, create_student_list #, close_file
 from execution_files.majors import Major, create_major_list
 from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
+from execution_files.planner_structures import additional_courses, core_courses, core_tracks, electives_tracks
+from execution_files.banners import banner_list
+
+
 import execution_files.planner_formats as planner_formats
 
 
@@ -65,7 +69,7 @@ def create_dplanners():
     """
     with open('execution_files\planner_parts.json', 'r') as myfile:
       planner_elements = json.load(myfile)
-      
+
     """
     IMPORT THE LIST OF ALL COURSES THE UNIVERSITY OFFERS
     """
@@ -97,21 +101,8 @@ def create_dplanners():
         curr_student = students_list[index]
         
         """
-        Set the planner and its parts        
+        Create majors       
         """
-        stud_name = curr_student.get_name()
-        planner_name = stud_name + " planner"
-        #print(planner_name)
-        
-        workbook = planner_formats.workbook
-        worksheet = planner_formats.worksheet
-        course_info_format = planner_formats.border_left
-        
-        worksheet.set_column(0, 5, 11)
-        worksheet.set_column(7, 12, 11) 
-        worksheet.set_column(14, 14, 44)
-        
-        
         #changes the element major present in the student object as the major key into the major object
         for j in range(0, len(majors_list)):
             curr_major = majors_list[j]
@@ -137,11 +128,12 @@ def create_dplanners():
         curr_student.compute_nx_standing()
     
         curr_major = curr_student.get_major()
+        
+        '''FOR EXCEPTIONS
         curr_core = curr_major.get_core_courses()
-    
         curr_courses =  curr_student.get_coursesReduced()   
-    
         print(curr_core) #[[1, [['COM', 101, 101]]], [1, [['exception', 1, 1]]], [1, [['COM', 470, 470]]], [1, [['COM', 480, 480]]]]
+        
         for i in curr_core:
             for element in i[1]:
                 if element[0] == "exception":
@@ -163,7 +155,30 @@ def create_dplanners():
 
                 else:
                     print("checking a course")
+                    '''
+        stud_name = curr_student.get_name()
+        major_name = curr_major.get_name()
+        
+        planner_name = stud_name + major_name
+        #print(planner_name)
+                            
+        major_structure = curr_major.get_planner_structure()
 
+        if major_structure == 1:
+            banner = banner_list["structure_one"]
+            additional_courses(planner_name, curr_student, courses_list, banner)
+            
+        elif major_structure == 2:
+            banner = banner_list["structure_two"]
+            core_courses(planner_name, curr_student, courses_list, banner)
+            
+        elif major_structure == 3:  
+            banner = banner_list["structure_three"]
+            core_tracks(planner_name, curr_student, courses_list, banner)
+            
+        elif major_structure == 4:
+            banner = banner_list["structure_two"]
+            electives_tracks(planner_name, curr_student, courses_list, banner)
 
     
     
@@ -177,4 +192,4 @@ def create_dplanners():
     
     
     
-    workbook.close()    
+#workbook.close()        

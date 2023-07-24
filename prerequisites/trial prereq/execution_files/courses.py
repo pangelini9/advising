@@ -29,7 +29,7 @@ letter_to_number = {
 
 class Course:
     
-    def __init__(self, namecourse, code, number, credits_num, req_list, course_key):
+    def __init__(self, namecourse, code, number, credits_num, req_list, course_key, course_periods, course_concentrations, course_onsite):
         self.name = namecourse
         self.code = code
         self.number = number
@@ -37,9 +37,9 @@ class Course:
         self.requirements_dict = req_list
         self.course_key = course_key
         
-        self.course_periods = [] 
-        self.course_concentrations = []
-        self.on_site = []
+        self.course_periods = course_periods
+        self.course_concentrations = course_concentrations
+        self.on_site = course_onsite
         
     def get_name(self): #full name
         return self.name
