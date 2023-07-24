@@ -86,6 +86,7 @@ color_cell4 = workbook.add_format({
     'fg_color': '#C6E0B4'
     })
 
+
 """
 DEFINE SOME PRINTING SHORTCUTS
 """

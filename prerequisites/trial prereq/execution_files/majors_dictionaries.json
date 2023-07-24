@@ -1,6 +1,11 @@
-{"Communications": {"math requirement": 0, 
-"additional requirements": [], 
-"core courses": [[1, [["COM", 101, 101]]], [1, [["COM", 111, 111]]], [1, [["COM", 210, 210]]], [1, [["COM", 220, 220]]], [1, [["COM", 221, 221]]], [1, [["COM", 230, 230]]], [1, [["COM", 311, 311]]], [1, [["exception", 1, 1]]], [1, [["COM", 470, 470]]], [1, [["COM", 480, 480]]]], 
-"major electives": [[3, [["exception", 2, 2]]], [2, [["COM", 300, 1000], ["CMS", 300, 1000], ["DMA", 300, 1000], ["DJRN", 300, 1000]]], [2, [["COM", 300, 1000], ["CMS", 300, 1000], ["DMA", 300, 1000], ["DJRN", 300, 1000], ["AH", 144, 144], ["AH", 273, 273], ["AH", 271, 271], ["AH", 278, 278], ["AH", 383, 383]]]], 
-"electives description": "", "major key": 12}
-}
+{"Business Administration": 
+{"math requirement": 1, 
+"additional requirements": [[1, [["CS", 110, 110]]], [1, [["MA", 198, 198]]], [1, [["MA", 208, 208]]]], 
+"core courses": [[1, [["BUS", 220, 220]]], [1, [["EC", 201, 201]]], [1, [["EC", 202, 202]]], [1, [["FIN", 201, 201]]], [1, [["FIN", 202, 202]]], [1, [["FIN", 301, 301]]], [1, [["LAW", 219, 219]]], [1, [["MKT", 301, 301]]], [1, [["MGT", 301, 301]]], [1, [["MGT", 310, 310]]], [1, [["MGT", 330, 330]]], [1, [["MGT", 498, 498]]]], 
+"major electives": [[4, [["BUS", 300, 1000], ["EC", 300, 1000], ["FIN", 300, 1000], ["LAW", 300, 1000], ["MGT", 300, 1000], ["MKT", 300, 1000], ["MA", 209, 209], ["MA", 299, 299], ["MA", 400, 1000]]]], 
+"electives description": "Four courses at the 300-level or higher to be chosen from: BUS, EC, FIN, LAW, MGT, MKT courses, MA209, MA299 and 400-level MA courses", 
+"planner_type": 1, 
+"major key": 1}
+} 
+
+
