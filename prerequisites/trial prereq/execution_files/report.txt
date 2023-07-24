@@ -1,0 +1,43 @@
+Students:7
+
+Mr. Luca Beccato
+Major 1:BA Business Administration
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Mr. Gabriele Ciotola
+Major 1:BA Marketing
+Minor:Art and Design/Art History
+Major 2:None
+Minor 2:None
+
+Ms. Assunta Mareschi
+Major 1:BA International Business
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Mr. Eduardo Mariel
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Pier Paolo Quadrozzi
+Major 1:BA International Affairs
+Minor:Economics/Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Elettra Scianetti
+Major 1:BA Economics and Finance
+Minor:Mathematics
+Major 2:None
+Minor 2:None
+
+Mr. Anthony Tricarico
+Major 1:BA Economics and Finance - as of FA22
+Minor:International Affairs
+Major 2:BA Psychological Science
+Minor 2:None
