@@ -1,7 +1,16 @@
 import xml.etree.ElementTree as ET
 import json
 
+import xlsxwriter # only for creating the list of major names
+
+
+
 def create_student_json(file_name):
+    
+    # list of major names that appear at least once
+    # creating this to then create the mapping    
+    major_names = []
+        
     # XML file to read the transcripts from
     #xml_file = "students.xml"
     xml_file = file_name
@@ -41,7 +50,7 @@ def create_student_json(file_name):
     
     for s in students:
         
-        # majors - to iterate over
+        # majors of the student - can be one or two
         majors = []
         
         # gets the sections in the header
@@ -94,6 +103,10 @@ def create_student_json(file_name):
         
         # TODO: we may do this loop after having created the list of courses!
         for maj in majors:
+            
+            # add to the list of major names, if not already there
+            if maj not in major_names:
+                major_names.append(maj)
 
             #key corresponding to the major of the student under consideration
             #major_code = 0 # For now, fixed to 0 for everybody - get the code from the json using the "maj" variable
@@ -252,4 +265,13 @@ def create_student_json(file_name):
         
     myReportFile.close()
     
-create_student_json("../pochi_studenti.xml")
+    # create an excel file with all the major names that appear at least once
+    workbook = xlsxwriter.Workbook('major_names.xlsx')
+    worksheet = workbook.add_worksheet()
+    row = 1
+    for x in major_names:
+        worksheet.write(row, 1, x)
+        row = row+1
+    workbook.close()
+    
+create_student_json("../students.xml")
