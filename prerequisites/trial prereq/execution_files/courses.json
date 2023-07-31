@@ -9035,7 +9035,9 @@
       "corequisite": []
     },
     363,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9049,7 +9051,9 @@
       "corequisite": []
     },
     364,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9063,7 +9067,9 @@
       "corequisite": []
     },
     365,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9077,7 +9083,9 @@
       "corequisite": []
     },
     366,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9091,7 +9099,9 @@
       "corequisite": []
     },
     367,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9105,7 +9115,9 @@
       "corequisite": []
     },
     368,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9119,7 +9131,9 @@
       "corequisite": []
     },
     369,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -9133,7 +9147,9 @@
       "corequisite": []
     },
     370,
-    [],
+    [
+      "Ancient"
+    ],
     [],
     []
   ],
@@ -13080,7 +13096,9 @@
       "corequisite": []
     },
     563,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13094,7 +13112,9 @@
       "corequisite": []
     },
     564,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13108,7 +13128,10 @@
       "corequisite": []
     },
     565,
-    [],
+    [
+      "Medieval History",
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13122,7 +13145,9 @@
       "corequisite": []
     },
     566,
-    [],
+    [
+      "Medieval History"
+    ],
     [],
     []
   ],
@@ -13136,7 +13161,9 @@
       "corequisite": []
     },
     567,
-    [],
+    [
+      "Medieval History"
+    ],
     [],
     []
   ],
@@ -13150,7 +13177,9 @@
       "corequisite": []
     },
     568,
-    [],
+    [
+      "Medieval History"
+    ],
     [],
     []
   ],
@@ -13164,7 +13193,10 @@
       "corequisite": []
     },
     569,
-    [],
+    [
+      "Medieval History",
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13178,7 +13210,9 @@
       "corequisite": []
     },
     570,
-    [],
+    [
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13192,7 +13226,9 @@
       "corequisite": []
     },
     571,
-    [],
+    [
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13206,7 +13242,10 @@
       "corequisite": []
     },
     572,
-    [],
+    [
+      "Early Modern History",
+      "Modern History "
+    ],
     [],
     []
   ],
@@ -13234,7 +13273,9 @@
       "corequisite": []
     },
     574,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13248,7 +13289,9 @@
       "corequisite": []
     },
     575,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13262,7 +13305,9 @@
       "corequisite": []
     },
     576,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13294,7 +13339,9 @@
       ]
     },
     578,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13326,7 +13373,9 @@
       ]
     },
     579,
-    [],
+    [
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13340,7 +13389,10 @@
       "corequisite": []
     },
     580,
-    [],
+    [
+      "Medieval History",
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13372,7 +13424,9 @@
       ]
     },
     581,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13404,7 +13458,9 @@
       ]
     },
     582,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13436,7 +13492,9 @@
       ]
     },
     583,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13468,7 +13526,9 @@
       ]
     },
     584,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13482,7 +13542,9 @@
       "corequisite": []
     },
     585,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13514,7 +13576,9 @@
       ]
     },
     586,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13546,7 +13610,10 @@
       ]
     },
     587,
-    [],
+    [
+      "Early Modern History",
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13578,7 +13645,9 @@
       ]
     },
     588,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13610,7 +13679,9 @@
       ]
     },
     589,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13624,7 +13695,9 @@
       "corequisite": []
     },
     590,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13688,7 +13761,9 @@
       ]
     },
     592,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13771,7 +13846,9 @@
       ]
     },
     597,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13803,7 +13880,11 @@
       ]
     },
     598,
-    [],
+    [
+      "Ancient History",
+      "Early Modern History",
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -13835,7 +13916,9 @@
       ]
     },
     599,
-    [],
+    [
+      "Early Modern History"
+    ],
     [],
     []
   ],
@@ -13867,7 +13950,9 @@
       ]
     },
     600,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -14027,7 +14112,9 @@
       ]
     },
     605,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -14059,7 +14146,10 @@
       ]
     },
     606,
-    [],
+    [
+      "Early Modern History",
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -14091,7 +14181,9 @@
       ]
     },
     607,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -14123,7 +14215,9 @@
       ]
     },
     608,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -14155,7 +14249,9 @@
       ]
     },
     609,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],
@@ -14187,7 +14283,9 @@
       ]
     },
     610,
-    [],
+    [
+      "Modern History"
+    ],
     [],
     []
   ],

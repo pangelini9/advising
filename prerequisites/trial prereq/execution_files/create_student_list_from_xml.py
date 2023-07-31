@@ -11,13 +11,15 @@ def create_student_json(file_name):
 
     # JSON file to read the course id's from
     json_file_courses = "courses.json"
+    #json_file_courses = "execution_files\courses.json"
     
     with open(json_file_courses) as myFile:
         course_id_list = json.load(myFile)
 
     # JSON file to read the course id's from
     json_file_majors = "majors-new.json"
-
+    #json_file_majors = "execution_files\majors-new.json"
+    
     with open(json_file_majors) as myFile:
         major_id_list = json.load(myFile)
     
@@ -104,6 +106,7 @@ def create_student_json(file_name):
             else:
                 major_code = 0 # giving 0 whenever the major is not found!
             
+            myReportFile.write(f"Major: {maj} student:{student}")
             print(f"Major: {maj}, code {major_code}")
 
             # To contain the list of courses for the current student
@@ -205,7 +208,8 @@ def create_student_json(file_name):
                                         grade = g.text
                                     
                                     #in_residence = 1 # Whether the course has been taken at JCU. For now, always 1
-                                    course_creds = float(cr)
+                                    course_creds = float(cr) 
+                                    #print(course_creds)
                                     
                                     #new_course = [course_id, in_residence, grade, current_term, honors]
                                     #had to substitute in residence with credits because in the GPA computation and in the standing it needs the actual amount of credits that the student has
@@ -247,9 +251,12 @@ def create_student_json(file_name):
     
     # myReportFile.write(str(data_list))
     
+#    with open("execution_files\students_list.json", "w") as myFile:
     with open("students_list.json", "w") as myFile:
         json.dump(data_list, myFile, indent=2)
         
     myReportFile.close()
     
-create_student_json("../pochi_studenti.xml")
+    #create_student_json("../pochi_studenti.xml")
+    
+#create_student_json("../pochi_studenti.xml")

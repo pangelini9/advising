@@ -5,39 +5,40 @@ Major 1:BA Business Administration
 Minor:Entrepreneurship: Innovation & Technology
 Major 2:None
 Minor 2:None
-
+Major: BA Business Administration student:Mr. Luca Beccato
 Mr. Gabriele Ciotola
 Major 1:BA Marketing
 Minor:Art and Design/Art History
 Major 2:None
 Minor 2:None
-
+Major: BA Marketing student:Mr. Gabriele Ciotola
 Ms. Assunta Mareschi
 Major 1:BA International Business
 Minor:Marketing
 Major 2:None
 Minor 2:None
-
+Major: BA International Business student:Ms. Assunta Mareschi
 Mr. Eduardo Mariel
 Major 1:BA History
 Minor:None
 Major 2:None
 Minor 2:None
-
+Major: BA History student:Mr. Eduardo Mariel
 Mr. Pier Paolo Quadrozzi
 Major 1:BA International Affairs
 Minor:Economics/Legal Studies
 Major 2:None
 Minor 2:None
-
+Major: BA International Affairs student:Mr. Pier Paolo Quadrozzi
 Ms. Elettra Scianetti
 Major 1:BA Economics and Finance
 Minor:Mathematics
 Major 2:None
 Minor 2:None
-
+Major: BA Economics and Finance student:Ms. Elettra Scianetti
 Mr. Anthony Tricarico
 Major 1:BA Economics and Finance - as of FA22
 Minor:International Affairs
 Major 2:BA Psychological Science
 Minor 2:None
+Major: BA Economics and Finance - as of FA22 student:Mr. Anthony TricaricoMajor: BA Psychological Science student:Mr. Anthony Tricarico

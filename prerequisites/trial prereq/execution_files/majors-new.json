@@ -1332,7 +1332,7 @@
         1,
         [
           [
-            "LAW ",
+            "LAW",
             219,
             219,
             ""
@@ -1343,7 +1343,7 @@
         1,
         [
           [
-            "MKT ",
+            "MKT",
             301,
             301,
             ""
@@ -1354,7 +1354,7 @@
         1,
         [
           [
-            "MGT ",
+            "MGT",
             301,
             301,
             ""
@@ -1365,7 +1365,7 @@
         1,
         [
           [
-            "MGT ",
+            "MGT",
             310,
             310,
             ""
@@ -1376,7 +1376,7 @@
         1,
         [
           [
-            "MGT ",
+            "MGT",
             330,
             330,
             ""
@@ -3752,6 +3752,382 @@
       ]
     ]
   },
+  "BA Communications - Milan Exchange": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 2,
+    "major key": 27,
+    "additional requirements": [],
+    "core courses": [
+      [
+        1,
+        [
+          [
+            "COM",
+            101,
+            101,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            111,
+            111,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            210,
+            210,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            220,
+            220,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            221,
+            221,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            230,
+            230,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            311,
+            311,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "exception",
+            1,
+            1,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            470,
+            470,
+            ""
+          ]
+        ]
+      ],
+      [
+        1,
+        [
+          [
+            "COM",
+            480,
+            480,
+            ""
+          ]
+        ]
+      ]
+    ],
+    "major electives": [
+      [
+        3,
+        [
+          [
+            "exception",
+            2,
+            2,
+            ""
+          ]
+        ]
+      ],
+      [
+        2,
+        [
+          [
+            "COM",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "CMS",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "DMA",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "DJRN",
+            300,
+            1000,
+            ""
+          ]
+        ]
+      ],
+      [
+        2,
+        [
+          [
+            "COM",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "CMS",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "DMA",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "DJRN",
+            300,
+            1000,
+            ""
+          ],
+          [
+            "AH",
+            144,
+            144,
+            ""
+          ],
+          [
+            "AH",
+            273,
+            273,
+            ""
+          ],
+          [
+            "AH",
+            271,
+            271,
+            ""
+          ],
+          [
+            "AH",
+            278,
+            278,
+            ""
+          ],
+          [
+            "AH",
+            383,
+            383,
+            ""
+          ],
+          [
+            "AH",
+            384,
+            384,
+            ""
+          ],
+          [
+            "AS",
+            101,
+            101,
+            ""
+          ],
+          [
+            "AS",
+            105,
+            105,
+            ""
+          ],
+          [
+            "AS",
+            141,
+            141,
+            ""
+          ],
+          [
+            "AS",
+            232,
+            232,
+            ""
+          ],
+          [
+            "AS",
+            260,
+            260,
+            ""
+          ],
+          [
+            "AS",
+            285,
+            285,
+            ""
+          ],
+          [
+            "AS",
+            289,
+            289,
+            ""
+          ],
+          [
+            "AS",
+            332,
+            332,
+            ""
+          ],
+          [
+            "AS",
+            345,
+            345,
+            ""
+          ],
+          [
+            "BUS",
+            220,
+            220,
+            ""
+          ],
+          [
+            "CS",
+            130,
+            130,
+            ""
+          ],
+          [
+            "CS",
+            131,
+            131,
+            ""
+          ],
+          [
+            "EN",
+            215,
+            215,
+            ""
+          ],
+          [
+            "HS",
+            311,
+            311,
+            ""
+          ],
+          [
+            "HS",
+            368,
+            368,
+            ""
+          ],
+          [
+            "LAW/PL",
+            220,
+            220,
+            ""
+          ],
+          [
+            "MKT/BUS",
+            322,
+            322,
+            ""
+          ],
+          [
+            "PH",
+            304,
+            304,
+            ""
+          ],
+          [
+            "PH",
+            325,
+            325,
+            ""
+          ],
+          [
+            "RH/CL",
+            372,
+            372,
+            ""
+          ],
+          [
+            "RH/CL",
+            322,
+            322,
+            ""
+          ],
+          [
+            "PL",
+            214,
+            214,
+            ""
+          ],
+          [
+            "PL",
+            360,
+            360,
+            ""
+          ],
+          [
+            "PS",
+            311,
+            311,
+            ""
+          ],
+          [
+            "SOSC/GDR",
+            200,
+            200,
+            ""
+          ]
+        ]
+      ]
+    ]
+  },
   "BA Art History (as of Fall 2019)": {
     "math requirement": 0,
     "electives description": "Six AH courses of which at least three 300-level AH courses. One must be a Rome City Series courses (AH 290/291/293/294/298) if not taken in the core. Students may take up to three 200-level or higher ARCH, AS, CL, CMS, DMA, HS, or PH courses",
@@ -5512,6 +5888,18 @@
             ""
           ],
           [
+            "AH",
+            100,
+            1000,
+            ""
+          ],
+          [
+            "EN",
+            200,
+            1000,
+            ""
+          ],
+          [
             "EN",
             200,
             1000,
@@ -6327,5 +6715,158 @@
         ]
       ]
     ]
+  },
+  "Undeclared": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 2,
+    "major key": 28,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Art History": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 29,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Business Administration": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 30,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Classical Studies": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 31,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Communications": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 32,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Computer Science": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 33,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Economics and Finance": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 34,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA English Literature": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 35,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Finance": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 36,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA History": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 37,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Humanistic Studies": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 38,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA International Affairs": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 39,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA International Business": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 40,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Italian Studies": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 41,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Marketing": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 42,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Political Science": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 43,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
+  },
+  "AA Psychology": {
+    "math requirement": 0,
+    "electives description": NaN,
+    "planner_type": 5,
+    "major key": 44,
+    "additional requirements": [],
+    "core courses": [],
+    "major electives": []
   }
 }
