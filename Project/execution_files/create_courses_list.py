@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov  4 19:23:11 2022
-
-@author: ilda1
-
 create_course_obj():
     The object of this code is to import a list containing all the courses,
     each one being a list with elements

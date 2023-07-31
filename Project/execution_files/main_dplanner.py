@@ -18,9 +18,6 @@ from execution_files.planner_structures import additional_courses, core_courses,
 from execution_files.banners import banner_list
 
 
-import execution_files.planner_formats as planner_formats
-
-
 letter_to_number = {
     "A" : 4,
     "A-" : 3.67,
@@ -66,12 +63,6 @@ number_to_letter = {
 
 def create_dplanners():   
     """
-    IMPORT THE PLANNER PARTS
-    
-    with open('execution_files\planner_parts.json', 'r') as myfile:
-      planner_elements = json.load(myfile)
-      """
-    """
     IMPORT THE LIST OF ALL COURSES THE UNIVERSITY OFFERS
     """
     courses_list = create_course_obj()
@@ -82,7 +73,7 @@ def create_dplanners():
     new_list = []
     students = []
     
-    with open('execution_files\students_list.json', 'r') as myfile:
+    with open('execution_files\json\students_list.json', 'r') as myfile:
        students = json.load(myfile)
        #print(len(students))
        

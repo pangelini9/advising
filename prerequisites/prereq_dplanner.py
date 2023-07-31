@@ -14,6 +14,8 @@ from create_courses_list import create_course_obj, create_coursetaken_obj, creat
 import formats
 from banners import banner
 """
+
+
 import json
 import xlsxwriter
 from prereq_courses import Course, Course_taken
@@ -87,6 +89,8 @@ for j in range(0, len(majors_list)):
     if curr_student.get_major() == curr_major.get_major_key():
         curr_student.change_major(curr_major)
         break
+
+#OR or
 
 #change the list of courses taken by the student with a list of objects courses taken    
 #for i in range(0, len(students_list)):
@@ -467,7 +471,7 @@ for i in range(0, len(core_list)):
         grade_format = formats.border_center
     elif course_grade == 2: #current
         grade_format = formats.color_cell4
-    elif course_grade == 3: #D
+    elif course_grade == 3: #highlights the grades that are not failed, but lower than C-
         grade_format = formats.color_cell2
     
     #row = 26+len(genel_list)+i

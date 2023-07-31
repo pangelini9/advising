@@ -13,7 +13,7 @@ from courses import Course, Course_taken
 import math
 #major
 import json
-
+#OR or
 letter_to_number = {
     "A" : 4,
     "A-" : 3.67,
