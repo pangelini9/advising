@@ -4,6 +4,7 @@ Created on Thu Jul 20 13:04:30 2023
 
 @author: elettra.scianetti
 """
+#create_student_json, core_list, print
 
 import xlsxwriter
 import os.path
@@ -13,7 +14,7 @@ import json
 from execution_files.courses import Course, Course_taken
 from execution_files.students import Student, create_student_list
 from execution_files.majors import Major, create_major_list
-from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
+from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list, create_remaining_list_special
 
 
 number_to_letter = {
@@ -60,24 +61,24 @@ def long_merge(row, arg, c, worksheet, merge_format1, merge_format2):
     else:
         worksheet.merge_range(position, arg, merge_format2) #long white headline
   
-def short_merge_sx(row, arg, c, worksheet, merge_format1, merge_format2):
+def short_merge_sx(row, arg, c, worksheet, merge_format1, merge_format2, bold_left):
     position = (("A" + str(row)) + (":") + ("F" + str(row)))
     if c == 1:
         worksheet.merge_range(position, arg, merge_format1) #short blue headline on left size
     elif c == 0:
         worksheet.merge_range(position, arg, merge_format2) #short white headline followed by course info on left size
-        course_det_left(row)
+        course_det_left(row, worksheet, bold_left)
     elif c == 2:
         worksheet.merge_range(position, arg, merge_format2) #short white headline on left size
 
 
-def short_merge_dx(row, arg, c, worksheet, merge_format1, merge_format2):
+def short_merge_dx(row, arg, c, worksheet, merge_format1, merge_format2, bold_left):
     position = (("H" + str(row)) + (":") + ("M" + str(row))) 
     if c == 1:
         worksheet.merge_range(position, arg, merge_format1) #short blue headline on right size
     elif c == 0:
         worksheet.merge_range(position, arg, merge_format2) #short white headline followed by course info on right size
-        course_det_right(row)
+        course_det_right(row, worksheet, bold_left)
     elif c == 2:
         worksheet.merge_range(position, arg, merge_format2) #short white headline on right size
 
@@ -128,12 +129,13 @@ CREATE THE STRUCTURES
 def additional_courses(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
-    workbook = xlsxwriter.Workbook(path)
+    workbook = xlsxwriter.Workbook(path, {'nan_inf_to_errors': True})
     worksheet = workbook.add_worksheet()
     
     worksheet.set_column(0, 5, 11)
     worksheet.set_column(7, 12, 11) 
     worksheet.set_column(14, 14, 44)
+    worksheet.set_column(15, 15, 11)
     
     banner = banner_content
      
@@ -212,28 +214,72 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
     student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
-    long_merge(row, student_major, 1) #major
-    long_merge(row+1, student_name, 0)  #name and surname
+    long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
+    long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
-    long_merge(row+3, banner_list[0], 1)
+    long_merge(row+3, banner_list[0], 1,  worksheet, merge_format1, merge_format2)
 
 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK THE VARIOUS PARTS
+    
+    in the specific sections are only left the parts 
+    that call the dictionary needed for the print in excel
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #ENGLISH COMPOSITION AND LITERATURE
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+    
+    #MATHEMATICS REQUIREMENT (MA100 OR MA101)
+    ma_requirement = curr_student.check_ma_req()
+    
+    #FOREIGN LANGUAGE
+    fl_requirement = curr_student.check_flanguage()
+    
+    #SOCIAL SCIENCES
+    sosc_req = curr_student.check_sosc()
+    
+    #HUMANITIES
+    hum_req = curr_student.check_hum()     
+    
+    #FINE ARTS
+    fa_req = curr_student.check_arts() 
+    
+    #MATHEMATICS, SCIENCE, AND COMPUTER SCIENCE
+    sci_requirement = curr_student.check_sci()
+    
+    #ADDITIONAL REQUIREMENTS
+    additional_requirements = curr_student.check_additional()
+    additional_remaining = curr_student.get_additional_remaining()
+    obj_additional_remaining = create_remaining_list_special(courses_list, additional_remaining)    
+        
+    #CORE COURSES
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    
+    #MAJOR ELECTIVES
+    major_electives = curr_student.check_major_electives()
+    
+    #MINOR 1
+    #MINOR 2
+    
+    #GENERAL ELECTIVES
+    genel_list = curr_student.check_genelectives()
+    
+    
     """""""""""""""""""""""""""""""""""""""
     PRINT ENGLISH COMP and LIT REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["eng"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print english banner
     course_det_left(row+1, worksheet, bold_left)
 
-    curr_student.generate_en_courses(courses_list)
-    curr_student.substitute_courses_done()
-    curr_student.check_eng_composition()
-    eng_requirement = curr_student.check_eng_literature()
     en_list = eng_requirement.get("output courses")
-    #eng_requirement = curr_student.check_eng_requirement()
-
     for i in range(0, len(en_list)):
         en_course = en_list[i]
         if en_course[1] == 1:
@@ -242,22 +288,22 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
             grade_format = color_cell3
         elif en_course[1] == 3:
             grade_format = color_cell4
+            
         row = 7+i
         worksheet.write(row, 0, en_course[0].course.get_name(), course_info_format) #col A=0
         worksheet.write(row, 1, en_course[0].course.get_code(), course_info_format)
         worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
         worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
-        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
+        worksheet.write(row, 5, en_course[0].get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  13
     banner_list = banner["math"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
-    ma_requirement = curr_student.check_ma_req()
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math proficiency banner
     course_det_left(row+1, worksheet, bold_left)
        
     m_list = ma_requirement.get("courses done")
@@ -276,32 +322,16 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, ma_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
-        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, ma_course.get_credits(), course_info_format)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    CHECK ADDITIONAL REQUIREMENTS, CORE COURSES, AND GENERAL ELECTIVES
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    
-    additional_requirements = curr_student.check_additional()
-    additional_remaining = curr_student.get_additional_remaining()
-    obj_additional_remaining = create_remaining_list(courses_list, additional_remaining)
-    #print(obj_additional_remaining)
-    
-    core_courses = curr_student.check_core()
-    core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
-    #print(obj_core_remaining)
-    
-    major_electives = curr_student.check_major_electives()
         
     """""""""""""""""""""""""""""""""""""""
     PRINT FOREIGN LANGUAGE REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row = 22
     banner_list = banner["fl"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
-    fl_requirement = curr_student.check_flanguage(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print foreign language requirements banner
     course_det_left(row+1, worksheet, bold_left)
        
     fl_list = fl_requirement.get("courses done")
@@ -309,21 +339,21 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         fl_course = fl_list[i][0]
         #different format depending on the stile
         if fl_list[i] [1] == 0: 
-            grade_format = color_cell3
+            grade_format = color_cell3 #failed/grade requirement not met
         elif fl_list[i] [1] == 1:
-            grade_format = border_center
+            grade_format = border_center #normal
         elif fl_list[i] [1] == 2:
-            grade_format = color_cell4
+            grade_format = color_cell4 #current
         row = 24+i
         worksheet.write(row, 0, fl_course.course.get_name(), course_info_format) #col A=0
         worksheet.write(row, 1, fl_course.course.get_code(), course_info_format)
         worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, fl_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
-        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, fl_course.get_credits(), course_info_format)
         
     lenght_left = row
-    print(f"languages end at {lenght_left}")
+    #print(f"languages end at {lenght_left}")
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -331,9 +361,8 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["sosc"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
-    sosc_req = curr_student.check_sosc(curr_student)
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print social sciences banner
     course_det_right(row+1, worksheet, bold_left)
 
     sosc_list = sosc_req.get("courses done")
@@ -353,7 +382,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
-        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, sosc_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -361,9 +390,8 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     """""""""""""""""""""""""""""""""""""""
     row = 10
     banner_list = banner["hum"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
-    hum_req = curr_student.check_hum(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print humanities banner
     course_det_right(row+1, worksheet, bold_left)
 
     hum_list = hum_req.get("courses done")
@@ -383,7 +411,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, hum_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
-        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, hum_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -391,9 +419,8 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     """""""""""""""""""""""""""""""""""""""
     row = 15
     banner_list = banner["fa"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
-    fa_req = curr_student.check_arts(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print fine arts banner
     course_det_right(row+1, worksheet, bold_left)
 
     fa_list = fa_req.get("courses done")
@@ -413,20 +440,17 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, fa_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
-        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, fa_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA, SCI, COMP SCI REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  17
     banner_list = banner["sci"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
-    sci_requirement = curr_student.check_sci(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math, sci, comp sci banner
     course_det_left(row+1, worksheet, bold_left)
 
-
-    #if len(sci_requirement.get("courses missing")) != 2:
     sci_list = sci_requirement.get("courses done")
     for i in range(0, len(sci_list)):
         sci_course = sci_list[i][0]
@@ -445,16 +469,15 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, sci_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
-        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, sci_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT GENERAL ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     row = 19
     banner_list = banner["genel"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
-    genel_list = curr_student.check_genelectives()
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print general electives courses
     course_det_right(row+1, worksheet, bold_left)
 
 
@@ -475,7 +498,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, genel_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
-        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, genel_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     DECIDE WHAT LENGHT TO PRINT
@@ -485,25 +508,28 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     if (21+len(genel_list)) >= (lenght_left+1):        
         lengt_first_part = len(genel_list)
     else:
-        lengt_first_part = len(fl_list)+1
+        lengt_first_part = len(fl_list)+3
     
     """""""""""""""""""""""""""""""""""""""
     PRINT ADDITIONAL REQUIREMENTS
     """""""""""""""""""""""""""""""""""""""
     #row = 24+len(genel_list)
+    
+    add_lenght = 0
+    
     row = 24+lengt_first_part
     banner_list = banner["B"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    #formats.short_merge_sx(row+1, banner_list[1], 0) #print additional courses
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
     course_det_left(row, worksheet, bold_left)
 
     #to print the courses that the student has done in this category
     additional_list = additional_requirements.get("courses done")
+    add_lenght += len(additional_list)
     for i in range(0, len(additional_list)):
         if additional_list[i][0] == "":
             row = 25+lengt_first_part+i
             if additional_list[i][0] == "":
-                short_merge_sx(row, additional_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+                short_merge_sx(row, additional_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
             else:
                 worksheet.write(row, 0, additional_list[i][2], course_info_format) 
             
@@ -526,12 +552,13 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
             worksheet.write(row, 2, additional_course.course.get_number(), course_info_format)
             worksheet.write(row, 3, additional_course.get_term(), course_info_format)
             worksheet.write(row, 4, number_to_letter.get(additional_course.get_grade()), grade_format)
-            worksheet.write(row, 5, additional_course.course.get_credits(), course_info_format)
+            worksheet.write(row, 5, additional_course.get_credits(), course_info_format)
 
 
     #to print the courses that the student has not done in this category (yet)
+    add_lenght += len(obj_additional_remaining)
     for i in range(0, len(obj_additional_remaining)):
-        additional_course = obj_additional_remaining[i]
+        additional_course = obj_additional_remaining[i][0]
         
         #instead of the check on grades I would put here a check on the pre-requisites to color the cell with the course name
         
@@ -550,19 +577,21 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     PRINT CORE COURSES
     """""""""""""""""""""""""""""""""""""""
     #row = 24+len(genel_list)
+    core_lenght = 0 
     row = 24+lengt_first_part
     banner_list = banner["C"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print core courses
     course_det_right(row+1, worksheet, bold_left)
     
     core_list = core_courses.get("courses done")
+    core_lenght += len(core_list)
     for i in range(0, len(core_list)):
-        
+
         if core_list[i][0] == "":
             row = 26+lengt_first_part+i
             if core_list[i][0] == "":
-                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
             else:
                 worksheet.write(row, 0, core_list[i][2], course_info_format) 
         else:
@@ -585,40 +614,45 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
             worksheet.write(row, 9, core_course.course.get_number(), course_info_format)
             worksheet.write(row, 10, core_course.get_term(), course_info_format)
             worksheet.write(row, 11, number_to_letter.get(core_course.get_grade()), grade_format)
-            worksheet.write(row, 12, core_course.course.get_credits(), course_info_format)
+            worksheet.write(row, 12, core_course.get_credits(), course_info_format)
         
     #to print the courses that the student has not done in this category 
+    core_lenght += len(obj_core_remaining)
     for i in range(0,len(obj_core_remaining)):
-        core_course = obj_core_remaining[i]
+        core_course = obj_core_remaining[i][0]
         
         row = 26+lengt_first_part+len(core_list)+i
-
-        worksheet.write(row, 7, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 7, obj_core_remaining[i][2], course_info_format) #col H=7
         worksheet.write(row, 8, core_course.get_code(), course_info_format)
         worksheet.write(row, 9, core_course.get_number(), course_info_format)
         worksheet.write(row, 10, "", course_info_format)
         worksheet.write(row, 11, "", course_info_format)
-        worksheet.write(row, 12, core_course.get_credits(), course_info_format)    
-    
-    
+        worksheet.write(row, 12, core_course.get_credits(), course_info_format) 
+        
+        
     """""""""""""""""""""""""""""""""""""""
     PRINT MAJOR ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     #set the row depending on the longest between core and additional requirements
     final_row = 0
-    if (len(obj_core_remaining)+len(core_list)) >= (len(obj_additional_remaining)+len(additional_list)):
-       final_row = (len(obj_core_remaining)+len(core_list))
+    if core_lenght >= add_lenght:
+       final_row = core_lenght
     else:
-        final_row = (len(obj_additional_remaining)+len(additional_list))
+        final_row = add_lenght
     #row = 30+lengt_first_part+len(core_list)+len(obj_core_remaining)
     
-    row = 30 + lengt_first_part + final_row
+    row = 29 + lengt_first_part + final_row
     
-    banner_list = banner["D"] 
-    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
-    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
-    course_det_left(row+1, worksheet, bold_left)
 
+    if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+        row=curr_student.major.major_electives_banner(row, worksheet)
+    else:
+        banner_list = banner["D"] 
+        long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+        long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+    
+    course_det_left(row+1, worksheet, bold_left)
+    new_row = row+2
     electives_list = major_electives.get("courses done")
     for i in range(0, len(electives_list)):
         elective_course = electives_list[i][0]
@@ -631,14 +665,18 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         elif course_grade == 2: #current
             grade_format = color_cell4
             
-        #row = 32+len(genel_list)+len(core_list)+i
-        row = 32+lengt_first_part+len(core_list)+i
+        
+        if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+            row = new_row + i
+        else:
+            row = 32 + lengt_first_part + final_row + i
+        
         worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
         worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
         worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, elective_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
-        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, elective_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
@@ -687,12 +725,13 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
 def core_courses(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
-    workbook = xlsxwriter.Workbook(path)
+    workbook = xlsxwriter.Workbook(path, {'nan_inf_to_errors': True})
     worksheet = workbook.add_worksheet()
     
     worksheet.set_column(0, 5, 11)
     worksheet.set_column(7, 12, 11) 
     worksheet.set_column(14, 14, 44)    
+    worksheet.set_column(15, 15, 11)
     
     banner = banner_content
     
@@ -773,27 +812,68 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
     student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
-    long_merge(row, student_major, 1) #major
-    long_merge(row+1, student_name, 0)  #name and surname
+    long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
+    long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
-    long_merge(row+3, banner_list[0], 1)
+    long_merge(row+3, banner_list[0], 1, worksheet, merge_format1, merge_format2)
 
 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK THE VARIOUS PARTS
+    
+    in the specific sections are only left the parts 
+    that call the dictionary needed for the print in excel
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #ENGLISH COMPOSITION AND LITERATURE
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+
+    #MATHEMATICS REQUIREMENT (MA100 OR MA101)
+    ma_requirement = curr_student.check_ma_req()
+    
+    #FOREIGN LANGUAGE
+    fl_requirement = curr_student.check_flanguage()
+    
+    #SOCIAL SCIENCES
+    sosc_req = curr_student.check_sosc()
+
+    #HUMANITIES
+    hum_req = curr_student.check_hum()     
+    
+    #FINE ARTS
+    fa_req = curr_student.check_arts() 
+    
+    #MATHEMATICS, SCIENCE, AND COMPUTER SCIENCE
+    sci_requirement = curr_student.check_sci()
+
+
+    #CORE COURSES
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+
+    #MAJOR ELECTIVES
+    major_electives = curr_student.check_major_electives()
+    
+    #MINOR 1
+    #MINOR 2
+    
+    #GENERAL ELECTIVES
+    genel_list = curr_student.check_genelectives()
+    
+    
     """""""""""""""""""""""""""""""""""""""
     PRINT ENGLISH COMP and LIT REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["eng"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print english banner
     course_det_left(row+1, worksheet, bold_left)
 
-    curr_student.generate_en_courses(courses_list)
-    curr_student.substitute_courses_done()
-    curr_student.check_eng_composition()
-    eng_requirement = curr_student.check_eng_literature()
     en_list = eng_requirement.get("output courses")
-    #eng_requirement = curr_student.check_eng_requirement()
 
     for i in range(0, len(en_list)):
         en_course = en_list[i]
@@ -809,16 +889,15 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
         worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
-        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
+        worksheet.write(row, 5, en_course[0].get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  13
     banner_list = banner["math"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
-    ma_requirement = curr_student.check_ma_req()
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math proficiency banner
     course_det_left(row+1, worksheet, bold_left)
        
     m_list = ma_requirement.get("courses done")
@@ -837,26 +916,16 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, ma_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
-        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, ma_course.get_credits(), course_info_format)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    CHECK CORE COURSES AND GENERAL ELECTIVES
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
-    core_courses = curr_student.check_core()
-    core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
-    #print(obj_core_remaining)
-    
-    major_electives = curr_student.check_major_electives()
-        
+
     """""""""""""""""""""""""""""""""""""""
     PRINT FOREIGN LANGUAGE REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row = 22
     banner_list = banner["fl"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
-    fl_requirement = curr_student.check_flanguage(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print foreign language requirements banner
     course_det_left(row+1, worksheet, bold_left)
        
     fl_list = fl_requirement.get("courses done")
@@ -864,31 +933,29 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         fl_course = fl_list[i][0]
         #different format depending on the stile
         if fl_list[i] [1] == 0: 
-            grade_format = color_cell3
+            grade_format = color_cell3 #failed/grade requirement not met
         elif fl_list[i] [1] == 1:
-            grade_format = border_center
+            grade_format = border_center #normal
         elif fl_list[i] [1] == 2:
-            grade_format = color_cell4
+            grade_format = color_cell4 #current
+            
         row = 24+i
         worksheet.write(row, 0, fl_course.course.get_name(), course_info_format) #col A=0
         worksheet.write(row, 1, fl_course.course.get_code(), course_info_format)
         worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, fl_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
-        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, fl_course.get_credits(), course_info_format)
         
     lenght_left = row
-    print(f"languages end at {lenght_left}")
-    
     
     """""""""""""""""""""""""""""""""""""""
     PRINT SOCIAL SCIENCES REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["sosc"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
-    sosc_req = curr_student.check_sosc(curr_student)
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print social sciences banner
     course_det_right(row+1, worksheet, bold_left)
 
     sosc_list = sosc_req.get("courses done")
@@ -908,7 +975,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
-        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, sosc_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -916,9 +983,8 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     """""""""""""""""""""""""""""""""""""""
     row = 10
     banner_list = banner["hum"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
-    hum_req = curr_student.check_hum(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print humanities banner
     course_det_right(row+1, worksheet, bold_left)
 
     hum_list = hum_req.get("courses done")
@@ -938,7 +1004,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, hum_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
-        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, hum_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -946,9 +1012,8 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     """""""""""""""""""""""""""""""""""""""
     row = 15
     banner_list = banner["fa"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
-    fa_req = curr_student.check_arts(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print fine arts banner
     course_det_right(row+1, worksheet, bold_left)
 
     fa_list = fa_req.get("courses done")
@@ -968,20 +1033,18 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, fa_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
-        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, fa_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA, SCI, COMP SCI REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  17
     banner_list = banner["sci"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
-    sci_requirement = curr_student.check_sci(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math, sci, comp sci banner
     course_det_left(row+1, worksheet, bold_left)
 
 
-    #if len(sci_requirement.get("courses missing")) != 2:
     sci_list = sci_requirement.get("courses done")
     for i in range(0, len(sci_list)):
         sci_course = sci_list[i][0]
@@ -1000,16 +1063,15 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, sci_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
-        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, sci_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT GENERAL ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     row = 19
     banner_list = banner["genel"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
-    genel_list = curr_student.check_genelectives()
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print general electives courses
     course_det_right(row+1, worksheet, bold_left)
 
 
@@ -1030,7 +1092,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, genel_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
-        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, genel_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     DECIDE WHAT LENGHT TO PRINT
@@ -1038,9 +1100,9 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     lengt_first_part = 0
     #if (21+len(genel_list)) >= 26:
     if (21+len(genel_list)) >= (lenght_left+1):        
-        lengt_first_part = len(genel_list)
+        lengt_first_part = len(genel_list) 
     else:
-        lengt_first_part = len(fl_list)+1 
+        lengt_first_part = len(fl_list)+3 
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -1049,9 +1111,9 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     #row = 24+len(genel_list)
     row = 24+lengt_first_part
     banner_list = banner["B"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
-    course_det_right(row+1, worksheet, bold_left)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print core courses
+    course_det_left(row+1, worksheet, bold_left)
     
     core_list = core_courses.get("courses done")
     for i in range(0, len(core_list)):
@@ -1059,7 +1121,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         if core_list[i][0] == "":
             row = 26+lengt_first_part+i
             if core_list[i][0] == "":
-                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
             else:
                 worksheet.write(row, 0, core_list[i][2], course_info_format) 
         else:
@@ -1082,15 +1144,15 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
             worksheet.write(row, 2, core_course.course.get_number(), course_info_format)
             worksheet.write(row, 3, core_course.get_term(), course_info_format)
             worksheet.write(row, 4, number_to_letter.get(core_course.get_grade()), grade_format)
-            worksheet.write(row, 5, core_course.course.get_credits(), course_info_format)
+            worksheet.write(row, 5, core_course.get_credits(), course_info_format)
         
     #to print the courses that the student has not done in this category 
     for i in range(0,len(obj_core_remaining)):
-        core_course = obj_core_remaining[i]
-        
+        core_course = obj_core_remaining[i][0]
+        #
         row = 26+lengt_first_part+len(core_list)+i
 
-        worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 0, obj_core_remaining[i][2], course_info_format) #col H=7
         worksheet.write(row, 1, core_course.get_code(), course_info_format)
         worksheet.write(row, 2, core_course.get_number(), course_info_format)
         worksheet.write(row, 3, "", course_info_format)
@@ -1102,13 +1164,19 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     PRINT MAJOR ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     #set the row depending on the longest between core and additional requirements
+    core_lenght = len(core_list) + len(obj_core_remaining) 
+    row = 29 + lengt_first_part + core_lenght
     
-    row = 30 + lengt_first_part + (len(obj_core_remaining)+len(core_list))
-    
-    banner_list = banner["C"] 
-    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
-    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+    if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+        row=curr_student.major.major_electives_banner(row, worksheet)
+    else:
+        banner_list = banner["C"] 
+        long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+        long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+
     course_det_left(row+1, worksheet, bold_left)
+    new_row = row+2
+#row, arg, c, worksheet, merge_format1, merge_format2
 
     electives_list = major_electives.get("courses done")
     for i in range(0, len(electives_list)):
@@ -1122,14 +1190,17 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         elif course_grade == 2: #current
             grade_format = color_cell4
             
-        #row = 32+len(genel_list)+len(core_list)+i
-        row = 32+lengt_first_part+len(core_list)+i
+        if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+            row = new_row + i
+        else:
+            row = 32 + lengt_first_part + core_lenght + i
+        
         worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
         worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
         worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, elective_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
-        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, elective_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
@@ -1178,12 +1249,13 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
 def core_tracks(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
-    workbook = xlsxwriter.Workbook(path)
+    workbook = xlsxwriter.Workbook(path, {'nan_inf_to_errors': True})
     worksheet = workbook.add_worksheet()
     
     worksheet.set_column(0, 5, 11)
     worksheet.set_column(7, 12, 11) 
     worksheet.set_column(14, 14, 44)
+    worksheet.set_column(15, 15, 11)
     
     banner = banner_content
     
@@ -1262,10 +1334,58 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
     student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
-    long_merge(row, student_major, 1) #major
-    long_merge(row+1, student_name, 0)  #name and surname
+    long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
+    long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
-    long_merge(row+3, banner_list[0], 1)
+    long_merge(row+3, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK THE VARIOUS PARTS
+    
+    in the specific sections are only left the parts 
+    that call the dictionary needed for the print in excel
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #ENGLISH COMPOSITION AND LITERATURE
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+    
+    #MATHEMATICS REQUIREMENT (MA100 OR MA101)
+    ma_requirement = curr_student.check_ma_req()
+    
+    #FOREIGN LANGUAGE
+    fl_requirement = curr_student.check_flanguage()
+    
+    #SOCIAL SCIENCES
+    sosc_req = curr_student.check_sosc()
+    
+    #HUMANITIES
+    hum_req = curr_student.check_hum()     
+
+    #FINE ARTS
+    fa_req = curr_student.check_arts() 
+    
+    #MATHEMATICS, SCIENCE, AND COMPUTER SCIENCE
+    sci_requirement = curr_student.check_sci()
+    
+    #CORE COURSES
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    
+    #TRACKS
+    
+    
+    #MAJOR ELECTIVES
+    major_electives = curr_student.check_major_electives()
+    
+    #MINOR 1
+    #MINOR 2
+    
+    #GENERAL ELECTIVES
+    genel_list = curr_student.check_genelectives()
 
 
     """""""""""""""""""""""""""""""""""""""
@@ -1273,17 +1393,11 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["eng"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print english banner
     course_det_left(row+1, worksheet, bold_left)
 
-    curr_student.generate_en_courses(courses_list)
-    curr_student.substitute_courses_done()
-    curr_student.check_eng_composition()
-    eng_requirement = curr_student.check_eng_literature()
     en_list = eng_requirement.get("output courses")
-    #eng_requirement = curr_student.check_eng_requirement()
-
     for i in range(0, len(en_list)):
         en_course = en_list[i]
         if en_course[1] == 1:
@@ -1298,16 +1412,16 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
         worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
-        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
+        worksheet.write(row, 5, en_course[0].get_credits(), course_info_format)
+    
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  13
     banner_list = banner["math"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
-    ma_requirement = curr_student.check_ma_req()
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math proficiency banner
     course_det_left(row+1, worksheet, bold_left)
        
     m_list = ma_requirement.get("courses done")
@@ -1326,26 +1440,16 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, ma_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
-        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, ma_course.get_credits(), course_info_format)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    CHECK CORE COURSES AND GENERAL ELECTIVES
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
-    core_courses = curr_student.check_core()
-    core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
-    #print(obj_core_remaining)
-    
-    major_electives = curr_student.check_major_electives()
-        
+
     """""""""""""""""""""""""""""""""""""""
     PRINT FOREIGN LANGUAGE REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row = 22
     banner_list = banner["fl"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
-    fl_requirement = curr_student.check_flanguage(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print foreign language requirements banner
     course_det_left(row+1, worksheet, bold_left)
        
     fl_list = fl_requirement.get("courses done")
@@ -1364,20 +1468,17 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, fl_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
-        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, fl_course.get_credits(), course_info_format)
         
     lenght_left = row
-    print(f"languages end at {lenght_left}")
-    
-    
+
     """""""""""""""""""""""""""""""""""""""
     PRINT SOCIAL SCIENCES REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["sosc"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
-    sosc_req = curr_student.check_sosc(curr_student)
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print social sciences banner
     course_det_right(row+1, worksheet, bold_left)
 
     sosc_list = sosc_req.get("courses done")
@@ -1397,7 +1498,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
-        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, sosc_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -1405,9 +1506,8 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     """""""""""""""""""""""""""""""""""""""
     row = 10
     banner_list = banner["hum"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
-    hum_req = curr_student.check_hum(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print humanities banner
     course_det_right(row+1, worksheet, bold_left)
 
     hum_list = hum_req.get("courses done")
@@ -1427,7 +1527,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, hum_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
-        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, hum_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -1435,9 +1535,8 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     """""""""""""""""""""""""""""""""""""""
     row = 15
     banner_list = banner["fa"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
-    fa_req = curr_student.check_arts(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print fine arts banner
     course_det_right(row+1, worksheet, bold_left)
 
     fa_list = fa_req.get("courses done")
@@ -1457,20 +1556,17 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, fa_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
-        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, fa_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA, SCI, COMP SCI REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  17
     banner_list = banner["sci"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
-    sci_requirement = curr_student.check_sci(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math, sci, comp sci banner
     course_det_left(row+1, worksheet, bold_left)
 
-
-    #if len(sci_requirement.get("courses missing")) != 2:
     sci_list = sci_requirement.get("courses done")
     for i in range(0, len(sci_list)):
         sci_course = sci_list[i][0]
@@ -1489,18 +1585,16 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, sci_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
-        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, sci_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT GENERAL ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     row = 19
     banner_list = banner["genel"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
-    genel_list = curr_student.check_genelectives()
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print general electives courses
     course_det_right(row+1, worksheet, bold_left)
-
 
     for i in range(0, len(genel_list)):
         genel_course = genel_list[i][0]
@@ -1519,7 +1613,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, genel_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
-        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, genel_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     DECIDE WHAT LENGHT TO PRINT
@@ -1529,7 +1623,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     if (21+len(genel_list)) >= (lenght_left+1):        
         lengt_first_part = len(genel_list)
     else:
-        lengt_first_part = len(fl_list)+1 
+        lengt_first_part = len(fl_list)+3
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -1538,9 +1632,9 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     #row = 24+len(genel_list)
     row = 24+lengt_first_part
     banner_list = banner["B"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
-    course_det_right(row+1, worksheet, bold_left)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print core courses
+    course_det_left(row+1, worksheet, bold_left)
     
     core_list = core_courses.get("courses done")
     for i in range(0, len(core_list)):
@@ -1548,7 +1642,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         if core_list[i][0] == "":
             row = 26+lengt_first_part+i
             if core_list[i][0] == "":
-                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
             else:
                 worksheet.write(row, 0, core_list[i][2], course_info_format) 
         else:
@@ -1571,15 +1665,15 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
             worksheet.write(row, 2, core_course.course.get_number(), course_info_format)
             worksheet.write(row, 3, core_course.get_term(), course_info_format)
             worksheet.write(row, 4, number_to_letter.get(core_course.get_grade()), grade_format)
-            worksheet.write(row, 5, core_course.course.get_credits(), course_info_format)
+            worksheet.write(row, 5, core_course.get_credits(), course_info_format)
         
     #to print the courses that the student has not done in this category 
     for i in range(0,len(obj_core_remaining)):
-        core_course = obj_core_remaining[i]
+        core_course = obj_core_remaining[i][0]
         
         row = 26+lengt_first_part+len(core_list)+i
 
-        worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 0, create_remaining_list_special[i][2], course_info_format) #col H=7
         worksheet.write(row, 1, core_course.get_code(), course_info_format)
         worksheet.write(row, 2, core_course.get_number(), course_info_format)
         worksheet.write(row, 3, "", course_info_format)
@@ -1591,14 +1685,19 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     PRINT MAJOR ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     #set the row depending on the longest between core and additional requirements
+    core_lenght = len(core_list) + len(obj_core_remaining) 
+    row = 29 + lengt_first_part + core_lenght
     
-    row = 30 + lengt_first_part + (len(obj_core_remaining)+len(core_list))
+    if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+        row=curr_student.major.major_electives_banner(row, worksheet)
+    else:
+        banner_list = banner["C"] 
+        long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+        long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
     
-    banner_list = banner["C"] 
-    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
-    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
     course_det_left(row+1, worksheet, bold_left)
-
+    new_row = row+2
+    
     electives_list = major_electives.get("courses done")
     for i in range(0, len(electives_list)):
         elective_course = electives_list[i][0]
@@ -1611,14 +1710,17 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         elif course_grade == 2: #current
             grade_format = color_cell4
             
-        #row = 32+len(genel_list)+len(core_list)+i
-        row = 32+lengt_first_part+len(core_list)+i
+        if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+            row = new_row + i
+        else:
+            row = 32 + lengt_first_part + core_lenght + i
+
         worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
         worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
         worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, elective_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
-        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, elective_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART
@@ -1666,12 +1768,13 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
 def electives_tracks(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
-    workbook = xlsxwriter.Workbook(path)
+    workbook = xlsxwriter.Workbook(path, {'nan_inf_to_errors': True})
     worksheet = workbook.add_worksheet()
     
     worksheet.set_column(0, 5, 11)
     worksheet.set_column(7, 12, 11) 
     worksheet.set_column(14, 14, 44)
+    worksheet.set_column(15, 15, 11)
     
     banner = banner_content
     
@@ -1750,10 +1853,55 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
     student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
-    long_merge(row, student_major, 1) #major
-    long_merge(row+1, student_name, 0)  #name and surname
+    long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
+    long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
-    long_merge(row+3, banner_list[0], 1)
+    long_merge(row+3, banner_list[0], 1, worksheet, merge_format1, merge_format2)
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    CHECK THE VARIOUS PARTS
+    
+    in the specific sections are only left the parts 
+    that call the dictionary needed for the print in excel
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #ENGLISH COMPOSITION AND LITERATURE
+    curr_student.generate_en_courses(courses_list)
+    curr_student.substitute_courses_done()
+    curr_student.check_eng_composition()
+    eng_requirement = curr_student.check_eng_literature()
+    
+    #MATHEMATICS REQUIREMENT (MA100 OR MA101)
+    ma_requirement = curr_student.check_ma_req()
+    
+    #FOREIGN LANGUAGE
+    fl_requirement = curr_student.check_flanguage()
+    
+    #SOCIAL SCIENCES
+    sosc_req = curr_student.check_sosc()
+    
+    #HUMANITIES
+    hum_req = curr_student.check_hum()     
+    
+    #FINE ARTS
+    fa_req = curr_student.check_arts() 
+    
+    #MATHEMATICS, SCIENCE, AND COMPUTER SCIENCE
+    sci_requirement = curr_student.check_sci()
+    
+    #CORE COURSES
+    core_courses = curr_student.check_core()
+    core_remaining = curr_student.get_core_remaining()
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    
+    #MAJOR ELECTIVES
+    major_electives = curr_student.check_major_electives()
+    
+    #MINOR 1
+    #MINOR 2
+    
+    #GENERAL ELECTIVES
+    genel_list = curr_student.check_genelectives()
 
 
     """""""""""""""""""""""""""""""""""""""
@@ -1761,14 +1909,10 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["eng"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print english banner
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print english banner
     course_det_left(row+1, worksheet, bold_left)
 
-    curr_student.generate_en_courses(courses_list)
-    curr_student.substitute_courses_done()
-    curr_student.check_eng_composition()
-    eng_requirement = curr_student.check_eng_literature()
     en_list = eng_requirement.get("output courses")
     #eng_requirement = curr_student.check_eng_requirement()
 
@@ -1786,16 +1930,15 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 2, en_course[0].course.get_number(), course_info_format)
         worksheet.write(row, 3, en_course[0].get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(en_course[0].get_grade()), grade_format)
-        worksheet.write(row, 5, en_course[0].course.get_credits(), course_info_format)
+        worksheet.write(row, 5, en_course[0].get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  13
     banner_list = banner["math"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math proficiency banner
-    ma_requirement = curr_student.check_ma_req()
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math proficiency banner
     course_det_left(row+1, worksheet, bold_left)
        
     m_list = ma_requirement.get("courses done")
@@ -1814,26 +1957,16 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 2, ma_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, ma_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(ma_course.get_grade()), grade_format)
-        worksheet.write(row, 5, ma_course.course.get_credits(), course_info_format)
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    CHECK CORE COURSES AND GENERAL ELECTIVES
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
-    core_courses = curr_student.check_core()
-    core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list(courses_list, core_remaining)
-    #print(obj_core_remaining)
-    
-    major_electives = curr_student.check_major_electives()
+        worksheet.write(row, 5, ma_course.get_credits(), course_info_format)
+        
         
     """""""""""""""""""""""""""""""""""""""
     PRINT FOREIGN LANGUAGE REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row = 22
     banner_list = banner["fl"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print foreign language requirements banner
-    fl_requirement = curr_student.check_flanguage(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print foreign language requirements banner
     course_det_left(row+1, worksheet, bold_left)
        
     fl_list = fl_requirement.get("courses done")
@@ -1852,20 +1985,18 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 2, fl_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, fl_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(fl_course.get_grade()), grade_format)
-        worksheet.write(row, 5, fl_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, fl_course.get_credits(), course_info_format)
         
     lenght_left = row
-    print(f"languages end at {lenght_left}")
-    
+
     
     """""""""""""""""""""""""""""""""""""""
     PRINT SOCIAL SCIENCES REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  5
     banner_list = banner["sosc"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print social sciences banner
-    sosc_req = curr_student.check_sosc(curr_student)
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print social sciences banner
     course_det_right(row+1, worksheet, bold_left)
 
     sosc_list = sosc_req.get("courses done")
@@ -1885,7 +2016,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 9, sosc_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, sosc_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(sosc_course.get_grade()), grade_format)
-        worksheet.write(row, 12, sosc_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, sosc_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -1893,9 +2024,8 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     """""""""""""""""""""""""""""""""""""""
     row = 10
     banner_list = banner["hum"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print humanities banner
-    hum_req = curr_student.check_hum(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print humanities banner
     course_det_right(row+1, worksheet, bold_left)
 
     hum_list = hum_req.get("courses done")
@@ -1915,7 +2045,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 9, hum_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, hum_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(hum_course.get_grade()), grade_format)
-        worksheet.write(row, 12, hum_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, hum_course.get_credits(), course_info_format)
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -1923,9 +2053,8 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     """""""""""""""""""""""""""""""""""""""
     row = 15
     banner_list = banner["fa"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print fine arts banner
-    fa_req = curr_student.check_arts(curr_student) 
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print fine arts banner
     course_det_right(row+1, worksheet, bold_left)
 
     fa_list = fa_req.get("courses done")
@@ -1945,16 +2074,15 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 9, fa_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, fa_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(fa_course.get_grade()), grade_format)
-        worksheet.write(row, 12, fa_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, fa_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MA, SCI, COMP SCI REQUIREMENT
     """""""""""""""""""""""""""""""""""""""
     row =  17
     banner_list = banner["sci"] 
-    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print math, sci, comp sci banner
-    sci_requirement = curr_student.check_sci(curr_student)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print math, sci, comp sci banner
     course_det_left(row+1, worksheet, bold_left)
 
 
@@ -1977,18 +2105,16 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 2, sci_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, sci_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(sci_course.get_grade()), grade_format)
-        worksheet.write(row, 5, sci_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, sci_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     PRINT GENERAL ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     row = 19
     banner_list = banner["genel"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print general electives courses
-    genel_list = curr_student.check_genelectives()
+    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print general electives courses
     course_det_right(row+1, worksheet, bold_left)
-
 
     for i in range(0, len(genel_list)):
         genel_course = genel_list[i][0]
@@ -2007,7 +2133,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         worksheet.write(row, 9, genel_course.course.get_number(), course_info_format)
         worksheet.write(row, 10, genel_course.get_term(), course_info_format)
         worksheet.write(row, 11, number_to_letter.get(genel_course.get_grade()), grade_format)
-        worksheet.write(row, 12, genel_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 12, genel_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""
     DECIDE WHAT LENGHT TO PRINT
@@ -2015,9 +2141,9 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     lengt_first_part = 0
     #if (21+len(genel_list)) >= 26:
     if (21+len(genel_list)) >= (lenght_left+1):        
-        lengt_first_part = len(genel_list)
+        lengt_first_part = len(genel_list) 
     else:
-        lengt_first_part = len(fl_list)+1 
+        lengt_first_part = len(fl_list)+3 
     
     
     """""""""""""""""""""""""""""""""""""""
@@ -2026,9 +2152,9 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     #row = 24+len(genel_list)
     row = 24+lengt_first_part
     banner_list = banner["B"] 
-    short_merge_dx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2)
-    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2) #print core courses
-    course_det_right(row+1, worksheet, bold_left)
+    short_merge_sx(row, banner_list[0], 1, worksheet, merge_format1, merge_format2, bold_left)
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print core courses
+    course_det_left(row+1, worksheet, bold_left)
     
     core_list = core_courses.get("courses done")
     for i in range(0, len(core_list)):
@@ -2036,7 +2162,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         if core_list[i][0] == "":
             row = 26+lengt_first_part+i
             if core_list[i][0] == "":
-                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2)
+                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
             else:
                 worksheet.write(row, 0, core_list[i][2], course_info_format) 
         else:
@@ -2052,6 +2178,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
             elif course_grade == 3: #highlights the grades that are not failed, but lower than C-
                 grade_format = color_cell2
             
+
             #row = 26+len(genel_list)+i
             row = 26+lengt_first_part+i
             worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
@@ -2059,15 +2186,15 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
             worksheet.write(row, 2, core_course.course.get_number(), course_info_format)
             worksheet.write(row, 3, core_course.get_term(), course_info_format)
             worksheet.write(row, 4, number_to_letter.get(core_course.get_grade()), grade_format)
-            worksheet.write(row, 5, core_course.course.get_credits(), course_info_format)
+            worksheet.write(row, 5, core_course.get_credits(), course_info_format)
         
     #to print the courses that the student has not done in this category 
     for i in range(0,len(obj_core_remaining)):
-        core_course = obj_core_remaining[i]
-        
+        core_course = obj_core_remaining[i][0]
+                
         row = 26+lengt_first_part+len(core_list)+i
 
-        worksheet.write(row, 0, core_list[i][2], course_info_format) #col H=7
+        worksheet.write(row, 0, obj_core_remaining[i][2], course_info_format) #col H=7
         worksheet.write(row, 1, core_course.get_code(), course_info_format)
         worksheet.write(row, 2, core_course.get_number(), course_info_format)
         worksheet.write(row, 3, "", course_info_format)
@@ -2079,14 +2206,18 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     PRINT MAJOR ELECTIVES
     """""""""""""""""""""""""""""""""""""""
     #set the row depending on the longest between core and additional requirements
+    core_lenght = len(core_list) + len(obj_core_remaining) 
+    row = 29 + lengt_first_part + core_lenght
     
-    row = 30 + lengt_first_part + (len(obj_core_remaining)+len(core_list))
+    if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+        row=curr_student.major.major_electives_banner(row, worksheet)
+    else:
+        banner_list = banner["C"] 
+        long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
+        long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
     
-    banner_list = banner["C"] 
-    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
-    long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
     course_det_left(row+1, worksheet, bold_left)
-
+    new_row = row+2
     electives_list = major_electives.get("courses done")
     for i in range(0, len(electives_list)):
         elective_course = electives_list[i][0]
@@ -2099,14 +2230,17 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         elif course_grade == 2: #current
             grade_format = color_cell4
             
-        #row = 32+len(genel_list)+len(core_list)+i
-        row = 32+lengt_first_part+len(core_list)+i
+        if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
+            row = new_row + i
+        else:
+            row = 32 + lengt_first_part + core_lenght + i
+
         worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
         worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
         worksheet.write(row, 2, elective_course.course.get_number(), course_info_format)
         worksheet.write(row, 3, elective_course.get_term(), course_info_format)
         worksheet.write(row, 4, number_to_letter.get(elective_course.get_grade()), grade_format)
-        worksheet.write(row, 5, elective_course.course.get_credits(), course_info_format)
+        worksheet.write(row, 5, elective_course.get_credits(), course_info_format)
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     CONSTRUCT THE LEGEND, GENERAL INFO, COURSES MISSING BY SECTION PART

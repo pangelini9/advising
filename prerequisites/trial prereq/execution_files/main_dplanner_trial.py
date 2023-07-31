@@ -4,6 +4,7 @@ Created on Thu Jul 13 16:22:06 2023
 
 @author: elettra.scianetti
 """
+#create_student_json
 
 import json
 import xlsxwriter
@@ -75,14 +76,9 @@ def create_dplanners():
     """
     courses_list = create_course_obj()
 
-    """"""""""""""""""""""
-    IMPORT THE MAJORS
-    """""""""""""""""""""
-    majors_list = create_major_list()
-
-    """"""""""""""""""""""
+    """""""""""""""""""""""""""""""""""""""""""""""
     IMPORT THE STUDENT
-    """""""""""""""""""""
+    """""""""""""""""""""""""""""""""""""""
     new_list = []
     students = []
     
@@ -100,9 +96,11 @@ def create_dplanners():
     for index in range(0, len(students_list)):
         curr_student = students_list[index]
         
-        """
-        Create majors       
-        """
+        
+        """""""""""""""""""""""""""""""""""""""""""""""
+        IMPORT and SUBSTITUTE THE MAJOR OF THE STUDENT
+        """""""""""""""""""""""""""""""""""""""
+        majors_list = create_major_list()
         #changes the element major present in the student object as the major key into the major object
         for j in range(0, len(majors_list)):
             curr_major = majors_list[j]
@@ -120,6 +118,10 @@ def create_dplanners():
         #curr_student.change_credits_total() #sets the total amounts of credis equal to 150 id the student has a double degree
         #curr_student.add_transfer_credits() #if the student has done more than 60 credits out of residency, then it add them to the total amount of credits
         
+        #to remove the credits from the courses taken and withdrawed from
+        curr_student.change_withdraw_creds()
+        
+        
         curr_student.cumpute_gpa()
         curr_student.compute_credits_earned()
         curr_student.compute_credits_nxsem()
@@ -129,46 +131,21 @@ def create_dplanners():
     
         curr_major = curr_student.get_major()
         
-        '''FOR EXCEPTIONS
-        curr_core = curr_major.get_core_courses()
-        curr_courses =  curr_student.get_coursesReduced()   
-        print(curr_core) #[[1, [['COM', 101, 101]]], [1, [['exception', 1, 1]]], [1, [['COM', 470, 470]]], [1, [['COM', 480, 480]]]]
-        
-        for i in curr_core:
-            for element in i[1]:
-                if element[0] == "exception":
-                    if element[1]==1:
-                        new_reduced = curr_major.exception_one(curr_courses)
-                        curr_student.change_reduced(new_reduced)
-                        
-                    elif element[1]==2:
-                        new_reduced = curr_major.exception_two(curr_courses)
-                        curr_student.change_reduced(new_reduced)
-
-                    elif element[1]==3:
-                        new_reduced = curr_major.exception_three(curr_courses)
-                        curr_student.change_reduced(new_reduced)
-
-                    elif element[1]==3:
-                        new_reduced = curr_major.exception_four(curr_courses) 
-                        curr_student.change_reduced(new_reduced)
-
-                else:
-                    print("checking a course")
-                    '''
         stud_name = curr_student.get_name()
         major_name = curr_major.get_name()
         
-        planner_name = stud_name + major_name
+        planner_name = stud_name + " " + major_name
         #print(planner_name)
                             
         major_structure = curr_major.get_planner_structure()
 
+        print(f"\n{stud_name} {major_name}")
+        
         if major_structure == 1:
             banner = banner_list["structure_one"]
             legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]   
             additional_courses(planner_name, curr_student, courses_list, banner, legend_keys)
-            
+        
         elif major_structure == 2:
             banner = banner_list["structure_two"]
             legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]   
@@ -183,7 +160,6 @@ def create_dplanners():
             banner = banner_list["structure_two"]
             legend_keys = ["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]   
             electives_tracks(planner_name, curr_student, courses_list, banner, legend_keys)
-
     
     
     

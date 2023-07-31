@@ -86,6 +86,20 @@ class Course_taken:
         self.c_type = c_type #se è honor
         self.in_residence = in_residence #=1 se il corso è stato fatto in JCU, =0 se è stato fatto col direct exchange
         
+        self.used_flag = 0
+        """
+        0 = is in general electives
+        1 = used in A (general distribution requirements)
+        2 = used in major not A (additional, core, ...)
+        3 = minor 1
+        4 = minor 2
+        5 = overlap major and minor1
+        6 = overlap major and minor2
+        7 = overlap major, minor1 and minor2
+        8 = overlap minor1 and minor2
+        """
+        
+        
         
     def get_course(self):
         return self.course

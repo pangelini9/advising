@@ -16,7 +16,7 @@ from execution_files.create_courses_list import create_course_obj, create_course
 import execution_files.prerequisites_formats as prerequisites_formats
 import execution_files.retake_formats as retake_formats
 
-#print, removeretake, write
+#print, removeretake, write, create_student_json
 
 letter_to_number = {
     "A" : 4,

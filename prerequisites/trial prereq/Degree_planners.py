@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun 26 14:40:01 2023
+Created on Thu Jul 13 16:18:40 2023
 
 @author: elettra.scianetti
 """
@@ -18,15 +18,15 @@ file_name = "students.xml"
 "IMPORT FUNCTIONS"
 from execution_files.create_student_list_from_xml import create_student_json #converts the data of students stored in xml format into a json file
 from execution_files.courses_list_creation import create_courses_list #converts the data on the course offering into a json file
-from execution_files.prerequisite_control import check_prerequisites #does the check on fullfilled prerequisites
+from execution_files.main_dplanner_trial import create_dplanners
 
 
 "START THE ANALYSIS"
 print("Importing courses' data...")
-create_courses_list()
+#create_courses_list()
 
-print("\nConverting students' data...")#
+print("\nConverting students' data...")
 #create_student_json(file_name)
 
-print("\nStarting the check on prerequisites and retakes...")
-#check_prerequisites()
+print("\nStarting the creation of the degree planners...")
+create_dplanners()

@@ -46,6 +46,7 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
     for j in range(0, len(courses_taken_list)):
         curr_course_taken = courses_taken_list[j]
         key_course_taken = curr_course_taken[0]
+        #print(curr_course_taken)
         for h in range(0, len(courses_list)):
             curr_course = courses_list[h]
             key_curr_course = curr_course.get_course_key()
@@ -68,6 +69,7 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
 #needed for the excel print of the degree planner: creates fake courses objects starting from the majors' requirements that the student has not fullfilled
 def create_remaining_list(courses_list, remaining_list):
     obj_remaining_list =  []
+    
     #for m in courses_list: #m is an object course
         #counter +=1
     for i in range(0, len(remaining_list)):
@@ -88,10 +90,54 @@ def create_remaining_list(courses_list, remaining_list):
                 elif counter!=0 and n[0]==m.get_code() and n[1]==m.get_number() and prevname!=m.get_name():
                     old_name = m.get_name()
                     new_name = "OR " + old_name #str(old_name)
-                    new_Course = Course(new_name, m.get_code(), m.get_number(), m.get_credits(), m.get_requirements_list(), m.get_course_key())
+                    new_Course = Course(new_name, m.get_code(), m.get_number(), m.get_credits(), m.get_requirements_dictionary(), -3, "", "", "")
                     obj_remaining_list.append(new_Course)
                     counter += 1
 
+
+#needed for the excel print of the degree planner: creates fake courses objects starting from the majors' requirements that the student has not fullfilled
+def create_remaining_list_special(courses_list, remaining_list):
+    obj_remaining_list =  []
+    
+    #for m in courses_list: #m is an object course
+        #counter +=1
+    for i in range(0, len(remaining_list)):
+        appoggio = []
+        counter = 0
+        curr_info = remaining_list[i] #the list with info about remaing requirement [1, [["EN", 102, 102], ["FIN", 300, 300]]]
+        #print(curr_info)
+        rem_courses_list = curr_info[1]
+        message = ""
+        """
+        if curr_info[0] == 1:
+            message = curr_info[3]
+        elif curr_info[0] > 1 :
+            message = ""
+            """
+        #print(rem_courses_list)
+        prevname = ""
+        for n in rem_courses_list: #each of the individual courses that can be alternatives
+            #counter = 0
+            #print(n)
+            for m in courses_list: #m is an object course
+            
+                if counter==0 and n[0]==m.get_code() and n[1]==m.get_number():
+                    if message == "":
+                        message = m.get_name()
+                    appoggio = [m, "", message]
+                    obj_remaining_list.append(appoggio)
+                    counter += 1
+                    prevname = m.get_name()
+                    
+                elif counter!=0 and n[0]==m.get_code() and n[1]==m.get_number() and prevname!=m.get_name():
+                    old_name = m.get_name()
+                    new_name = "OR " + old_name #str(old_name)
+                    new_Course = Course(new_name, m.get_code(), m.get_number(), m.get_credits(), m.get_requirements_dictionary(), -3, "", "", "")
+                    if message == "":
+                        message = new_Course.get_name()
+                    appoggio = [new_Course, "", message]
+                    obj_remaining_list.append(appoggio)
+                    counter += 1
  
         """
         #for i in remaining_list:
