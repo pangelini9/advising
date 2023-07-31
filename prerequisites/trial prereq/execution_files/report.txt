@@ -1,44 +1,3835 @@
-Students:7
+Students:639
 
-Mr. Luca Beccato
-Major 1:BA Business Administration
-Minor:Entrepreneurship: Innovation & Technology
-Major 2:None
-Minor 2:None
-Major: BA Business Administration student:Mr. Luca Beccato
-Mr. Gabriele Ciotola
-Major 1:BA Marketing
-Minor:Art and Design/Art History
-Major 2:None
-Minor 2:None
-Major: BA Marketing student:Mr. Gabriele Ciotola
-Ms. Assunta Mareschi
+Sahari Bougier Abney
 Major 1:BA International Business
-Minor:Marketing
+Minor:None
 Major 2:None
 Minor 2:None
-Major: BA International Business student:Ms. Assunta Mareschi
-Mr. Eduardo Mariel
+
+Fayzeh Abou Ardat
+Major 1:BA Political Science  -  as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Benedetta Acquari
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Joseph Adams
 Major 1:BA History
 Minor:None
 Major 2:None
 Minor 2:None
-Major: BA History student:Mr. Eduardo Mariel
-Mr. Pier Paolo Quadrozzi
+
+Isabella Adesso
+Major 1:BA International Business
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Mr. Nicola Agosti
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Leonardo Agresti
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Rebecca Ann Aist
+Major 1:BA Communications/Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ana Lucia Ajuria Escobar
+Major 1:BA Marketing/Psych Sci
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Milaf Al Kahtani
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Naif Faisal Al Kahtani
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Cesar Nicolas Alarcon
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Francesco Arturo Albano
+Major 1:BA International Affairs/International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Amber Mauri Alexander
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Giada Alfano
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Danah Alkhafaji
+Major 1:BA Humanistic Studies
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Laela Angela Allen
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ludovica Amodio
+Major 1:BA Political Science  -  as of FA22
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ludovica Amoroso
+Major 1:BA Political Science  -  as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Alessandra Angeletti
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Martina Angeli
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Silvana Angelucci
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Leonardo David Antonino
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Carla Sophia Mawgain Apel
+Major 1:BA English Literature
+Minor:Creative Writing/Political Science
+Major 2:None
+Minor 2:None
+
+George Appleton
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Natalia Aragon
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Isabella Taye Arguello
+Major 1:BA Classical Studies
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Mariem Kareem A Aribi
+Major 1:BA Psychological Science
+Minor:Business Administration/Creative Writing
+Major 2:None
+Minor 2:None
+
+Mr. Gianmarco Ariola
+Major 1:BA Economics and Finance - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Lorenzo Arista
+Major 1:BA Marketing
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Carolina Aronica
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. John Arrigo
+Major 1:BA Italian Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ayan Aslanova
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Gabriele Maria Astaldi
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Martina Velkova Atanasova
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alana Nicole Atkinson
+Major 1:BA Classical Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Marina Badalamenti
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Tatiana Badillo Campuzano
+Major 1:BA International Business
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Giorgia Bagala
+Major 1:BA Communications
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Madeleine Elisabeth Baines
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Nina Bakuta
+Major 1:BA Psychological Science
+Minor:Political Science
+Major 2:None
+Minor 2:None
+
+Nicolette Tande Orsay Balazs
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Nurgul Balgat
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Shira Barak
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ludovico Bari
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Alessandra Barnabo Carballo
+Major 1:BA Communications
+Minor:Business Administration/Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Manuela Ramos Barroso
+Major 1:BA International Bus/ International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Jacopo Bartolini
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Miriam Barzaghi
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Lou-Ann Chiara Baschiera
+Major 1:BA Art History/Classical Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Rhoda Akua Basoah
+Major 1:BA Psychological Science
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Ms. Margherita Battistella
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Daniela Bazzani
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Gavin Theodore Beckett
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Margot Beever
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ester Maria Bega
+Major 1:BA Econ&Fin-FA22/International Aff-FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Simone Belleggia
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Selima Ben Rhouma
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alice Benvegnu
+Major 1:BA Marketing
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Alba Pellumbesha Felek Beqiraj
+Major 1:BA International Business
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Prudence Elisabeth Pelagie Berge
+Major 1:BA Art History/Communications
+Minor:Creative Writing/International Affairs
+Major 2:None
+Minor 2:None
+
+Ludovica Berti
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sofia Matos De Almeida Feijo Sampaio Berwanger
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Daniella Bevan
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Elizabete Bisa
+Major 1:BA Communications
+Minor:Art and Design/Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Arnaud David Bidogeza
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Giovanni Bindi
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Zachary Bishop
+Major 1:BA Italian Studies
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Mr. Misha Blagoevski-Trazoff
+Major 1:BA International Affairs - as of FA22
+Minor:Philosophy/Political Science
+Major 2:None
+Minor 2:None
+
+Yana Dimitrova Boeva
+Major 1:BA Business Administration/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Valeria Bonannella
+Major 1:BA International Business
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Edoardo Bondi
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Hedda Treider Bonesmo
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Macarena Borja Serrano
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Miriam Bousfiha
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Donnatella Bove Parra
+Major 1:BA Economics and Finance/International Affairs
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Anna Bozzi
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Emily Grace Bozzi
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Olivia Dawn Branchaud
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Ellie Rose Branson
+Major 1:BA Econ&Finance - prior to FA22/IntlAffairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Giulia Brecci
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Jazlyn Jade Briant
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Chloe Tuller Bridgeland
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Victoria Scarlett Brizzi
+Major 1:BA International Affairs
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Luca Brocato
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Meredith Ann Brooks
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Kiersten Amelia Brown
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Serena Bruce
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Mr. Ayden Alexander Bruell
+Major 1:BA Psychological Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Lara Bruni
+Major 1:BA Marketing
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Mirella Bruni
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Julianna Marie Bryant
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Elena Buonocore
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Francesco Caccioppoli
+Major 1:BA International Affairs - as of FA22
+Minor:History
+Major 2:None
+Minor 2:None
+
+Ms. Sevada Skye Calvino
+Major 1:BA Communications
+Minor:Italian Studies
+Major 2:None
+Minor 2:None
+
+Mr. Vasco De Matos Campelo
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Barbara Campesi
+Major 1:BA Marketing
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Tommaso Camponeschi
+Major 1:BA International Business
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Ms. Chiara Canaveras
+Major 1:BA Communications/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Chiara Canepone
+Major 1:BA Communications/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Irma Cannizzaro
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Ivan Caporali
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Eugenio Caracciolo
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Morgan Grace Carkner
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alice Carlei
+Major 1:BA Business Administration
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Michael Philip Carlson
+Major 1:BA Marketing
+Minor:Classical Studies
+Major 2:None
+Minor 2:None
+
+Cristiano Carta
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mencia Casas Neo
+Major 1:BA Art History-as of FA22/Classical Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Francesco Maria Castellano
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Matteo Castrechini
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Elaine Gardner Castro
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Gaia Castrone
+Major 1:BA Marketing
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Alessandro Cataldi
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Maria Ludovica Cataldi
+Major 1:BA Marketing
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Mr. Giampaolo Cavazzuti De Leon
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Clara Cavelli
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Nathalie Ana Cenan
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ilaria Cerbini
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Leonardo Cesaretti
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Karoline Cevallos Ponce
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Miles James Chapman
+Major 1:BA Humanistic Studies
+Minor:Art and Design/Philosophy
+Major 2:None
+Minor 2:None
+
+Wendy Rubi Chavez Tacuri
+Major 1:BA International Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Francesca Chiari
+Major 1:BA English Literature
+Minor:Creative Writing/Legal Studies
+Major 2:None
+Minor 2:None
+
+Vittorio Chiaverini
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Paige Maryanna Chinn
+Major 1:BA Psychological Science
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Martina Chizzola
+Major 1:BA International Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Ms. Camilla Ciallella
+Major 1:BA International Affairs - as of FA22
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Ms. Annabella Parigi Cianciulli
+Major 1:BA Humanistic Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Giorgia Cinaglia
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Allegra Cipollone
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Luca Rocco Cippone
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Giulia Cipriani
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Morgan Simone Clarke
+Major 1:BA English Literature
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Edwina Strawbridge Clews
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Aymee Natalia Natalia Coba
+Major 1:BA Communications
+Minor:Creative Writing/Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Chaska Callalli Cobalt
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Michela Colarusso
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Carina Compton
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sophia A Cone
+Major 1:BA Communications
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Isabella Morgan Conner
+Major 1:BA Art History-as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Eleonora Consorti
+Major 1:BA Economics and Finance - as of FA 2022/Intl Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Laura Consorti Pelczar
+Major 1:BA International Affairs
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Maria Elena Conta
+Major 1:BA Communications - Milan Exchange
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Lucia Conte
+Major 1:BA Communications
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Ms. Virginia Conti
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Almudena Cordova Alvarez
+Major 1:BA Psychological Science
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Andrea Carolina Corea Valle
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Chiara Corradini
+Major 1:BA Communications
+Minor:Art and Design/Marketing
+Major 2:None
+Minor 2:None
+
+Charlotte Cousin
+Major 1:BA Communications
+Minor:Marketing/Psychology
+Major 2:None
+Minor 2:None
+
+Rachel Elizabeth Cramer
+Major 1:BA Humanistic Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Cheyenne Creati
+Major 1:BA International Affairs
+Minor:Business Administration/Legal Studies
+Major 2:BA Psychological Science
+Minor 2:None
+
+Ms. Gaia Cucchi
+Major 1:BA International Affairs/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Giada Cucci
+Major 1:BA English Literature
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Dafne Cunille Renteria
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Grace Jennifer Cuozzo
+Major 1:BA English Literature
+Minor:Philosophy
+Major 2:None
+Minor 2:None
+
+Edoardo William D'Annibale
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Biagio D'arconso
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Giulia D'avanzo
+Major 1:BA International Affairs - as of FA22
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Rebecca Dalmasso
+Major 1:BA Business Administration
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Charlotte Dammicco
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Anna Danalis
+Major 1:BA International Business
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Lloyd Geofrey Danquah
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Martina Dattolo
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mia Davila Napier Gegg
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alexandria Marie Davis
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. David Davitaia
+Major 1:BA Business Administration
+Minor:Marketing/Political Science
+Major 2:None
+Minor 2:None
+
+Ms. Julia Silvana Day
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Kian De La Fuente
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Olivia Rebekah Grace De Laura
+Major 1:BA Art History-as of FA22
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Arianna De Massari
+Major 1:BA Psychological Science
+Minor:Art and Design/Political Science
+Major 2:None
+Minor 2:None
+
+Mr. Giorgio De Rosa
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Dante De Toma
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Stephanie De Vasconcellos
+Major 1:BA History/ International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Maiya Jade Decena-Chinn
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Artico Degli Azzoni Avogadro
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Betselot Getabicha Dejene
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Flavia Del Prete
+Major 1:BA Marketing
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Maeva Dell Acqua
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Mina Carmela Dell'Acqua
+Major 1:BA Political Science
+Minor:History/Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Aris Mihael Dell'edera
+Major 1:BA Marketing
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Ms. Flaminia Dell’Amico
+Major 1:BA Communications/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Bronte Isabella Delmonico
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Emma Demerath
+Major 1:BA Art History
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Mariarosaria Di Bagno
+Major 1:BA International Affairs - as of FA22
+Minor:Economics/Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Ludovica Maria Pia Di Caro
+Major 1:BA Humanistic Studies
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Lorena Di Cesare
+Major 1:BA Art History-as of FA22
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Leonardo Alessandro Di Franco-Cascone
+Major 1:BA International Business
+Minor:Philosophy/Marketing
+Major 2:None
+Minor 2:None
+
+Mr. Lorenzo Emanuel Di Franco-Cascone
+Major 1:BA International Affairs
+Minor:Art and Design/Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Renzo Di Lorenzo
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Jonathan Di Maggio
+Major 1:BA Communications
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Ms. Tiberia Di Maggio
+Major 1:BA Business Administration
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Ms. Nicole Di Maria
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Corrado Di Petrillo
+Major 1:BA Economics and Finance - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Alessandro Di Porto
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Flavia Dominguez
+Major 1:BA Business Administration
+Minor:Entrepreneurship: For Profit
+Major 2:None
+Minor 2:None
+
+Chloe Elizabeth Dougherty
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Erin Marie Doyle
+Major 1:BA History
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Emma Lorraine Draus
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Maria Sole Duca
+Major 1:BA Psychological Science
+Minor:Gender Studies
+Major 2:None
+Minor 2:None
+
+Ms. Sadie May Dunham
+Major 1:BA International Business
+Minor:English Literature
+Major 2:None
+Minor 2:None
+
+Mr. Davide Ebraheem
+Major 1:BA Marketing
+Minor:Entrepreneurship: For Profit
+Major 2:None
+Minor 2:None
+
+Ms. Annie Paola Echenique Hernandez
+Major 1:BA International Affairs
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Mohamed Ali Edeeb
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Luca Amanda Teig Eikanger
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Emili Elias Armengol
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Nina Elkins
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Cameron Rhys Els
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Gabrielle Kayla England
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Maria Isabel Escalante Gortaire
+Major 1:BA Art History-as of FA22
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Maria Lina Escudero
+Major 1:BA Art History/Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Martina Espinosa
+Major 1:BA Communications
+Minor:Entrepreneurship: For Profit
+Major 2:None
+Minor 2:None
+
+Beatrice Esposito
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Federico Esposito
+Major 1:BA International Affairs - as of FA22
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Tiye Amariyah Evans
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Giovanni Fabbri
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alice Fabozzi
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sofia Faid
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Michael Angelo Fallucca
+Major 1:BA International Business
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Mrs. Camilla Farsetti
+Major 1:BA International Business/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Giulia Fasulo
+Major 1:BA International Business
+Minor:Entrepreneurship: For Profit
+Major 2:None
+Minor 2:None
+
+Anaisha Fernandez
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Paula Victoria Fernandez
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mrs. Liliana Ferreri
+Major 1:BA International Affairs - as of FA22
+Minor:Gender Studies/Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Vittoria Ferri
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Tatiana Clara Fett
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Antonia Fields
+Major 1:BA Psychological Science
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Ms. Anita Finco
 Major 1:BA International Affairs
 Minor:Economics/Legal Studies
 Major 2:None
 Minor 2:None
-Major: BA International Affairs student:Mr. Pier Paolo Quadrozzi
-Ms. Elettra Scianetti
+
+Kristin Elizabeth Fiorvanti
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Mr. Alberto Fiscal Noriega
+Major 1:BA Political Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Carlo Flamer
+Major 1:BA International Affairs - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Michela Fogu
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Luca Danilo Follega
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Gabriella Louise Fourie
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sofia Franciosi
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Julian Alexander Franco
+Major 1:AA International Affairs
+Minor:None
+Major 2:BA International Affairs
+Minor 2:Communications/Economics
+
+Anita Frattini
+Major 1:BA International Business
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Bennett Micheal Free
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Nora Louise Freeland
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Valeria Frezza
+Major 1:BA Art History - prior to Fall 2019
+Minor:Psychology
+Major 2:BA Psychological Science
+Minor 2:None
+
+Ms. Jessica Maria Frylmark
+Major 1:BA Political Science  -  as of FA22
+Minor:Legal Studies/Philosophy
+Major 2:None
+Minor 2:None
+
+Mr. Luca Guimaraes Fustagno
+Major 1:BA Art History-as of FA22
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Andrea Nicole Gadpaille Bejarano
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Ralph Gerald Gallarda
+Major 1:BA Business Administration
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Maxim Gallozzi
+Major 1:BA International Affairs - as of FA22
+Minor:Philosophy
+Major 2:None
+Minor 2:None
+
+Ms. Benedetta Galvani
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Juan Camilo Gamboa
+Major 1:BA Economics and Finance - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sonja Painui Garcia
+Major 1:BA Art History-as of FA22
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Francesco Gargiulo
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Paula Silveira Gasser
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Martina Gavioli
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Youanna Wafik Adel Aziz Geriss
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Lorenza Gervasio
+Major 1:BA International Affairs - as of FA22
+Minor:Economics/Legal Studies
+Major 2:None
+Minor 2:None
+
+Giorgia Giacinti
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alessandra Pia Giancristofaro
+Major 1:BA International Affairs - as of FA22
+Minor:History
+Major 2:None
+Minor 2:None
+
+Ms. Carolina Gioia
+Major 1:BA International Affairs
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Nicole Girardi
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Alessandro Gizzi
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Oliwia Wiktoria Gladysz
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Lorenzo Roberto Maurice Goglio
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Cierra Alexandra Gordon
+Major 1:BA Political Science  -  as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Igor Gorobets
+Major 1:BA International Affairs
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Ms. Sophia Gozalvez
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Edoardo Grandi
+Major 1:BA Economics and Finance - as of FA22
+Minor:Legal Studies/Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Sara Grandi
+Major 1:BABusiness Administration/Economics and Finance - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Josephine Gravatt
+Major 1:BA International Business
+Minor:Communications/Entrepreneurship-Social Innovation
+Major 2:None
+Minor 2:None
+
+Erika Greco
+Major 1:BA Marketing
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Nahila May Green
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alice Gregorio
+Major 1:BA English Literature
+Minor:Communications/Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Divina Amor F. Griego
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sebastiano Alexander Groeteke
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Giulia Emilia Gstrein Scaroni
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Daniel Guastalla
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Katre Gurbey
+Major 1:BA Psychological Science
+Minor:Legal Studies/Political Science
+Major 2:None
+Minor 2:None
+
+Ms. Marcella Gutierrez Molina
+Major 1:BA Business Administration/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Rashell Guzmeli
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Aviv Hagar
+Major 1:BA International Affairs
+Minor:Philosophy
+Major 2:None
+Minor 2:None
+
+Ms. Brooke Nicole Hardin
+Major 1:BA Communications/Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Janane Ashraf Saad Hassaan
+Major 1:BA Communications
+Minor:Art and Design/Entrepreneurship - For Profit
+Major 2:None
+Minor 2:None
+
+Mr. Sebastian Nile Hellie
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Faynette Serena Herndon
+Major 1:BA International Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Mr. Skander Hidri
+Major 1:BA Economics and Finance - as of FA22
+Minor:Mathematics
+Major 2:None
+Minor 2:None
+
+Inez Elizabeth Higgiston
+Major 1:BA International Affairs - as of FA22
+Minor:English Literature
+Major 2:None
+Minor 2:None
+
+Ms. Jessica Darby Hood
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:BA Psychological Science
+Minor 2:None
+
+Sara Hosn
+Major 1:BA Marketing
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Olivia Cai Hutchinson
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Kyra-Leigh Hymons
+Major 1:BA Communications
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Ms. Rian Ignasiak
+Major 1:BA International Affairs
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Roberta Ingenito
+Major 1:BA Economics and Finance
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Sofia Innocenzi
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Maham Insha
+Major 1:BA Communications
+Minor:Art and Design/Entrepreneurship - Art and Humanities
+Major 2:None
+Minor 2:None
+
+Ms. Ana Ionescu
+Major 1:BA Art History/Psychological Science
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Camilla Ioriatti
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Louisa Bryn Jagelski
+Major 1:BA Psychological Science
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Anastasia Jannin Piwudzka
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Teresa Liely Da Silva Lima Joaquim
+Major 1:BA International Affairs
+Minor:Economics/Legal Studies
+Major 2:None
+Minor 2:None
+
+Antonio Maximillian Johnson
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ava Brook Johnson
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ferdinando A Johnston
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Skyylar Jordan
+Major 1:BA Political Science  -  as of FA22
+Minor:History
+Major 2:None
+Minor 2:None
+
+Ms. Anastasija Jovic
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Lluvia Argentina Juarez Luna
+Major 1:BA Classical Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sofija Ljubinko Kaluderovic
+Major 1:BA Business Administration/Int Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Sharon Kanchik
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Isabella Julia Kane
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Sophia Faisal Kapadia
+Major 1:BA Political Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Isabel Sara Kaplan
+Major 1:BA Italian Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Skyla Bigale Priya Katenga
+Major 1:BA Political Science  -  as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Ahmed Magdy Khalil
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Valeriia Khvostova
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Kayla Kirkpatrick
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Natasha Kisila
+Major 1:BA Communications/Political Science-as of Fall 2022
+Minor:None
+Major 2:None
+Minor 2:None
+
+Nicolette Maria Klibson
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Paige Knudson
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Yurim Ko
+Major 1:BA Art History/Humanistic Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Michelle Koiava
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Masa Kovacevic
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Zoe Asena Kratins
+Major 1:BA Political Science
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Henry Krenzer
+Major 1:BA Econ&Fin-FA22/International Aff-FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Maite Kronland Justen De Oliveira
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Vasil Pavlov Kruglii
+Major 1:BA History
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Ms. Gioia Caroleena Kunst
+Major 1:BA Psychological Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Mina Michael Kyoleyan
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Laura Grazia La Forgia
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Natalia Lachininskaia
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alison Carol Ladd
+Major 1:BA Art History-as of FA22
+Minor:Art and Design/Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Ms. Matilde Lalli
+Major 1:BA Classical Studies/English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Alberto Lalo Missrie
+Major 1:BA Communications
+Minor:Entrepreneurship: Social Innovation
+Major 2:None
+Minor 2:None
+
+Nicholas Legend Langley
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Bryce Donald Lanigan
+Major 1:BA Italian Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Manuela Larrea
+Major 1:BA Art History-as of FA22
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Mr. Luis Vicente Latorre Funke
+Major 1:BA Psychological Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Kacie Lyn Lavender
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Zed Alexander Layson
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Anastasiia Lazareva
+Major 1:BA Communications
+Minor:Art and Design/Entrepreneurship - Art and Humanities
+Major 2:None
+Minor 2:None
+
+Ms. Amalia Le Pape
+Major 1:BA Marketing
+Minor:Entrepreneurship: Social Innovation
+Major 2:None
+Minor 2:None
+
+Ms. Sofia Ledda
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Adrien Kee Tae Lengert
+Major 1:BA Marketing
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Giulia Leurini
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Eli Alessandro Lev
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Eric Linari
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Giulia Elizabeth Lindquist
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Andrea Livoli
+Major 1:BA Psychological Science
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Urangoo Lkhagvasuren
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Francesca Maria Lo Campo
+Major 1:BA Psychological Science
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Marica Loffreda
+Major 1:BA Communications
+Minor:None
+Major 2:BA International Affairs
+Minor 2:None
+
+Luigi Lombardi
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Giacomo Lombardo
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Emilia Lopez Ortega
+Major 1:BA International Affairs - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Ka Ren Patricia-Marie Maccalla
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Antonio Alvaro Mackoul
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. David Francis Maehle
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Christopher Maggiano
+Major 1:BA Psychological Science
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Helena Miriam Diana Maier
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Nino Malakmadze
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Beatrice Malcotti
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Lorenzo Malguzzi
+Major 1:BA International Affairs - as of FA22
+Minor:Humanistic Studies/ Legal Studies
+Major 2:None
+Minor 2:None
+
+Filippo Mancinelli
+Major 1:BA Business Administration
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Francesca Mancini
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Emilia Mandia
+Major 1:BA Marketing
+Minor:Gender Studies/ Psychology
+Major 2:None
+Minor 2:None
+
+Mr. Manlio Mangione
+Major 1:BA Marketing
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Mr. Gabriele Mannering
+Major 1:BA Business Administration
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Vivian Candace Marceca
+Major 1:BA Psychological Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Benjamin Knute Marchi
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Leonardo Margiotta
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Arianna Sofia Marin
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Irina Marincus
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Samantha Marra
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Tristan Marris
+Major 1:BA Economics and Finance
+Minor:Business Administration/Philosophy
+Major 2:None
+Minor 2:None
+
+Ms. Flavia Marsico
+Major 1:BA Political Science  -  as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Andrea Maso
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Rita Massi
+Major 1:BA Marketing
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Greta Mastroianni
+Major 1:BA International Affairs - as of FA22
+Minor:History/Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Nelson Angel Matos
+Major 1:BA English Literature
+Minor:Art History/Communications/Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Ms. Francesca Mattone
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Vanessa Azura Mauri
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Nicol Mazzantini
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Annalaura Mazzeo
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Teresa Mazzone
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Maya Lan McCarthy
+Major 1:BA Art History
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Carla Sofia Mcneley Riera
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Natalia Medero Lopez
+Major 1:BA Art History-as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Hannah Louise Meit
+Major 1:BA Art History-as of FA22
+Minor:Art and Design/Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Elena Meloni
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ines Menacho Fleig
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Bersabeh Johney Mergia
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Filippo Merli
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Kaitlyn Meule
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Dan Kirt Bullanday Micu
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Ann Genevra Miller
+Major 1:BA Humanistic Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Carolina Myriam Miller
+Major 1:BA Political Science  -  as of FA22
+Minor:Communications/Legal Studies
+Major 2:None
+Minor 2:None
+
+Nika Romeo Mincheva
+Major 1:BA Humanistic Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Velina Radoslavova Mincheva
+Major 1:BA Business Administration
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Silvia Mineo
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Ludovica Minervino
+Major 1:BA Business Administration
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Fiona Mishkin
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Giorgio Misitano
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Georgiana Moisa
+Major 1:BA International Business
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Ms. Fernanda Lucia Montano Hurtado
+Major 1:BA International Business
+Minor:Entrepreneurship: For Profit
+Major 2:None
+Minor 2:None
+
+Cayetana Montes
+Major 1:BA International Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Ms. Nicole Moretti
+Major 1:BA Psychological Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Valentina Morgillo
+Major 1:BA Marketing
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Fiamma Morichelli
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Maria Morozan
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Arianna Morrico
+Major 1:BA Art History-as of FA22
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Emily Grace Morrissey
+Major 1:BA Political Science  -  as of FA22
+Minor:Communications/Entrepreneurship-Social Innovation
+Major 2:None
+Minor 2:None
+
+Mr. Peter Mourlot
+Major 1:BA Communications
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Skye Anastasia Mugford
+Major 1:BA Communications
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Mr. Rehman Adil Muhammad
+Major 1:BA Economics and Finance - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Cristina Muhonen
+Major 1:BA International Affairs - as of FA22
+Minor:History/Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Kayla Ann Muller
+Major 1:BA International Affairs - as of FA22
+Minor:Communications/Legal Studies
+Major 2:None
+Minor 2:None
+
+Catalina Munoz
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Federica Murgolo
+Major 1:BA English Literature
+Minor:Creative Writing/Philosophy
+Major 2:None
+Minor 2:None
+
+Ms. Michaela Alanna Murphy
+Major 1:BA Art History
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Mr. Giuseppe Musto
+Major 1:BA Business Administration
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Violeta Shereen Nanutti
+Major 1:BA Communications
+Minor:Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Ms. Bianca Nardelli
+Major 1:BA Psychological Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Aleksandra Nasobina
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Isabella Nassiff
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Mr. Alessandro Natale
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Gabriele Vincenzo Natale
+Major 1:BA International Affairs - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Giorgia Natalizia
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Lapo Nencini
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Louis Newman
+Major 1:BA Humanistic Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sean Nichols
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Max Alexander Nokes
+Major 1:BA Communications/History
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Michela Noris
+Major 1:BA International Affairs - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Julia Nudo
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Talia Bryerton O'Reilly
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Zoe  Elizabeth Ogle
+Major 1:BA Art History-as of FA22
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Melisa Olier Pedroza
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Lauren Marie Onodera-Brasel
+Major 1:BA Communications/Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Elena Orazi
+Major 1:BA International Affairs - as of FA22
+Minor:Entrepreneurship: Social Innovation
+Major 2:None
+Minor 2:None
+
+Giuseppe Orsini
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Adriana Bella Ortega
+Major 1:BA Communications/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Anna Giulia Palmieri
+Major 1:BA Economics and Finance - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Ms. Maria Alessia Palmieri
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alessia Palmisano
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Antonella Maria Papaianni
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Simone Paparatto
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Michaela Papoudi
+Major 1:BA Marketing
+Minor:Business Administration/Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Marouso Pappas
+Major 1:BA Communications
+Minor:Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Ms. Elisa Paris
+Major 1:BA International Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Vishwa Parmar
+Major 1:BA English Literature
+Minor:Communications/Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Giulia Passalacqua
+Major 1:BA Art History/Psychological Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Martina Patrizia Passalacqua
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Giordana Paterno
+Major 1:BA Marketing
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Hans Olav Paulsen
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Barbara Pena Guzman
+Major 1:BA English Literature
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Ananda Kai Penkwitt
+Major 1:BA Art History
+Minor:Art and Design/Communications
+Major 2:None
+Minor 2:None
+
+Ms. Sarah Permel
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Federico Petruccelli
+Major 1:BA Communications
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Pierluigi Pettini
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Elisa Pinnelli
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Elinor Rebecca Piperno
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Sara Piperno
+Major 1:BA Business Administration/Marketing
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Guido Plebani
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Arina-Mariia Polishchuk
+Major 1:BA Communications/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Molly Blythe Pollock
+Major 1:AA Psychology
+Minor:None
+Major 2:None
+Minor 2:None
+
+Marya Polovinkina
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Maria Costanza Poma Murialdo Fournier
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Allison Grace Pomeroy
+Major 1:BA Humanistic Studies
+Minor:Philosophy
+Major 2:None
+Minor 2:None
+
+Angela Pomo
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Juan Fernando Ponce Jacome
+Major 1:BA Business Administration
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Selini Popp
+Major 1:BA Business Administration
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Luisa Porzio
+Major 1:BA International Affairs
+Minor:None
+Major 2:BA Psychological Science
+Minor 2:Legal Studies
+
+Giulia Prandini
+Major 1:BA Econ&Fin-FA22/International Aff-FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Eleonora Prior
+Major 1:BA English Literature
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Catherine Frances Pritchard
+Major 1:BA Marketing
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Ester Giulia Martina Privitera
+Major 1:BA Political Science  -  as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Lukas Simon Probst
+Major 1:BA International Business
+Minor:Economics/Legal Studies
+Major 2:BA Marketing
+Minor 2:None
+
+Enrica Profeta
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Rebecca Proietti
+Major 1:BA Psychological Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Mr. Valerio Proietti
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Bianca Maria Luisa Protti
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Zara Qasim
+Major 1:BA International Business
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Carola Quarantini
+Major 1:BA Marketing
+Minor:Business Administration/Entrepreneurship - Innovation&Tech
+Major 2:None
+Minor 2:None
+
+Ms. Alaina Quinn
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ria Shivanna Raghunanan
+Major 1:BA Communications/International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Setara Rahimi
+Major 1:BA Business Administration
+Minor:Economics/Marketing
+Major 2:None
+Minor 2:None
+
+Maya Randolph
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Meia Dolce Rangel
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Francesca Maria Rapisarda
+Major 1:BA Communications
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Alessandro Ratto
+Major 1:BA International Business
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Mr. Joseph Callan Rawcliffe
+Major 1:BA International Affairs - as of FA22
+Minor:Classical Studies
+Major 2:None
+Minor 2:None
+
+Paolo Clemente Resta
+Major 1:BA Economics and Finance - as of FA22
+Minor:Mathematics
+Major 2:None
+Minor 2:None
+
+Gaia Restelli
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Valeria Reyes Garcia
+Major 1:BA Psychological Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Carlotta Ricciotti
+Major 1:BA Marketing
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Ms. Arihyanna Richards
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Larissa Katharina Richter
+Major 1:BA Psychological Science
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Vito Risucci
+Major 1:BA International Business/Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Alessandra Rizzo
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Valentina Rizzo Ocariz
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Jeanne Lea Carla Rodrigues
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Sydney Roe
+Major 1:BA Humanistic Studies
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Mr. Daniel Felipe Rojas
+Major 1:BA Art History-as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Allison Rolla
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Ada Maria Francesca Romeo
+Major 1:BA Communications/Psychological Science
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Martina Rossillo
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alexandra Ellen Ruatti
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Luca Rubertà
+Major 1:BA Marketing
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Ms. Giulia Francesca Rucco
+Major 1:BA International Affairs - as of FA22
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Ms. Mariagiovanna Ruggiero
+Major 1:BA International Affairs
+Minor:Legal Studies/Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Katarina Michelle Ruiz
+Major 1:BA Political Science  -  as of FA22
+Minor:Communications/Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Emanuela Rosa Ruotolo
+Major 1:BA International Affairs - as of FA22
+Minor:History
+Major 2:None
+Minor 2:None
+
+Ms. Anastassia Sofia Rusanoff
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Carlo Russo
+Major 1:BA International Business
+Minor:Economics/Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Iris Russo
+Major 1:BA Communications
+Minor:Creative Writing/Gender Studies
+Major 2:None
+Minor 2:None
+
+Enoch Salas
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Jose Miguel Salvatierra Hidalgo
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Brandon Louis Salvi
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Michaela Salzman
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Adriana Mae Samuels
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Felipe Sanchez De Lozada
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Malia Anamarie Sanchez
+Major 1:BA History
+Minor:Classical Studies
+Major 2:None
+Minor 2:None
+
+Ms. Natelie Sanders
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Colette Brion Fox Sandhu
+Major 1:BA Communications
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Mr. Carlos Santander
+Major 1:BA International Bus/ International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Addie Lee Santaniello
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Karla Santillana
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Ms. Lynch Ainsley G. Sariola
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Riccardo Sarra
+Major 1:BA International Affairs - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Emma Jade Saul
+Major 1:BA Communications
+Minor:International Affairs
+Major 2:None
+Minor 2:None
+
+Mr. Nazariy Savkiv
 Major 1:BA Economics and Finance
 Minor:Mathematics
 Major 2:None
 Minor 2:None
-Major: BA Economics and Finance student:Ms. Elettra Scianetti
+
+Mr. Robert Ionut Savu
+Major 1:BA Economics and Finance - as of FA22
+Minor:None
+Major 2:BA Business Administration
+Minor 2:None
+
+Alena Alekseevna Sazonova
+Major 1:BA Communications
+Minor:Entrepreneurship: Social Innovation
+Major 2:None
+Minor 2:None
+
+Ms. Doma Scaini
+Major 1:BA International Affairs
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Annabel Klees Schaeffer
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ella Alexandra Schale
+Major 1:BA Psychological Science
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Michelangelo F. B. Schroeder
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Christopher James Schwarten
+Major 1:BA Italian Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Ayana Scivetti
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Andrea Scorta
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Annalucia Scotto Di Clemente
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Eleonora Scuderi
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Pietro Maria Secchia
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Gabriel Sed
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Sara Segat
+Major 1:BA Communications
+Minor:Creative Writing/Entrepreneurship-For Profit
+Major 2:None
+Minor 2:None
+
+Ms. Irene Semerano
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Margaux Serratore
+Major 1:BA International Affairs - as of FA22
+Minor:Economics/Legal Studies
+Major 2:None
+Minor 2:None
+
+Antonella Maria Servidio
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Isabella Sevilla Aguilera
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Namuandi Tunomukwathi Mesindano Shaanika
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Hamza Khalifa Sheibani
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Aiyana Elaine Shriver
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Garrick Dale Shull
+Major 1:BA English Literature-as of FA23
+Minor:None
+Major 2:None
+Minor 2:None
+
+Eleonora Silli
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Micol Silvera
+Major 1:BA English Literature
+Minor:Creative Writing/Psychology
+Major 2:None
+Minor 2:None
+
+Mr. David Oliver Simpson
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Michela Sinardi
+Major 1:BA International Affairs - as of FA22
+Minor:Philosophy
+Major 2:None
+Minor 2:None
+
+Ms. Arsh Deep Singh
+Major 1:BA International Business
+Minor:Entrepreneurship: For Profit
+Major 2:None
+Minor 2:None
+
+Mr. Harman Singh
+Major 1:BA International Affairs - as of FA22
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Alessa Smith
+Major 1:BA Psychological Science
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Cidney Mcartan Smith
+Major 1:BA Art History-as of FA22
+Minor:Classical Studies
+Major 2:None
+Minor 2:None
+
+Alessia Solci
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Michael Sonnino
+Major 1:BA Business Administration
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Mr. Noe Elias Sosa Rodriguez
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sidney Alfred South
+Major 1:BA Business Administration
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Ms. Nicole Spaziani
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Eva Spila
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Martina Spizzichino
+Major 1:BA Marketing
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Elisa Stabiano
+Major 1:BA International Business
+Minor:Entrepreneurship: Art & Humanities
+Major 2:None
+Minor 2:None
+
+Yoana Stoyanova Stavreva
+Major 1:BA International Affairs - as of FA22
+Minor:Humanistic Studies
+Major 2:None
+Minor 2:None
+
+Alexis Nicole Steelman
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Zoey Moreaux Steelman
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Ginevra Stefanelli
+Major 1:BA Political Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Dane Stone
+Major 1:BA International Affairs - as of FA22
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Sofia Strawder
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Grace Anne Sullivan
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Giulio Taglialatela
+Major 1:BA Economics and Finance - as of FA22
+Minor:Mathematics
+Major 2:None
+Minor 2:None
+
+Samira Maria Tarantino
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Gabriel Niccolo Tayao Tayao
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Finlay Kichio Taylor
+Major 1:BA Communications
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Sebastian Terrazas
+Major 1:BA Classical Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Giulia Testa
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Elizabeth Thorpe
+Major 1:BA Art History - prior to Fall 2019
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alaina Joy Tice
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Dominique Denopra Tionko
+Major 1:BA - Undeclared
+Minor:None
+Major 2:None
+Minor 2:None
+
+Lorenzo Tiozzo Caenazzo
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Carla Tomaino
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Lily Tooman
+Major 1:BA International Affairs - as of FA22
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Matias Tornaboni
+Major 1:BA Business Administration
+Minor:None
+Major 2:None
+Minor 2:None
+
+Allyson Nicole Torres
+Major 1:BA Psychological Science
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Mr. Sebastian Kenneth Torres-Yeckley
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Lovisa Therese Tostemar
+Major 1:BA Economics and Finance
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Benjamin Toussaint
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Rebekah Ilene Tracy
+Major 1:BA International Business
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Joshua Andrew Trexler
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
 Mr. Anthony Tricarico
 Major 1:BA Economics and Finance - as of FA22
 Minor:International Affairs
 Major 2:BA Psychological Science
 Minor 2:None
-Major: BA Economics and Finance - as of FA22 student:Mr. Anthony TricaricoMajor: BA Psychological Science student:Mr. Anthony Tricarico
+
+Ms. Sabrina Triglia
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Jane Isabella Trina
+Major 1:BA Psychological Science
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Ms. Manuela Trujillo
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Temashengu Nomaswati Tshabalala
+Major 1:BA Communications/English Literature
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Sara Turati
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Nicole Vahdat
+Major 1:BA Communications
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Mr. Erick Valencia
+Major 1:BA History
+Minor:Classical Studies/Psychology
+Major 2:None
+Minor 2:None
+
+Mr. Francesco Valenti
+Major 1:BA Economics and Finance - as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Sabrina Valori
+Major 1:BA International Affairs
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Ms. Emma Rose Van Dyke
+Major 1:BA Communications
+Minor:Entrepreneurship: Social Innovation
+Major 2:None
+Minor 2:None
+
+Ms. Yeva Varenitsina
+Major 1:BA Communications
+Minor:History
+Major 2:None
+Minor 2:None
+
+Vito Vasile
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Kian Vatandoost
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Victoria Valentina Vega
+Major 1:BA International Affairs
+Minor:None
+Major 2:None
+Minor 2:None
+
+Isabel Monique Velazquez
+Major 1:BA Classical Studies
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Gabriele Venneri
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Jill Verbeeck
+Major 1:BA Psychological Science
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Lusiana Therese Veveiros
+Major 1:BA Political Science  -  as of FA22
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Akira Vicaro
+Major 1:BA International Affairs - as of FA22
+Minor:Economics/History
+Major 2:None
+Minor 2:None
+
+Ms. Gea Villa
+Major 1:BA Communications
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ines Villarreal Senzatimore
+Major 1:BA English Literature
+Minor:Communications
+Major 2:None
+Minor 2:None
+
+Santiago Villegas Gomez
+Major 1:BA History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Melissa Arlette Villegas
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Francesca Visconti
+Major 1:BA Psychological Science
+Minor:Legal Studies
+Major 2:None
+Minor 2:None
+
+Naomi Vitiello
+Major 1:BA English Literature
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Nicole Rosanna Vitiello
+Major 1:BA International Business
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Delma Vitobello
+Major 1:BA Psychological Science
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Ms. Noemi Volpi
+Major 1:BA Marketing
+Minor:Business Administration/Psychology
+Major 2:None
+Minor 2:None
+
+Erjon Vorfi
+Major 1:BA International Business
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sophia Theresia Vukovich
+Major 1:BA Art History
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Maria Paz Wandemberg
+Major 1:BA Marketing
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Ethan James Watson
+Major 1:BA History
+Minor:Classical Studies
+Major 2:BA Classical Studies
+Minor 2:None
+
+Ms. Paige Eileen Weber
+Major 1:BA Art History-as of FA22
+Minor:None
+Major 2:None
+Minor 2:None
+
+Alia Frances Weiner
+Major 1:BA Communications
+Minor:Business Administration
+Major 2:None
+Minor 2:None
+
+Mr. Jackson Cole Whisenhunt
+Major 1:BA Political Science
+Minor:Art History
+Major 2:None
+Minor 2:None
+
+Lucas Michael Whitaker
+Major 1:BA International Affairs - as of FA22
+Minor:Gender Studies
+Major 2:None
+Minor 2:None
+
+Ms. Gabriella Haley Whited
+Major 1:BA Communications
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Taleha Whyte
+Major 1:BA Communications
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Ms. Bianka Angelique Wille-Mendoza
+Major 1:BA English Literature
+Minor:None
+Major 2:None
+Minor 2:None
+
+Ms. Kathryn Jean Williams
+Major 1:BA Communications
+Minor:Creative Writing
+Major 2:None
+Minor 2:None
+
+Zanai Aliece Williams
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Sanay Woolen
+Major 1:BA Psychological Science
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Cristiana Wu
+Major 1:BA Political Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Mr. Noam Yawetz
+Major 1:BA Business Administration
+Minor:Entrepreneurship: Innovation & Technology
+Major 2:None
+Minor 2:None
+
+Mr. Giorgio Zacheo
+Major 1:BA International Business
+Minor:Economics
+Major 2:None
+Minor 2:None
+
+Lorenzo Zampetti
+Major 1:BA Psychological Science
+Minor:None
+Major 2:None
+Minor 2:None
+
+Giorgia Zampini
+Major 1:BA Communications
+Minor:Psychology
+Major 2:None
+Minor 2:None
+
+Mr. Chenyu Zhou
+Major 1:BA Business Administration
+Minor:Marketing
+Major 2:None
+Minor 2:None
+
+Ms. Aurora Elena Fosca Zio
+Major 1:BA Communications
+Minor:Art and Design
+Major 2:None
+Minor 2:None
+
+Angelica Zollo
+Major 1:BA Communications
+Minor:Gender Studies
+Major 2:None
+Minor 2:None
