@@ -3,6 +3,7 @@ import json
 import numpy as np
 import xml.etree.ElementTree as ET
 
+#trim
 
 #CREATES THE MAPPING FROM BLACKBAUD ABBREVATIONS TO FULL NAME OF MAJORS
 def create_majors_names_mapping():
@@ -20,7 +21,7 @@ def create_majors_names_mapping():
         
         #print(f"The actual name of {abbreviations[x]} is {complete[x]}")
         
-        mapping[abbreviations[x]] = complete[x]
+        mapping[abbreviations[x].strip()] = complete[x].strip()
         
     with open("execution_files\json\majors_mapping.json", "w") as myFile:
         json.dump(mapping, myFile)
@@ -52,7 +53,30 @@ def create_courses_list():
     current_cr = ""
     req_grade = ""
     
-
+    for x in range(0,len(names)):
+        if type(names[x]) is not float:
+            names[x] = names[x].strip()
+            
+        if type(codes[x]) is not float:
+            codes[x] = codes[x].strip()
+            
+        #if type(numbers[x]) is not float:
+            #numbers[x] = numbers[x].strip()
+        
+        #if type(creds[x]) is not float:
+            #creds[x] = creds[x].strip()
+        
+        #if type(ids[x]) is not float:
+            #ids[x] = ids[x].strip()
+        
+        if type(period[x]) is not float:
+            period[x] = period[x].strip()
+        
+        if type(concentration[x]) is not float:
+            concentration[x] = concentration[x].strip()
+        
+        if type(on_site[x]) is not float:
+            on_site[x] = on_site[x].strip()
     
     for x in range(0,len(names)):
         #print("Analyzing: ", names[x])    
@@ -187,6 +211,26 @@ def create_majors_dict():
     curr_el = ""
     
     for x in range(0,len(names)):
+        
+        if type(names[x]) is not float:
+            names[x] = names[x].strip()
+        
+        #if type(reqs_nums[x]) is not float:
+            #reqs_nums[x] = reqs_nums[x].strip()
+            
+        if type(elect_codes[x]) is not float:
+            elect_codes[x] = elect_codes[x].strip()
+            
+        #if type(type_lower[x]) is not float:
+            #type_lower[x] = type_lower[x].strip()
+            
+        #if type(keys_upper[x]) is not float:
+            #keys_upper[x] = keys_upper[x].strip()
+            
+        if type(descriptions[x]) is not float:
+            descriptions[x] = descriptions[x].strip()
+    
+    for x in range(0,len(names)):
         #print("Analyzing: ", names[x])
         # to skip empty lines
         if type(names[x]) is not float:
@@ -232,7 +276,9 @@ def create_majors_dict():
             else:
                 # this is one of the requirements, so we store the values into variables
                 
-                code = str(elect_codes[x])
+                code = ""
+                if type(elect_codes[x]) is not float:
+                    code = str(elect_codes[x])
 
                 if type(type_lower[x]) is int:
                     lower_bound = int(type_lower[x])
@@ -562,8 +608,9 @@ def create_student_json(file_name):
         
 """""""""""""""""""""""""""
 CALLING FUNCTIONS
-"""            
+"""""""""""""""""""""""""""            
+'''
 create_majors_names_mapping()        
 create_courses_list()    
 create_majors_dict()
-#create_student_json(file_name)
+'''

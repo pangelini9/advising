@@ -36,7 +36,7 @@ letter_to_number = {
     "NP" : 0.2,
     "W" : 0.3,
     "current" : 0.4,
-    "TR" : 0.5, # PA: added this entry, for Transfer credits,
+    "TR" : 4.5, # PA: added this entry, for Transfer credits,
     "AU" : 0.01}
 
 number_to_letter = {
@@ -57,7 +57,7 @@ number_to_letter = {
     0.2 : "NP",
     0.3 : "W",
     0.4 : "current",
-    0.5 : "TR", # PA: added this entry, for Transfer credits
+    4.5 : "TR", # PA: added this entry, for Transfer credits
     0.01 : "AU"}
 
 
@@ -130,7 +130,7 @@ def create_dplanners():
                             
         major_structure = curr_major.get_planner_structure()
 
-        print(f"\n{stud_name} {major_name}")
+        print(f"\n{stud_name} {major_name}\n")
         
         if major_structure == 1:
             banner = banner_list["structure_one"]

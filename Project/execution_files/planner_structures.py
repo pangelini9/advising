@@ -4,7 +4,7 @@ Created on Thu Jul 20 13:04:30 2023
 
 @author: elettra.scianetti
 """
-#create_student_json, core_list, print, json
+#create_student_json, core_list, print, json, create_info_list
 
 import xlsxwriter
 import os.path
@@ -35,7 +35,7 @@ number_to_letter = {
     0.2 : "NP",
     0.3 : "W",
     0.4 : "current",
-    0.5 : "TR", # PA: added this entry, for Transfer credits
+    4.5 : "TR", # PA: added this entry, for Transfer credits
     0.01 : "AU"}
 
 #1 == additional courses
@@ -129,7 +129,7 @@ CREATE THE STRUCTURES
 def additional_courses(planner_name, curr_student, courses_list, banner_content, legend_keys):
     path = os.path.relpath(f"planners/{planner_name}.xlsx")
 
-    workbook = xlsxwriter.Workbook(path, {'nan_inf_to_errors': True})
+    workbook = xlsxwriter.Workbook(path, {'nan_inf_to_errors': True, 'useSharedStrings': True, 'useStyles': True})
     worksheet = workbook.add_worksheet()
     
     worksheet.set_column(0, 5, 11)
@@ -142,9 +142,6 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     """""""""""""""""""""""""""
     DEFINE FORMATS
     """""""""""""""""""""""
-    font_size = workbook.add_format({'font_size': 10})
-
-    bold_center = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1, 'align': 'center'})
     bold_left = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1})
 
     border_center = workbook.add_format({'font_size': 10, 'border': 1, 'align': 'center',})
@@ -156,6 +153,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         'bold': 1,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'fg_color': '#BDD7EE'
         })
 
@@ -165,6 +163,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         'bold': 0,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'text_wrap': True
         })
 
@@ -213,7 +212,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     row = 1
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
-    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    student_major = "Degree Planner for " + curr_student.major.get_name()
     long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
     long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
@@ -253,12 +252,12 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     #ADDITIONAL REQUIREMENTS
     additional_requirements = curr_student.check_additional()
     additional_remaining = curr_student.get_additional_remaining()
-    obj_additional_remaining = create_remaining_list_special(courses_list, additional_remaining)    
+    obj_additional_remaining = create_remaining_list_special(courses_list, additional_remaining, curr_student.major)    
         
     #CORE COURSES
     core_courses = curr_student.check_core()
     core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining, curr_student.major)
     
     #MAJOR ELECTIVES
     major_electives = curr_student.check_major_electives()
@@ -650,6 +649,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
         banner_list = banner["D"] 
         long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
         long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+        worksheet.set_row(row, 50)
     
     course_det_left(row+1, worksheet, bold_left)
     new_row = row+2
@@ -700,7 +700,7 @@ def additional_courses(planner_name, curr_student, courses_list, banner_content,
     legend_merge(row, banner_list[0], worksheet, merge_format1)
     worksheet.write(row, 15, "Total", bold_left)
     worksheet.write(row, 14, "", bold_left)
-    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing (tentative)", "Credits missing (actual)"]
     data_list = curr_student.create_info_list()
     row = row + 1
     legend_structure(info_list, data_list, row, worksheet, border_left)
@@ -739,9 +739,6 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     """""""""""""""""""""""""""
     DEFINE FORMATS
     """""""""""""""""""""""
-    font_size = workbook.add_format({'font_size': 10})
-
-    bold_center = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1, 'align': 'center'})
     bold_left = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1})
 
     border_center = workbook.add_format({'font_size': 10, 'border': 1, 'align': 'center',})
@@ -753,6 +750,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         'bold': 1,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'fg_color': '#BDD7EE'
         })
 
@@ -762,6 +760,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         'bold': 0,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'text_wrap': True
         })
 
@@ -811,7 +810,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     row = 1
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
-    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    student_major = "Degree Planner for " + curr_student.major.get_name()
     long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
     long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
@@ -852,11 +851,11 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     #CORE COURSES
     core_courses = curr_student.check_core()
     core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining, curr_student.major)
 
     #MAJOR ELECTIVES
     major_electives = curr_student.check_major_electives()
-    
+
     #MINOR 1
     #MINOR 2
     
@@ -1120,10 +1119,15 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         
         if core_list[i][0] == "":
             row = 26+lengt_first_part+i
-            if core_list[i][0] == "":
-                short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
-            else:
-                worksheet.write(row, 0, core_list[i][2], course_info_format) 
+            #if core_list[i][0] == "":
+                #short_merge_sx(row, core_list[i][2], 0,  worksheet, merge_format1, merge_format2, bold_left)
+            #else:
+            worksheet.write(row, 0, core_list[i][2], course_info_format)
+            worksheet.write(row, 1, "", course_info_format)
+            worksheet.write(row, 2, "", course_info_format)
+            worksheet.write(row, 3, "", course_info_format)
+            worksheet.write(row, 4, "", course_info_format)
+            worksheet.write(row, 5, "", course_info_format)
         else:
             core_course = core_list[i][0]
             course_grade = core_list[i][1]
@@ -1173,7 +1177,8 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
         banner_list = banner["C"] 
         long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
         long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
-
+        worksheet.set_row(row, 50)
+        
     course_det_left(row+1, worksheet, bold_left)
     new_row = row+2
 #row, arg, c, worksheet, merge_format1, merge_format2
@@ -1224,7 +1229,7 @@ def core_courses(planner_name, curr_student, courses_list, banner_content, legen
     legend_merge(row, banner_list[0], worksheet, merge_format1)
     worksheet.write(row, 15, "Total", bold_left)
     worksheet.write(row, 14, "", bold_left)
-    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing (tentative)", "Credits missing (actual)"]
     data_list = curr_student.create_info_list()
     row = row + 1
     legend_structure(info_list, data_list, row, worksheet, border_left)
@@ -1262,9 +1267,6 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     """""""""""""""""""""""""""
     DEFINE FORMATS
     """""""""""""""""""""""
-    font_size = workbook.add_format({'font_size': 10})
-
-    bold_center = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1, 'align': 'center'})
     bold_left = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1})
 
     border_center = workbook.add_format({'font_size': 10, 'border': 1, 'align': 'center',})
@@ -1276,6 +1278,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         'bold': 1,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'fg_color': '#BDD7EE'
         })
 
@@ -1285,6 +1288,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         'bold': 0,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'text_wrap': True
         })
 
@@ -1333,7 +1337,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     row = 1
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
-    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    student_major = "Degree Planner for " + curr_student.major.get_name()
     long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
     long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
@@ -1373,7 +1377,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     #CORE COURSES
     core_courses = curr_student.check_core()
     core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining, curr_student.major)
     
     #TRACKS
     
@@ -1673,28 +1677,52 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         
         row = 26+lengt_first_part+len(core_list)+i
 
-        worksheet.write(row, 0, create_remaining_list_special[i][2], course_info_format) #col H=7
+        worksheet.write(row, 0, obj_core_remaining[i][2], course_info_format) #col H=7
         worksheet.write(row, 1, core_course.get_code(), course_info_format)
         worksheet.write(row, 2, core_course.get_number(), course_info_format)
         worksheet.write(row, 3, "", course_info_format)
         worksheet.write(row, 4, "", course_info_format)
         worksheet.write(row, 5, core_course.get_credits(), course_info_format)    
+
+    """""""""""""""""""""""""""""""""""""""
+    PRINT TRACKS
+    """""""""""""""""""""""""""""""""""""""
+    #set the row depending on the longest between core courses
+    core_lenght = len(core_list) + len(obj_core_remaining) 
+    row = 29 + lengt_first_part + core_lenght
+
+    banner_list = banner["C"] 
+    long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "chosen track"
+    #long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
+    #worksheet.set_row(row, 50)
+    
+    #concentration A
+    banner_list = banner["X"]
+    short_merge_sx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print core courses
+    #course_det_left(row+2, worksheet, bold_left)
+    
+    #concentration B
+    banner_list = banner["Z"]
+    short_merge_dx(row+1, banner_list[1], 0, worksheet, merge_format1, merge_format2, bold_left) #print core courses
+    #course_det_right(row+2, worksheet, bold_left)
     
     
     """""""""""""""""""""""""""""""""""""""
     PRINT MAJOR ELECTIVES
     """""""""""""""""""""""""""""""""""""""
-    #set the row depending on the longest between core and additional requirements
+    #set the row depending on the longest between core courses
     core_lenght = len(core_list) + len(obj_core_remaining) 
-    row = 29 + lengt_first_part + core_lenght
+    #row = 29 + lengt_first_part + core_lenght
+    row = 35 + lengt_first_part + core_lenght
     
     if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
         row=curr_student.major.major_electives_banner(row, worksheet, merge_format1, merge_format2)
     else:
-        banner_list = banner["C"] 
+        banner_list = banner["D"] 
         long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
         long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
-    
+        worksheet.set_row(row, 50)
+        
     course_det_left(row+1, worksheet, bold_left)
     new_row = row+2
     
@@ -1713,7 +1741,8 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
         if curr_student.major.get_major_key()==12 or curr_student.major.get_major_key()==27: #communications has a different major electives banner
             row = new_row + i
         else:
-            row = 31 + lengt_first_part + core_lenght + i
+            #row = 31 + lengt_first_part + core_lenght + i
+            row = 37 + lengt_first_part + core_lenght + i
 
         worksheet.write(row, 0, elective_course.course.get_name(), course_info_format) #col H=7
         worksheet.write(row, 1, elective_course.course.get_code(), course_info_format)
@@ -1744,7 +1773,7 @@ def core_tracks(planner_name, curr_student, courses_list, banner_content, legend
     legend_merge(row, banner_list[0], worksheet, merge_format1)
     worksheet.write(row, 15, "Total", bold_left)
     worksheet.write(row, 14, "", bold_left)
-    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing (tentative)", "Credits missing (actual)"]
     data_list = curr_student.create_info_list()
     row = row + 1
     legend_structure(info_list, data_list, row, worksheet, border_left)
@@ -1781,9 +1810,6 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     """""""""""""""""""""""""""
     DEFINE FORMATS
     """""""""""""""""""""""
-    font_size = workbook.add_format({'font_size': 10})
-
-    bold_center = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1, 'align': 'center'})
     bold_left = workbook.add_format({'font_size': 10, 'bold': True, 'border': 1})
 
     border_center = workbook.add_format({'font_size': 10, 'border': 1, 'align': 'center',})
@@ -1795,6 +1821,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         'bold': 1,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'fg_color': '#BDD7EE'
         })
 
@@ -1804,6 +1831,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         'bold': 0,
         'border': 1,
         'align': 'center',
+        'valign': 'vcenter',
         'text_wrap': True
         })
 
@@ -1852,7 +1880,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     row = 1
     column = 0
     student_name = curr_student.get_name() + " " + curr_student.get_surname()
-    student_major = "Degree Planner for B.A. in " + curr_student.major.get_name()
+    student_major = "Degree Planner for " + curr_student.major.get_name()
     long_merge(row, student_major, 1, worksheet, merge_format1, merge_format2) #major
     long_merge(row+1, student_name, 0, worksheet, merge_format1, merge_format2)  #name and surname
     banner_list = banner["A"]
@@ -1892,7 +1920,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     #CORE COURSES
     core_courses = curr_student.check_core()
     core_remaining = curr_student.get_core_remaining()
-    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining)
+    obj_core_remaining = create_remaining_list_special(courses_list, core_remaining, curr_student.major)
     
     #MAJOR ELECTIVES
     major_electives = curr_student.check_major_electives()
@@ -2215,7 +2243,8 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
         banner_list = banner["C"] 
         long_merge(row, banner_list[0], 1, worksheet, merge_format1, merge_format2) #prints "Major Electives"
         long_merge(row+1, curr_student.major.get_major_explanation(), 0, worksheet, merge_format1, merge_format2) #prints description
-    
+        worksheet.set_row(row, 50)
+        
     course_det_left(row+1, worksheet, bold_left)
     new_row = row+2
     electives_list = major_electives.get("courses done")
@@ -2264,7 +2293,7 @@ def electives_tracks(planner_name, curr_student, courses_list, banner_content, l
     legend_merge(row, banner_list[0], worksheet, merge_format1)
     worksheet.write(row, 15, "Total", bold_left)
     worksheet.write(row, 14, "", bold_left)
-    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+    info_list = ["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing (tentative)", "Credits missing (actual)"]
     data_list = curr_student.create_info_list()
     row = row + 1
     legend_structure(info_list, data_list, row, worksheet, border_left)

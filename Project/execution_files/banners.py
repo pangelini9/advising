@@ -54,7 +54,11 @@ banner_list = {
     "structure_three": {
         "A" : ["A. Proficiency and General Distribution Requirements", ""], 
         "B" : ["B. Core Courses", "No more that two core courses might be passed with a grade lower than C-"],
+        
         "C" : ["C. Chosen Track", ""],
+        "X" : ["", "Track A – Classical Language and Literature"],
+        "Z" : ["", "Track B – Classical Archaeology and Ancient History"],
+        
         "D" : ["D. Major Electives Courses", ""],
         "G" : ["Legend", ""],
         "H" : ["General Information", ""],

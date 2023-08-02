@@ -23,7 +23,7 @@ letter_to_number = {
     "NP" : 0.2,
     "W" : 0.3,
     "current" : 0.4,
-    "TR" : 0.5, # PA: added this entry, for Transfer credits,
+    "TR" : 4.5, # PA: added this entry, for Transfer credits,
     "AU" : 0.01}
 
 
