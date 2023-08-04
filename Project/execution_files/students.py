@@ -89,6 +89,7 @@ class Student:
         self.course_lift_minor = []
         
         #attributesfor credits and standings
+        self.credits_to_grad = 120 #120 if single degree/ double major; 150 i fdouble degree
         self.credits_earned = 0
         self.credits_nxsem = 0
         self.credits_missing = 120 #must be changed to account for double major
@@ -210,15 +211,17 @@ class Student:
         for i in self.reduced_courses_list:
             grade = i.get_grade()
             if pd.isnull(grade) != True:
-                if i.get_grade()>= letter_to_number.get("D-") and letter_to_number.get("TR"):
+                if i.get_grade()<letter_to_number.get("AU") or i.get_grade()>letter_to_number.get("current"):
+                #if i.get_grade()>= letter_to_number.get("D-") and i.get_grade()==letter_to_number.get("TR"):
                 #if grade != "": # PA: this should also be updated to use the dictionary values
                     course_credit = i.get_credits()
                     self.credits_earned += course_credit
             
     def compute_credits_nxsem(self):
         for i in self.reduced_courses_list:
-            course_credit = i.get_credits()
-            self.credits_nxsem += course_credit
+            #if i.used_flag<14 and ((i.get_grade()<letter_to_number.get("AU") and i.get_grade()>=letter_to_number.get("current")) or i.get_grade()==letter_to_number.get("INC")):
+                course_credit = i.get_credits()
+                self.credits_nxsem += course_credit
     
     #does not account for minors
     def compute_credits_missing(self):
@@ -256,6 +259,39 @@ class Student:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Action Functions
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
+    
+    """
+    def compute_creds_in_residence(self):
+        for tcourse in self.reduced_courses_list:
+            if tcourse.in_residence == 1: #the couse has been done at JCU
+           """     
+                
+    
+    def major_info_list(self):
+        #self.degrees = double_degree #=1 if double major, =0 if only one major, =2 if double degree
+        double_degree = "No"
+        double_major = "No"
+        
+
+        #if self.degrees == 0 the student is doing only one degree
+        
+        if self.degrees == 1:
+            self.credits_to_grad = 150
+            double_degree = "Yes"
+            
+        elif self.degrees == 2:
+            double_major = "Yes"
+
+        
+        major_list = {
+            1 : ["Double Degree" , double_degree],
+            2 : ["Double Major", double_major],
+            3 : ["Credits Required to Graduate", self.credits_to_grad],
+            }
+        
+        self.degrees = double_degree #=1 if double major, =0 if only one major, =2 if double degree
+        return major_list
+    
     def create_info_list(self):
         """"
         Returns a list of informations to be printed in the additional information        
@@ -264,18 +300,64 @@ class Student:
         #["GPA", "Credits(earned)", "Current Standing", "Credits following semester", "Standing following semester", "Credits missing"]
         #info_list = [self.gpa, self.credits_earned, self.curr_standing, self.credits_nxsem, self.nx_standing, self.credits_missing]
         #["Cumulative GPA", "Credits (earned)", "Current Standing", "Tentative Credits following semester", "Tentative Standing following semester", "Credits missing"]
+        '''OLD VERSION
         info_list = {
             "Cumulative GPA" : self.gpa,
             "Credits (earned)" : self.credits_earned,
-            "Current Standing" : self.curr_standing,
-            "Tentative Credits following semester" : self.credits_nxsem,
-            "Tentative Standing following semester" : self.nx_standing, 
-            #"Credits missing" : self.credits_missing,
+            "Standing (earned)" : self.curr_standing,
+            "Credits missing (earned)"  : self.credits_missing_actual,
+            
+            
+            "Credits (tentative)" : self.credits_nxsem,
+            "Standing (tentative)" : self.nx_standing, 
             "Credits missing (tentative)" : self.credits_missing_tentative,
-            "Credits missing (actual)"  : self.credits_missing_actual
+            }'''
+        
+        
+        info_list = {
+            
+            "A": ["Cumulative GPA",  self.gpa],
+            "B" : ["Credits earned", self.credits_earned], #Credits (earned)
+            "C" : ["Credits earned in residence", 0],
+            "D" : ["Standing", self.curr_standing] , #Standing based on credits earned
+            "E" : ["Credits missing", self.credits_missing_actual] , #Credits missing only cosidering the courses that are not current or incomplete
+            
+            
+            "F" : ["Credits", self.credits_nxsem] , #Credits (tentative)
+            "G" : ["Credits in residence", 0],
+            "H" : ["Standing", self.nx_standing] , #Standing (tentative)
+            "I" : ["Credits missing", self.credits_missing_tentative]  #Credits missing based on the courses has taken considering current
             }
         
         return info_list
+    
+    #NEEDED TO CREATE THE COUNTER'S PART OF THE PLANNER
+    def return_missing(self):
+        #["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
+        #missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_majorelectives["courses missing"], "NA", "NA"]
+        minor1 = self.minor1
+        if minor1 == "":
+            minor1 = "None"
+        minor2 = self.minor2
+        if minor2 == "":
+            minor2 = "None"
+        
+        missing_numcourses = {
+            "Math Proficiency" : self.m_ma["courses missing"],
+            "Math, Science, Computer Science" : self.m_sci["courses missing"],
+            "Foreign Language" : self.m_flang["courses missing"],
+            "Social Sciences" : self.m_sosc["courses missing"],
+            "Humanities" : self.m_hum["courses missing"],
+            "Fine Arts" : self.m_fa["courses missing"],
+            "Additional Requirements" : self.m_additional["courses missing"],
+            "Core Courses" : self.m_core["courses missing"],
+            "Concentration" : "NA",
+            "Major Electives" : self.m_majorelectives["courses missing"],
+            "Minor 1" : minor1,
+            "Minor 2" : minor2            
+            }
+        
+        return missing_numcourses
     
     #adds to the lit of courses the list for each course done by the student
     def add_course(self, course):
@@ -306,6 +388,26 @@ class Student:
             if course_taken.get_grade() == letter_to_number.get("W"):
                 course_taken.creds = 0
     
+    ''' 
+    def check_for_unofficial_retake(self):
+        in_residence = 0
+        
+        special_courses = [0, 281, 299, 381, 399, 499]
+        self.text = ""
+        for i in range(len(self.courses_done)-1, -1, -1):
+            current_course = self.courses_done[i] #first time around
+            to_insert = True #è da inserire in reduced
+            
+            for h in self.reduced_courses_list[:]: #second time around
+                in_residence = h.return_in_residence()
+                
+                #we can ignore AU and null because remove_retake is called before 
+                
+                #finds the same course in the list                
+                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=373 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=372 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=367 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=283 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=272 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=267 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN/HS") and (current_course.course.get_number()!=346 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=306 and current_course.course.get_code()!="EN") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
+
+       '''         
+        
     
     def remove_retake(self):
         """
@@ -316,17 +418,18 @@ class Student:
         in_residence = 0
         #found_retake = False
         #non deve togliere i duplicates dei corsi fatti non in residence
-        special_courses = [0, 281, 299, 381, 399]
+        special_courses = [0, 281, 299, 381, 399, 499]
         self.text = ""
         for i in range(len(self.courses_done)-1, -1, -1):
-            current_course = self.courses_done[i] #first time around
+            current_course = self.courses_done[i] #latest before getting appended  and becoming h, so h is the actual latest
+            #print(f"{current_course.course.get_name()} in {current_course.get_term()}")
             to_insert = True #è da inserire in reduced
             
-            for h in self.reduced_courses_list[:]: #second time around
+            for h in self.reduced_courses_list[:]: #secon d time done the course
                 in_residence = h.return_in_residence()
                 
                 #se la seconda volta era come Auditor la prima rimane perchè AU non conta ne sui crediti ne sui voti
-                if current_course.get_grade() == letter_to_number.get("AU"):
+                if h.get_grade() == letter_to_number.get("AU"):
                     to_insert = False # non è da inserire
                     break
                     #found_retake = True
@@ -338,26 +441,35 @@ class Student:
                     break
                 
                 #finds the same course in the list                
-                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=373 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=372 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=367 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=283 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=272 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=267 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=346 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=306 and current_course.course.get_code()!="EN") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
+                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=373 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=372 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=367 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=283 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=272 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=267 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN/HS") and (current_course.course.get_number()!=346 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=306 and current_course.course.get_code()!="EN") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
                     #to_insert = False # non è da inserire
                     
-                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("current") or in_residence == 0:
+                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("current") or in_residence == 0:
                         'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W, or retaken the course abroad'
                         'then does not have to be dropped nor added to the retake'
                         #print(f"not dropped because second time {h.get_grade()}")
-                        if h.get_grade()==letter_to_number.get("INC"):
-                            if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("P") and current_course.get_grade()!=letter_to_number.get("NP"):
-                                """
-                                Out of all the courses that a student has repeated, only the ones in which the student has
-                                not taken W, P, NP must be reported
-                                This is a check on the grade of the course taken the first time, not the second
-                                """
-                                retaken_pair = {"old_course" : current_course,
-                                                "new_course" : h
-                                                }
-                                self.retaken_classes.append(retaken_pair)   
+                        #if h.get_grade()==letter_to_number.get("INC"):
+                        current_course.used_flag = 15
+                        if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("NP"): #and current_course.get_grade()!=letter_to_number.get("P")
+                            print(f"student has a non official repeat {current_course.course.get_name()} {h.course.get_name()}")    
+                            """
+                            Out of all the courses that a student has repeated, only the ones in which the student has
+                            not taken W, P, NP must be reported
+                            This is a check on the grade of the course taken the first time, not the second
+                            """
+                            retaken_pair = {"old_course" : current_course,
+                                            "new_course" : h
+                                            }
+                            self.retaken_classes.append(retaken_pair)
+                         
+                        else:
+                            to_insert = False
                         break
-                        
+                    
+                    elif current_course.get_grade()==letter_to_number.get("W"):
+                        self.reduced_courses_list.remove(h) #se la nuova versione è W non dovrebbe essere nel planner but double check
+                        break
+
                     elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current") and in_residence == 1:
                         'you took a class twice, but the second time the grade was acceptable and you took it again at JCU'
                         to_insert = False # non è da inserire
@@ -445,7 +557,7 @@ class Student:
                 
             next_num += 1
     
-    #def leave_the_or(self, options_list, attribute_name):
+    def return_or_courses(self, i, attribute_name, courses_list):
         """
         This function is needed to report in the planner the courses that are in or
         with respect with the course that has been found by the program
@@ -455,18 +567,62 @@ class Student:
         AND add the course found to the ["courses done"] list of the dictionary
         then this function will create elements that have the 
         """
-              
-        #options_list sarebbe la lista di possibili corsi in alternativa a quello che è stato trovato
+        #i sarebbe la lista di possibili corsi in alternativa a quello che è stato trovato 
+        #and from which the course found was removed
+            #i[0] = counter
+            #i[1] = lista di corsi --> [['MA', 208, 208, ''], ['MA', 209, 209, '']]
+                #i[1][0] = codice corso, or "", or exception 
+                #i[1][1] = lower bound or ""
+                #i[1][2] = upper bound or ""
+                #i[1][3] = description
+                
+        report_name = "information_not_found.txt"
+        myReportFile = open(report_name, "a")
+        
+        if len(i[1])!=0:
+            for element in i[1]:
+                found = False
+                for z in courses_list: #z is an object course
+                
+                    if element[1] > element[2]  or element[1] < element[2]:
+                        print("found range")
+                        message = element[3]
+                        if message == "":
+                            message  = "exception"
+                        new_Course = Course(message, "", "", "", [], -3, "", "", "")
+                        new_tcourse = Course_taken(new_Course, self, "", "", "", "", 2)
+                        appoggio = [new_tcourse, "", message]
+                        attribute_name["courses done"].append(appoggio)
+                        found = True
+                        break
+                    
+                    else:
+                        if element[0]==z.get_code() and element[1]==z.get_number():
+                            print(f"Found {z.get_name()} {z.get_code()} {z.get_number()}")
+                            old_name = z.get_name()
+                            new_name = "OR " + old_name #str(old_name)
+                            new_Course = Course(new_name, z.get_code(), z.get_number(), z.get_credits(), z.get_requirements_dictionary(), -3, "", "", "")
+                            new_tcourse = Course_taken(new_Course, self, "", "", "", "", 2)
+                            message = element[3]
+                            if message == "":
+                                message = new_Course.get_name()
+                            appoggio = [new_tcourse, "", message]
+                            attribute_name["courses done"].append(appoggio)
+                            found = True
+       
+                if found == False:
+                    myReportFile.write(f"\nCourse not existing: {element[0]} {element[1]} range({element[1]} to {element[2]}) in major {self.major.name} ")
         
         #for i in options_list:
             
     def exception_raiser(self, i, curr_student, reduced_courses_list):
         #print(i)
         #political science, communications, international affairs, 
-        majors_implemented = [2, 5, 6, 12, 27, 22, 23, 7]
+        majors_implemented = [2, 5, 6, 12, 27, 22, 23, 7, 15]
         if self.major.get_major_key() in majors_implemented: 
             if i[1][0][1]==1:
                 self.major.exception_one(i, curr_student, reduced_courses_list)
+                
                 #curr_student.change_reduced(new_reduced)
                 
             elif i[1][0][1]==2:
@@ -492,13 +648,21 @@ class Student:
                 
             elif i[1][0][1]==8:
                 self.major.exception_eight(i, curr_student, reduced_courses_list) 
-        #else:
+       
+            else:
+                print("this exeption was not implemented")
+       #else:
+            
            # print("not implemented")
+    #def report_or(self, i): 
+        #for course in i:
+            #if 
+        
         
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Degree Planner Checks Functions
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""    
-    def check_additional(self):
+    def check_additional(self, courses_list):
         additional_courses = self.major.get_additional_requirements()
         message = ""
         for i in additional_courses[:]:
@@ -516,6 +680,7 @@ class Student:
             
             if i[1][0][0] == "exception":
                 self.exception_raiser(i, self, self.reduced_courses_list)
+                additional_courses.remove(i)
                 #print("not implemented")
                 
             #se c'è una description allora il blocco deve apparire tutto insieme    
@@ -535,7 +700,7 @@ class Student:
                                 if found == False and j.used_flag < 2:
                                     if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
                                         
-                                        if j.get_grade() == letter_to_number.get("current"):
+                                        if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
                                             self.m_additional["courses done"].append([j,2,message])
                                             j.used_flag = 2
                                             additional_courses.remove(i)
@@ -580,7 +745,7 @@ class Student:
                             if j.used_flag < 2:
                                 if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
                                     
-                                    if j.get_grade() == letter_to_number.get("current"):
+                                    if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
                                         message = m[3]
                                         if message == "":
                                             message = f"{course_num} course"
@@ -632,12 +797,12 @@ class Student:
                 for j in self.reduced_courses_list:
                     message = i[1][0][3]
                     
-                    for m in i[1]:
+                    for m in i[1][:]:
                         if j.used_flag < 2:
                             if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
                                 #print(f"add recognized -- : current code:{j.course.get_code()} vs prereq code:{i[1][0][0]}")
                                 
-                                if j.get_grade() == letter_to_number.get("current"):
+                                if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
                                     message = m[3]
                                     if message == "":
                                         message = j.course.get_name()
@@ -671,7 +836,7 @@ class Student:
         return self.m_additional 
 
     
-    def check_core(self):
+    def check_core(self, courses_list):
         #print("inside check core")
         core_courses = self.major.get_core_courses()
         self.counter_core_grades = 0
@@ -690,7 +855,7 @@ class Student:
 
             if i[1][0][0] == "exception": #[['MA', 209, 209, '']]
                 self.exception_raiser(i, self, self.reduced_courses_list)
-                
+                core_courses.remove(i)
             #se c'è una description allora il blocco deve apparire tutto insieme    
             elif i[1][0][0] == "": #se non c'è il codice corso allora quella lista ha una description
                 message = i[1][0][3]
@@ -706,7 +871,7 @@ class Student:
                                 if found == False and j.used_flag < 2:
                                     if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
                                         
-                                        if j.get_grade() == letter_to_number.get("current"):
+                                        if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
                                             self.m_core["courses done"].append([j,2,message])
                                             j.used_flag = 2
                                             core_courses.remove(i)
@@ -722,7 +887,7 @@ class Student:
                                             self.m_core["courses missing"] -= 1
                                             found = True
                                             
-                                        elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("NP"):
+                                        elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("W"):
                                             self.m_core["courses done"].append([j,3,message])
                                             j.used_flag = 2
                                             core_courses.remove(i)
@@ -744,26 +909,32 @@ class Student:
             
                 #se invce il counter è maggiore di uno la descrizione precede un tot di righe
                 elif i[0]>1:
+                   #counter = 3
                    message = i[1][0][3]
                    self.m_core["courses done"].append(["","",message])
                    message = ""
                    course_num = 1
+                   #i[1].remove(i[1][0])
                    #core_courses.remove(i)
-                   for index in range(1, len(i[1])):    
-                       m = i[1][index]
+                   requ_copy = i[1][:]
+                   print(requ_copy)
+                   for index in range(1, len(requ_copy)): 
+                       
+                       m = requ_copy[index]
+                       #print(f"iteration {index} analyzing {m}")
+                       #m = i[1][index]
                        for j in self.reduced_courses_list:
                            #print(f"Core(''2): current code:{j.course.get_code()} vs prereq code:{i[1][0][0]}")
                            if j.used_flag < 2:
                                if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
                                    
-                                   if j.get_grade() == letter_to_number.get("current"):
+                                   if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
                                        message = m[3]
                                        if message == "":
                                            message = f"{course_num} course"
                                        course_num += 1
                                        self.m_core["courses done"].append([j,2,message])
                                        j.used_flag = 2
-                                       i[1].remove(m)
                                        counter -= 1
                                        self.m_core["courses missing"] -= 1
                                        i[1].remove(m)
@@ -775,19 +946,19 @@ class Student:
                                        course_num += 1
                                        self.m_core["courses done"].append([j,1,message])
                                        j.used_flag = 2
-                                       i[1].remove(m)
+                                       #i[1].remove(m)
                                        counter -= 1
                                        self.m_core["courses missing"] -= 1
                                        i[1].remove(m)
                                        
-                                   elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("NP"):
+                                   elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("W"):
                                        message = m[3]
                                        if message == "":
                                             message = f"{course_num} course"
                                        course_num += 1
                                        self.m_core["courses done"].append([j,3,message])
                                        j.used_flag = 2
-                                       i[1].remove(m)     
+                                       #i[1].remove(m)     
                                        counter -= 1     
                                        self.m_core["courses missing"] -= 1
                                        i[1].remove(m)
@@ -799,7 +970,7 @@ class Student:
                                        course_num += 1
                                        self.m_core["courses done"].append([j,0,message])
                                        j.used_flag = 2
-                                       i[1].remove(m)
+                                       #i[1].remove(m)
                                        counter -= 1
                                        self.m_core["courses missing"] -= 1
                                        i[1].remove(m)
@@ -810,6 +981,7 @@ class Student:
                            self.m_core["courses done"].append(["",1,message]) 
                            course_num += 1                                                               
                    core_courses.remove(i) 
+                   #break
                 
                 
                 #altrimenti il requirement è un corso normale
@@ -818,71 +990,90 @@ class Student:
                 #print("core in else")
                 for j in self.reduced_courses_list:
                     #print("enterd loop of courses done")
-                    message = i[1][0][3]
-
-                    for m in i[1]:
-                        #print(f"{m}")
-                        #print(f"analyzing {j.course.get_name()}, current requirement is {m} of {i[1]}")
-                        
-                        if found == True:
-                            break
-                        
-                        if j.used_flag < 2 and counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
-                            #print(f"core recognized -- : current code:{j.course.get_code()} vs prereq code:{i[1][0][0]}")
+                    #print(i)
+                    if len(i[1])!=0:
+                        message = i[1][0][3]
+    
+                        for m in i[1][:]:
+                            #print(f"{m}")
+                            #print(f"analyzing {j.course.get_name()}, current requirement is {m} of {i[1]}")
                             
-                            if j.get_grade() == letter_to_number.get("current"):
-                                #print("found as current")
-                                message = m[3]
-                                if message == "":
-                                    message = j.course.get_name()
-                                self.m_core["courses done"].append([j,2,message])
-                                j.used_flag = 2
-                                core_courses.remove(i)
-                                counter -= 1
-                                self.m_core["courses missing"] -= 1
-                                found = True
+                            if found == True:
                                 break
                             
-                            elif j.get_grade() >= letter_to_number.get("C-"):
-                                #print("found as sufficient")
-                                message = m[3]
-                                if message == "":
-                                    message = j.course.get_name()
-                                self.m_core["courses done"].append([j,1,message])
-                                j.used_flag = 2
-                                
-                                core_courses.remove(i)
-                                counter -= 1
-                                self.m_core["courses missing"] -= 1
-                                found = True
-                                break
-                            
-                            elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("NP"):
-                                #print("found as risky")
-                                message = m[3]
-                                if message == "":
-                                    message = j.course.get_name()
-                                self.counter_core_grades += 1
-                                self.m_core["courses done"].append([j,3,message])
-                                j.used_flag = 2
-                                core_courses.remove(i)
-                                counter -= 1
-                                self.m_core["courses missing"] -= 1
-                                found = True
-                                break
-                            
-                            else:         
-                                #print("found as failed")
-                                message = m[3]
-                                if message == "":
-                                    message = j.course.get_name()
-                                self.m_core["courses done"].append([j,0,message])
-                                j.used_flag = 2
-                                core_courses.remove(i)
-                                counter -= 1
-                                self.m_core["courses missing"] -= 1
-                                found = True
-                                break
+                            if j.used_flag < 2 and counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
+                                if not (m[0]=="IT" and len(j.course.get_code())>2 and j.course.get_code()[2]=="S") and not (m[0]=="AS" and len(j.course.get_code())>2 and j.course.get_code()[-3]=="R"):
+                                    
+                                    #print(f"core recognized -- : current code:{j.course.get_code()} vs prereq code:{i[1][0][0]}")
+                                    
+                                        if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
+                                            #print("found as current")
+                                            message = m[3]
+                                            if message == "":
+                                                message = j.course.get_name()
+                                            self.m_core["courses done"].append([j,2,message])
+                                            j.used_flag = 2
+                                            
+                                            i[1].remove(m)
+                                            self.return_or_courses(i, self.m_core, courses_list)
+                                            core_courses.remove(i)
+                                            
+                                            counter -= 1
+                                            self.m_core["courses missing"] -= 1
+                                            found = True
+                                            break
+                                        
+                                        elif j.get_grade() >= letter_to_number.get("C-"):
+                                            #print("found as sufficient")
+                                            message = m[3]
+                                            if message == "":
+                                                message = j.course.get_name()
+                                            self.m_core["courses done"].append([j,1,message])
+                                            j.used_flag = 2
+                                            
+                                            i[1].remove(m)
+                                            self.return_or_courses(i, self.m_core, courses_list)
+                                            core_courses.remove(i)
+                                            
+                                            counter -= 1
+                                            self.m_core["courses missing"] -= 1
+                                            found = True
+                                            break
+                                        
+                                        elif j.get_grade() < letter_to_number.get("C-") and j.get_grade() > letter_to_number.get("W"):
+                                            #print("found as risky")
+                                            message = m[3]
+                                            if message == "":
+                                                message = j.course.get_name()
+                                            self.counter_core_grades += 1
+                                            self.m_core["courses done"].append([j,3,message])
+                                            j.used_flag = 2
+                                            
+                                            i[1].remove(m)
+                                            self.return_or_courses(i, self.m_core, courses_list)
+                                            core_courses.remove(i)
+                                            
+                                            counter -= 1
+                                            self.m_core["courses missing"] -= 1
+                                            found = True
+                                            break
+                                        
+                                        else:         
+                                            #print("found as failed")
+                                            message = m[3]
+                                            if message == "":
+                                                message = j.course.get_name()
+                                            self.m_core["courses done"].append([j,0,message])
+                                            j.used_flag = 2
+                                            
+                                            i[1].remove(m)
+                                            self.return_or_courses(i, self.m_core, courses_list)
+                                            core_courses.remove(i)
+                                            
+                                            counter -= 1
+                                            self.m_core["courses missing"] -= 1
+                                            found = True
+                                            break
                                 
         self.m_core["courses remaining"] = core_courses
         return self.m_core    
@@ -913,7 +1104,7 @@ class Student:
                     for m in i[1]:
                         if j.used_flag < 2:
                             if counter!=0 and j.course.get_number() >= m[1] and j.course.get_number() <= m[2] and (j.course.get_code().startswith(m[0]) or j.course.get_code().endswith(m[0])):
-                                if j.get_grade() == letter_to_number.get("current"):
+                                if j.get_grade() == letter_to_number.get("current") or j.get_grade() == letter_to_number.get("INC"):
                                     self.m_majorelectives["courses done"].append([j,2])
                                     j.used_flag = 2
                                     counter -= 1
@@ -951,7 +1142,7 @@ class Student:
     #GENERAL ELECTIVES
     def check_genelectives(self):
         for i in self.reduced_courses_list:
-            if i.used_flag < 1:
+            if i.used_flag < 1 or i.used_flag > 14:
                 if i.get_grade() == letter_to_number.get("current"):
                     i.used_flag = 1
                     self.m_genelectives.append([i,2])
@@ -1503,26 +1694,7 @@ class Student:
         return self.m_flang
     
     
-    #NEEDED TO CREATE THE COUNTER'S PART OF THE PLANNER
-    def return_missing(self):
-        #["Math Proficiency", "Math, Science, Computer Science", "Foreign Language", "Social Sciences", "Humanities", "Fine Arts", "Additional Requirements", "Core Courses", "Major Electives", "Minor 1", "Minor 2"]
-        #missing_numcourses = [self.m_ma["courses missing"], self.m_sci["courses missing"], self.m_flang["courses missing"], self.m_sosc["courses missing"], self.m_hum["courses missing"], self.m_fa["courses missing"], self.m_additional["courses missing"], self.m_core["courses missing"], self.m_majorelectives["courses missing"], "NA", "NA"]
-        missing_numcourses = {
-            "Math Proficiency" : self.m_ma["courses missing"],
-            "Math, Science, Computer Science" : self.m_sci["courses missing"],
-            "Foreign Language" : self.m_flang["courses missing"],
-            "Social Sciences" : self.m_sosc["courses missing"],
-            "Humanities" : self.m_hum["courses missing"],
-            "Fine Arts" : self.m_fa["courses missing"],
-            "Additional Requirements" : self.m_additional["courses missing"],
-            "Core Courses" : self.m_core["courses missing"],
-            "Concentration" : "NA",
-            "Major Electives" : self.m_majorelectives["courses missing"],
-            "Minor 1" : "NA",
-            "Minor 2" : "NA"            
-            }
-        
-        return missing_numcourses
+
     
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Prerequisites Check
@@ -1543,64 +1715,7 @@ class Student:
                 self.current_courses.append(i)
                 
                 #self.noncurrent_courses.remove(i)
-        
-    '''
-    def remove_not_finished(self):
-        """This function removes from the current list the courses that the student is following in the ongoing semester 
-        so the prerequisite check does not double check those prerequisites"""
-        for ccourse in self.current_courses[:]:
-            term1 = ccourse.get_term()
-            for comparison in self.current_courses[:]:
-                term2 = comparison.get_term()
-                result = compare(term1, term2)
-                if result == 1:
-                    if comparison in self.current_courses:
-                        self.current_courses.remove(comparison)
-                        self.noncurrent_courses.append(comparison)
-                        #print(f"dropping {comparison.course.get_name()}")
-                if result == 2:
-                    if ccourse in self.current_courses:
-                        self.current_courses.remove(ccourse)
-                        self.noncurrent_courses.append(ccourse)
-                        #print(f"dropping {ccourse.course.get_name()}")
-
-    
-    def leave_chosen_curr(self, semester):
-        """This function removes from the current list all the courses that are not  
-        done in the semester of interest (aka the one provided by user input)"""
-        curr_semester = semester
-        for ccourse in self.current_courses[:]:
-            term1 = ccourse.get_term()
-            result = compare(curr_semester, term1)
-            if result == 1: #current after term 1
-                if ccourse in self.current_courses:
-                    self.current_courses.remove(ccourse)
-                    self.noncurrent_courses.append(ccourse)
-                    print(f"cause 1: dropping {ccourse.course.get_name()}")
-            if result == 2: #term 1 after current
-                if ccourse in self.current_courses:
-                    self.current_courses.remove(ccourse)
-                    print(f"cause 2: dropping {ccourse.course.get_name()}")
-    
-    def create_curr_ver2(self, semester):
-        curr_semester = semester
-        copy_list = self.reduced_courses_list[:]
-        self.noncurrent_courses = copy_list
-        for ccourse in self.reduced_courses_list[:]:
-            print(f"analyzing: {ccourse.course.get_name()}")
-            term1 = ccourse.get_term()
-            if term1 == "TR":
-                self.current_courses.append(ccourse)
-                self.noncurrent_courses.remove(ccourse)
-                print(f"cause TR: dropping {ccourse.course.get_name()}")
-            else:
-                result = compare(curr_semester, term1)
-                if ccourse.get_grade()==0.4 and result==0:
-                    self.current_courses.append(ccourse)
-                    self.noncurrent_courses.remove(ccourse)
-                    print(f"cause 1: dropping {ccourse.course.get_name()}")
-        print(self.current_courses)
-    '''                
+                      
                 
     def return_current(self):
         #print(self.current_courses)

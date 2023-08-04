@@ -49,6 +49,7 @@ class Major:
         #4 == concentrations nei major electives
         
         
+        
     def get_name(self):
         return self.name
     
@@ -88,32 +89,35 @@ class Communications(Major):
     def __init__(self, namemajor, ma_req, additional_requirements_list, core_courses_list, major_elective_courses, major_electives_possible, planner_type, major_key):
         super().__init__(namemajor, ma_req, additional_requirements_list, core_courses_list, major_elective_courses, major_electives_possible, planner_type, major_key)
         
-        self.passing_list = []
             
-    def return_passing(self) :
-        return self.passing_list
+    #def return_passing(self) :
+        #return self.passing_list
 
     #prints "One 300-level CMS course:"
     def exception_one(self, i, curr_student, reduced_courses_list):
         #print("exception one")
         message = "One 300-level CMS course:"
-        
+        found = False
         iteration_counter = 0
         
         #tries to take a CMS course with a grade ==current or above C-
         for taken_course in curr_student.reduced_courses_list:
             iteration_counter += 1
-            if len(self.passing_list)==0 and taken_course.used_flag<2 and (taken_course.course.get_code().startswith("CMS") or taken_course.course.get_code().endswith("CMS")):
+            if taken_course.used_flag<2 and (taken_course.course.get_code().startswith("CMS") or taken_course.course.get_code().endswith("CMS")) and found == False:
                  
-                if taken_course.get_grade() >= letter_to_number.get("current"):
+                if taken_course.get_grade() >= letter_to_number.get("current") or taken_course.get_grade() == letter_to_number.get("INC"):
                     curr_student.m_core["courses done"].append([taken_course,2,message])
                     taken_course.used_flag=2
+                    found = True
+                    break
                     
                 elif taken_course.get_grade() >= letter_to_number.get("C-"):
                     curr_student.m_core["courses done"].append([taken_course,1,message])
                     taken_course.used_flag=2
+                    found = True
+                    break
             
-        if len(self.passing_list)==0:
+        if found == False:
             fake_course = Course(message, "", "", "", [], "", "", "", -1)
             fcourse_taken =  Course_taken(fake_course, curr_student, "", "", "", "", 2)
             curr_student.m_core["courses done"].append([fcourse_taken,1,message])
@@ -277,12 +281,13 @@ class Psychology(Major):
             
         #loops over the courses that the student has done
         for tcourse in curr_student.reduced_courses_list:
+            
             concentrations_list = tcourse.course.get_course_concentrations()
-            if tcourse.course.code =="PS":
-                print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
+            #if tcourse.course.code =="PS" and tcourse.get_grade() >= letter_to_number.get("C-"):
+             #   print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
             
             #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
-            if tcourse.used_flag<2 and counter<2 and len(concentrations_list)!=0 and tcourse.course.get_code() == "PS" and (concentrations_list[0] in possible_courses.keys()):
+            if tcourse.used_flag<2 and counter<2 and len(concentrations_list)!=0 and tcourse.course.get_code() == "PS" and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("C-") or tcourse.get_grade() == letter_to_number.get("current")):
                 print("course with concentrations")
                 if len(possible_courses[concentrations_list[0]]) == 0:
                     possible_courses[concentrations_list[0]].append(tcourse)
@@ -309,7 +314,42 @@ class Psychology(Major):
                         counter += 1    
                         tcourse.used_flag = 2
                         
+         #loops over the courses that the student has done
+        for tcourse in curr_student.reduced_courses_list:
+            
+             concentrations_list = tcourse.course.get_course_concentrations()
+             #if tcourse.course.code =="PS" and tcourse.get_grade() >= letter_to_number.get("C-"):
+              #   print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
+             
+             #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
+             if tcourse.used_flag<2 and counter<2 and len(concentrations_list)!=0 and tcourse.course.get_code() == "PS" and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("D-") or tcourse.get_grade() == letter_to_number.get("INC")):
+                 print("course with concentrations")
+                 if len(possible_courses[concentrations_list[0]]) == 0:
+                     possible_courses[concentrations_list[0]].append(tcourse)
+                     counter += 1
+                     tcourse.used_flag = 2
+                     
+                 elif len(concentrations_list)>1 and len(possible_courses[concentrations_list[1]]) == 0:
+                     possible_courses[concentrations_list[1]].append(tcourse)
+                     counter += 1
+                     tcourse.used_flag = 2                    
+                     
+                 elif len(concentrations_list)==1:
+                     prev_concentrations =  possible_courses[concentrations_list[0]][0].course.course_concentrations
+                     if len(prev_concentrations)>1:
+                         old_area_name = prev_concentrations[0]
+                         new_area_name = prev_concentrations[1]
+                         placed_course = possible_courses[concentrations_list[0]][0]
+                         
+                         possible_courses[old_area_name].remove(placed_course)
+                         possible_courses[old_area_name].append(tcourse)
+                         
+                         possible_courses[new_area_name].append(placed_course)
+                         
+                         counter += 1    
+                         tcourse.used_flag = 2
                         
+        
         for area_name in possible_courses.keys():
             if len(possible_courses[area_name]) == 0:
                 message = " -  " + area_name
@@ -318,7 +358,7 @@ class Psychology(Major):
             elif len(possible_courses[area_name]) == 1:
                 curr_course = possible_courses[area_name][0]
                 
-                if curr_course.get_grade() == letter_to_number.get("current"):
+                if curr_course.get_grade() == letter_to_number.get("current") or curr_course.get_grade() == letter_to_number.get("INC"):
                     message = " -  " + area_name
                     curr_student.m_core["courses done"].append([curr_course,2,message])
                     curr_student.m_core["courses missing"] -= 1
@@ -331,12 +371,12 @@ class Psychology(Major):
                     
                 elif tcourse.get_grade() >= letter_to_number.get("D-"):
                     message = " -  " + area_name
-                    curr_student.m_majorelectives["courses done"].append([tcourse,3,message])
+                    curr_student.m_core["courses done"].append([tcourse,3,message])
                     curr_student.m_core["courses missing"] -= 1
                     
                 else:
                     message = " -  " + area_name
-                    curr_student.m_majorelectives["courses done"].append([tcourse,0,message])
+                    curr_student.m_core["courses done"].append([tcourse,0,message])
                     curr_student.m_core["courses missing"] -= 1
 
 
@@ -721,7 +761,7 @@ class ClassicalStudies_asfa20(Major):
                 self.counter_SOSC -= 1
 
         return counter
-    """
+    
     
     def construct_languages(self, curr_student, tcourse):
         if tcourse.get_grade() == letter_to_number.get("current"):
@@ -747,11 +787,11 @@ class ClassicalStudies_asfa20(Major):
     #concentrations
     def exception_two(self, i, curr_student, reduced_courses_list):
         print("concentrations")
+"""
 
 
-
-"""        
-def History(Major):
+    
+class History(Major):
     
     def __init__(self, namemajor, ma_req, additional_requirements_list, core_courses_list, major_elective_courses, major_electives_possible, planner_type, major_key):
         super().__init__(namemajor, ma_req, additional_requirements_list, core_courses_list, major_elective_courses, major_electives_possible, planner_type, major_key)
@@ -760,25 +800,183 @@ def History(Major):
     def exception_one(self, i, curr_student, reduced_courses_list):
         
         possible_courses = {
-            "Cognitive Area": [],
-            "Developmental Area" : [],
-            "Sociocultural Area" : [],
-            "Psychobiology Area" : []            
+            "Ancient History": [],
+            "Medieval History" : [],
+            "Early Modern History" : [],
+            "Modern History" : []            
             }
         message = "ONE 200/300-level HS from each area:"
         curr_student.m_core["courses done"].append(["", 1, message])
         
         ["Ancient History (before c. 500 C.E.)", "Medieval History (c. 500-1500 C.E.)", "Early Modern History (c. 1500-1800 C.E.)", "Modern History (c. 1800-2000 C.E.)"]
 
-"""
+
+class ArtHistory_asfa22(Major):
+    
+    def __init__(self, namemajor, ma_req, additional_requirements_list, core_courses_list, major_elective_courses, major_electives_possible, planner_type, major_key):
+        super().__init__(namemajor, ma_req, additional_requirements_list, core_courses_list, major_elective_courses, major_electives_possible, planner_type, major_key)
+
+    
+    def exception_one(self, i, curr_student, reduced_courses_list):
+        counter = 0
+        
+        possible_courses = {
+            "Ancient World": [],
+            "Medieval World" : [],
+            "Early Modern World" : [],
+            "Modern and Contemporary World" : []            
+            }
+        
+        message = "3 AH or ARCH  courses (200-300 level) in 3 of 4 areas:"
+        curr_student.m_core["courses done"].append(["", 1, message])
+         
+        #loops over the courses that the student has done
+        for tcourse in curr_student.reduced_courses_list:
+            #print("for loop 1")
+            concentrations_list = tcourse.course.get_course_periods()
+            #if tcourse.course.code =="PS" and tcourse.get_grade() >= letter_to_number.get("C-"):
+             #   print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
+            #if len(concentrations_list)!= 0:
+                #print(f"{tcourse.course.get_name()} has {concentrations_list}")
+            #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
+            if tcourse.used_flag<2 and counter<3 and len(concentrations_list)!=0 and (tcourse.course.get_code().startswith("AH") or tcourse.course.get_code().endswith("AH") or tcourse.course.get_code().startswith("ARCH") or tcourse.course.get_code().endswith("ARCH")) and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("C-") or tcourse.get_grade() == letter_to_number.get("current")):
+                #print("course with concentrations")
+                if len(possible_courses[concentrations_list[0]]) == 0:
+                    possible_courses[concentrations_list[0]].append(tcourse)
+                    counter += 1
+                    tcourse.used_flag = 2
+                    
+                elif len(concentrations_list)>1 and len(possible_courses[concentrations_list[1]]) == 0:
+                    possible_courses[concentrations_list[1]].append(tcourse)
+                    counter += 1
+                    tcourse.used_flag = 2                    
+                    
+                elif len(concentrations_list)==1:
+                    prev_concentrations =  possible_courses[concentrations_list[0]][0].course.course_concentrations
+                    if len(prev_concentrations)>1:
+                        old_area_name = prev_concentrations[0]
+                        new_area_name = prev_concentrations[1]
+                        placed_course = possible_courses[concentrations_list[0]][0]
+                        
+                        possible_courses[old_area_name].remove(placed_course)
+                        possible_courses[old_area_name].append(tcourse)
+                        
+                        possible_courses[new_area_name].append(placed_course)
+                        
+                        counter += 1    
+                        tcourse.used_flag = 2
+                        
+         #loops over the courses that the student has done
+        for tcourse in curr_student.reduced_courses_list:
+             #print("for loop 2")
+             concentrations_list = tcourse.course.get_course_periods()
+             #if tcourse.course.code =="PS" and tcourse.get_grade() >= letter_to_number.get("C-"):
+              #   print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
+             
+             #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
+             if tcourse.used_flag<2 and counter<3 and len(concentrations_list)!=0 and (tcourse.course.get_code().startswith("AH") or tcourse.course.get_code().endswith("AH") or tcourse.course.get_code().startswith("ARCH") or tcourse.course.get_code().endswith("ARCH")) and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("D-") or tcourse.get_grade() == letter_to_number.get("INC")):
+                 #print("course with concentrations")
+                 if len(possible_courses[concentrations_list[0]]) == 0:
+                     possible_courses[concentrations_list[0]].append(tcourse)
+                     counter += 1
+                     tcourse.used_flag = 2
+                     
+                 elif len(concentrations_list)>1 and len(possible_courses[concentrations_list[1]]) == 0:
+                     possible_courses[concentrations_list[1]].append(tcourse)
+                     counter += 1
+                     tcourse.used_flag = 2                    
+                     
+                 elif len(concentrations_list)==1:
+                     prev_concentrations =  possible_courses[concentrations_list[0]][0].course.course_concentrations
+                     if len(prev_concentrations)>1:
+                         old_area_name = prev_concentrations[0]
+                         new_area_name = prev_concentrations[1]
+                         placed_course = possible_courses[concentrations_list[0]][0]
+                         
+                         possible_courses[old_area_name].remove(placed_course)
+                         possible_courses[old_area_name].append(tcourse)
+                         
+                         possible_courses[new_area_name].append(placed_course)
+                         
+                         counter += 1    
+                         tcourse.used_flag = 2
+                        
+        
+        for area_name in possible_courses.keys():
+            if len(possible_courses[area_name]) == 0:
+                message = " -  " + area_name
+                curr_student.m_core["courses done"].append(["", 1, message])
+                
+            elif len(possible_courses[area_name]) == 1:
+                curr_course = possible_courses[area_name][0]
+                
+                if curr_course.get_grade() == letter_to_number.get("current") or curr_course.get_grade() == letter_to_number.get("INC"):
+                    message = " -  " + area_name
+                    curr_student.m_core["courses done"].append([curr_course,2,message])
+                    curr_student.m_core["courses missing"] -= 1
+                    
+                elif curr_course.get_grade() >= letter_to_number.get("C-"):
+                    message = " -  " + area_name
+                    curr_student.m_core["courses done"].append([curr_course,1,message])
+                    curr_student.m_core["courses missing"] -= 1
+                    
+                    
+                elif tcourse.get_grade() >= letter_to_number.get("D-"):
+                    message = " -  " + area_name
+                    curr_student.m_core["courses done"].append([tcourse,3,message])
+                    curr_student.m_core["courses missing"] -= 1
+                    
+                else:
+                    message = " -  " + area_name
+                    curr_student.m_core["courses done"].append([tcourse,0,message])
+                    curr_student.m_core["courses missing"] -= 1
 
 
+    def exception_two(self, i, curr_student, reduced_courses_list):
+        #print("none")
+        on_site_flag = False
+        curr_student.m_core["courses done"]
+        curr_student.m_majorelectives["courses done"]
+        
+        for x in curr_student.m_core["courses done"]:
+            tcourse = x[0]
+            if tcourse != "":
+                if tcourse.course.get_on_site() != "":
+                    on_site_flag= True
+        
+        for x in curr_student.m_majorelectives["courses done"]:
+            tcourse = x[0]
+            if tcourse != "":
+                if tcourse.course.get_on_site() != "":
+                    on_site_flag= True
+                
+        
+        for tcourse in curr_student.reduced_courses_list:
 
+            if tcourse.used_flag<2 and (tcourse.course.get_code().startswith("AH") or tcourse.course.get_code().endswith("AH")) and tcourse.course.get_number()>=200:
+                    
+                if on_site_flag == True or  tcourse.course.get_on_site()!= "":
 
-
-
-
-
+                    if tcourse.get_grade() == letter_to_number.get("current") or tcourse.get_grade() == letter_to_number.get("INC"):
+                        message = tcourse.course.get_name()
+                        curr_student.m_majorelectives["courses done"].append([tcourse,2,message])
+                        tcourse.used_flag = 2
+                        curr_student.m_majorelectives["courses missing"] -= 1
+                        curr_student.m_majorelectives["next_num"] += 1
+                        break
+                    
+                    elif tcourse.get_grade() >= letter_to_number.get("D-"):
+                        message = tcourse.course.get_name()
+                        curr_student.m_majorelectives["courses done"].append([tcourse,1,message])
+                        tcourse.used_flag = 2
+                        curr_student.m_majorelectives["courses missing"] -= 1
+                        curr_student.m_majorelectives["next_num"] += 1
+                        break
+                        
+                    
+        
+                
+             
         
 def create_major_list():
     #with open('execution_files\majors_dictionaries.json', 'r') as myfile:
@@ -812,6 +1010,9 @@ def create_major_list():
                 
             elif i == "BA Psychological Science":
                 major = Psychology(i, curr_major['math requirement'], curr_major['additional requirements'], curr_major['core courses'], curr_major['major electives'], curr_major['electives description'], curr_major['planner_type'], curr_major['major key'])
+
+            elif i == "BA Art History (as of Fall 2022)":
+                major = ArtHistory_asfa22(i, curr_major['math requirement'], curr_major['additional requirements'], curr_major['core courses'], curr_major['major electives'], curr_major['electives description'], curr_major['planner_type'], curr_major['major key'])
 
             else:
                 major = Major(i, curr_major['math requirement'], curr_major['additional requirements'], curr_major['core courses'], curr_major['major electives'], curr_major['electives description'], curr_major['planner_type'], curr_major['major key'])

@@ -63,6 +63,7 @@ def create_coursetaken_obj(curr_student, courses_taken_list, courses_list):
         j += 1
     return courses_taken_obj
 
+"""
 #needed for the excel print of the degree planner: creates fake courses objects starting from the majors' requirements that the student has not fullfilled
 def create_remaining_list(courses_list, remaining_list):
     obj_remaining_list =  []
@@ -90,7 +91,7 @@ def create_remaining_list(courses_list, remaining_list):
                     new_Course = Course(new_name, m.get_code(), m.get_number(), m.get_credits(), m.get_requirements_dictionary(), -3, "", "", "")
                     obj_remaining_list.append(new_Course)
                     counter += 1
-
+"""
 
 #needed for the excel print of the degree planner: creates fake courses objects starting from the majors' requirements that the student has not fullfilled
 def create_remaining_list_special(courses_list, remaining_list, major):
@@ -115,13 +116,73 @@ def create_remaining_list_special(courses_list, remaining_list, major):
         elif curr_info[0] > 1 :
             message = ""
             """
+        
+        #print(f"\nanalyzing {curr_info}")
         #print(rem_courses_list)
         prevname = ""
+        
         for n in rem_courses_list: #each of the individual courses that can be alternatives
             #rem_courses_list = [["CS", 110, 110], ["CS", 160, 160]]
             #n = ["CS", 110, 110]
             found = False
+            print(f"\nAnalyzing {n}")
+            message = ""
             
+            if n[0] == "exception":
+                print("found exceprtion")
+                message = n[3]
+                if message == "":
+                    message  = "exception"
+                new_Course = Course(message, "", "", "", [], -3, "", "", "")
+                appoggio = [new_Course, "", message]
+                obj_remaining_list.append(appoggio)
+                found = True
+                break
+                
+            elif n[1] > n[2]  or n[1] < n[2]:
+                print("found range")
+                message = n[3]
+                if message == "":
+                    message  = "exception"
+                new_Course = Course(message, "", "", "", [], -3, "", "", "")
+                appoggio = [new_Course, "", message]
+                obj_remaining_list.append(appoggio)
+                found = True
+                break
+             
+            else:
+                if counter==0:
+                    print(f"iteration 1 actual {counter}")
+                    for m in courses_list: #m is an object course
+                        if n[0]==m.get_code() and n[1]==m.get_number():
+                            #print(f"Found {m.get_name()} {m.get_code()} {m.get_number()}")
+                            if message == "":
+                                message = m.get_name()
+                            appoggio = [m, "", message]
+                            obj_remaining_list.append(appoggio)
+                            counter += 1
+                            prevname = m.get_name()
+                            found = True
+                            break
+                        
+                elif counter!=0:
+                    print(f"iteration 2 actual {counter}")
+                    for z in courses_list: #m is an object course
+                        
+                        if n[0]==z.get_code() and n[1]==z.get_number(): #and prevname!=z.get_name():
+                            print(f"Found {z.get_name()} {z.get_code()} {z.get_number()}")
+                            old_name = z.get_name()
+                            new_name = "OR " + old_name #str(old_name)
+                            new_Course = Course(new_name, z.get_code(), z.get_number(), z.get_credits(), z.get_requirements_dictionary(), -3, "", "", "")
+                            if message == "":
+                                message = new_Course.get_name()
+                            appoggio = [new_Course, "", message]
+                            obj_remaining_list.append(appoggio)
+                            counter += 1
+                            found = True
+                            break
+            
+            """
             for m in courses_list: #m is an object course
             
                 if counter==0 and n[0]==m.get_code() and n[1]==m.get_number():
@@ -132,6 +193,7 @@ def create_remaining_list_special(courses_list, remaining_list, major):
                     counter += 1
                     prevname = m.get_name()
                     found = True
+                    break
                     
                 elif counter!=0 and n[0]==m.get_code() and n[1]==m.get_number() and prevname!=m.get_name():
                     old_name = m.get_name()
@@ -143,6 +205,8 @@ def create_remaining_list_special(courses_list, remaining_list, major):
                     obj_remaining_list.append(appoggio)
                     counter += 1
                     found = True
+                    break
+                """
                     
             if found == False:
                 myReportFile.write(f"\nCourse not existing: {n[0]}{n[1]} range({n[1]} to {n[2]}) in major {major.name} ")

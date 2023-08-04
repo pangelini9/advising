@@ -13,7 +13,7 @@ import xlsxwriter
 from execution_files.courses import Course, Course_taken
 from execution_files.students import Student, create_student_list #, close_file
 from execution_files.majors import Major, create_major_list
-from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
+from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj
 from execution_files.planner_structures import additional_courses, core_courses, core_tracks, electives_tracks
 from execution_files.banners import banner_list
 
@@ -130,7 +130,7 @@ def create_dplanners():
                             
         major_structure = curr_major.get_planner_structure()
 
-        print(f"\n{stud_name} {major_name}\n")
+        print(f"\n{stud_name} - {major_name}\n")
         
         if major_structure == 1:
             banner = banner_list["structure_one"]

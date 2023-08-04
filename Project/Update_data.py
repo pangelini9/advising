@@ -627,8 +627,7 @@ def create_student_json(file_name):
 """""""""""""""""""""""""""
 CALLING FUNCTIONS
 """""""""""""""""""""""""""            
-
-#create_majors_names_mapping()        
-#create_courses_list()    
-#create_majors_dict()
-create_student_json("students.xml")
+create_majors_names_mapping()        
+create_courses_list()    
+create_majors_dict()
+#create_student_json("students.xml")

@@ -26,3 +26,22 @@ print("\nConverting students' data...")
 
 print("\nStarting the creation of the degree planners...")
 create_dplanners()
+
+
+
+
+'''
+Student:
+    {"full name" : "",
+     "language_waived" : numero,
+     "math_waived" : numero
+     }
+
+
+language_waived
+
+0 101
+
+
+
+'''
