@@ -5,6 +5,24 @@ import xml.etree.ElementTree as ET
 
 #trim
 
+def clean(myString):
+    
+    output = ""
+    
+    if type(myString) is str:
+        
+        output = myString.strip()
+        
+    elif type(myString) is float or myString is None:
+        
+        output = ""
+        
+    else:
+        
+        output = myString
+        
+    return output
+
 #CREATES THE MAPPING FROM BLACKBAUD ABBREVATIONS TO FULL NAME OF MAJORS
 def create_majors_names_mapping():
     #name of the excel file that contains the mapping of the names
@@ -36,51 +54,46 @@ def create_courses_list():
     
     #print(df.keys())
     
-    names = df["A"] # also PR or CR
-    codes = df["B"] # also codes of pre/co req
-    numbers = df["C"] # also lower for pre/co req
-    creds = df["D"] # also upper for pre/co req
-    ids = df["E"] # also required grade
-    
-    period = df["F"]
-    concentration = df["G"]
-    on_site = df["H"]
-    
-    
+    names_old = df["A"] # also PR or CR
+    codes_old = df["B"] # also codes of pre/co req
+    numbers_old = df["C"] # also lower for pre/co req
+    creds_old = df["D"] # also upper for pre/co req
+    ids_old = df["E"] # also required grade    
+    period_old = df["F"]
+    concentration_old = df["G"]
+    on_site_old = df["H"]
+      
     courses = []
     course = ""
     current = ""
     current_cr = ""
     req_grade = ""
+        
+    names = [] # also PR or CR
+    codes = [] # also codes of pre/co req
+    numbers = [] # also lower for pre/co req
+    creds = [] # also upper for pre/co req
+    ids = [] # also required grade    
+    period = []
+    concentration = []
+    on_site = []
     
-    for x in range(0,len(names)):
-        if type(names[x]) is not float:
-            names[x] = names[x].strip()
-            
-        if type(codes[x]) is not float:
-            codes[x] = codes[x].strip()
-            
-        #if type(numbers[x]) is not float:
-            #numbers[x] = numbers[x].strip()
-        
-        #if type(creds[x]) is not float:
-            #creds[x] = creds[x].strip()
-        
-        #if type(ids[x]) is not float:
-            #ids[x] = ids[x].strip()
-        
-        if type(period[x]) is not float:
-            period[x] = period[x].strip()
-        
-        if type(concentration[x]) is not float:
-            concentration[x] = concentration[x].strip()
-        
-        if type(on_site[x]) is not float:
-            on_site[x] = on_site[x].strip()
+    
+    for x in range(0,len(names_old)):
+           
+        names.append(clean(names_old[x]))
+        codes.append(clean(codes_old[x]))
+        numbers.append(clean(numbers_old[x]))
+        creds.append(clean(creds_old[x]))
+        ids.append(clean(ids_old[x]))
+        period.append(clean(period_old[x]))
+        concentration.append(clean(concentration_old[x]))
+        on_site.append(clean(on_site_old[x]))
+                    
     
     for x in range(0,len(names)):
         #print("Analyzing: ", names[x])    
-        if type(names[x]) is not float:
+        if names[x] != "":
             
             course_periods = []
             course_concentrations = []
@@ -88,20 +101,20 @@ def create_courses_list():
             
             split_string = names[x].split()
             
-            if type(period[x]) is not float:
+            if period[x]  != "":
                 #split_string1 = period[x].split()
                 split_string1 = np.array(period[x].split(', '))
                 course_periods = split_string1.tolist()
                 #print(f"\n{names[x]} has period: {course_periods}")
                 
-            if type(concentration[x]) is not float:    
+            if concentration[x] != "":    
                 #split_string2 = concentration[x].split()
                 split_string2 = np.array(concentration[x].split(', '))
                 course_concentrations = split_string2.tolist()
                 #print(f"\n{names[x]} has concentrations: {course_concentrations}")
 
             
-            if type(on_site[x]) is not float:
+            if on_site[x] != "":
                 #split_string3 = on_site[x].split()
                 split_string3 = np.array(on_site[x].split(','))
                 course_onsite = split_string3.tolist()
@@ -128,7 +141,7 @@ def create_courses_list():
             elif split_string[0] == "PR":
                 
                 grade = "D-"
-                if type(ids[x]) is not float:
+                if ids[x] != "NULL":
                     grade = ids[x]
                 
                 # this is a pre-req
@@ -152,7 +165,7 @@ def create_courses_list():
             elif split_string[0] == "CR":
                 
                 grade = "D-"
-                if type(ids[x]) is not float:
+                if ids[x] != "":
                     grade = ids[x]
     
                 # this is a pre-req
@@ -187,15 +200,6 @@ def create_majors_dict():
     
     df = pd.read_excel(filename, "Majors")
     
-    #print(df.keys())
-
-    names = df["Major Name"] # Major name or type of entry (ADD, COR, ELC)
-    reqs_nums = df["Math requirement"] # Math requirement 0/1 or number of courses
-    elect_codes = df["Electives Description"] # Elective descriptions or code
-    type_lower = df["Planner Type"] # Type of the planner or lower bound
-    keys_upper = df["Major Key"] # Key of the major or upper bound
-    descriptions = df["next id"] # None or text description
-    
     majors_dict = {} # the general dictionary with all majors
     major = {} # the dict for each single major
     name = "" # the name of the major, which will be used as key for the general dictionary
@@ -209,34 +213,37 @@ def create_majors_dict():
     curr_add = ""
     curr_core = ""
     curr_el = ""
+
+    names_old = df["Major Name"] # Major name or type of entry (ADD, COR, ELC)
+    reqs_nums_old = df["Math requirement"] # Math requirement 0/1 or number of courses
+    elect_codes_old = df["Electives Description"] # Elective descriptions or code
+    type_lower_old = df["Planner Type"] # Type of the planner or lower bound
+    keys_upper_old = df["Major Key"] # Key of the major or upper bound
+    descriptions_old = df["next id"] # None or text description
+
+    names = []
+    reqs_nums = []
+    elect_codes = []
+    type_lower = []
+    keys_upper = []    
+    descriptions = []
     
+    for x in range(0,len(names_old)):
+               
+        names.append(clean(names_old[x]))
+        reqs_nums.append(clean(reqs_nums_old[x]))
+        elect_codes.append(clean(elect_codes_old[x]))
+        type_lower.append(clean(type_lower_old[x]))
+        keys_upper.append(clean(keys_upper_old[x]))
+        descriptions.append(clean(descriptions_old[x]))
+        
     for x in range(0,len(names)):
-        
-        if type(names[x]) is not float:
-            names[x] = names[x].strip()
-        
-        #if type(reqs_nums[x]) is not float:
-            #reqs_nums[x] = reqs_nums[x].strip()
-            
-        if type(elect_codes[x]) is not float:
-            elect_codes[x] = elect_codes[x].strip()
-            
-        #if type(type_lower[x]) is not float:
-            #type_lower[x] = type_lower[x].strip()
-            
-        #if type(keys_upper[x]) is not float:
-            #keys_upper[x] = keys_upper[x].strip()
-            
-        if type(descriptions[x]) is not float:
-            descriptions[x] = descriptions[x].strip()
     
-    for x in range(0,len(names)):
-        #print("Analyzing: ", names[x])
         # to skip empty lines
-        if type(names[x]) is not float:
+        if names[x] != "":
             
             split_name = names[x].split()
-            #print(split_name)
+
             if split_name[0] != "ADD" and split_name[0] != "COR" and split_name[0] != "ELC":
     
                 # in this case, we are starting a new major
@@ -277,7 +284,7 @@ def create_majors_dict():
                 # this is one of the requirements, so we store the values into variables
                 
                 code = ""
-                if type(elect_codes[x]) is not float:
+                if elect_codes[x] != "":
                     code = str(elect_codes[x])
 
                 if type(type_lower[x]) is int:
@@ -290,15 +297,9 @@ def create_majors_dict():
                 else:
                     upper_bound = -1
                     
-                if type(descriptions[x]) is str:
-                    desc = descriptions[x]
-                    print(desc)
-                else:
-                    desc = ""
-                      
+                desc = descriptions[x]                      
                 
                 if split_name[0] == "ADD":
-                    print(f"{curr_add}")          
                     
                     #if a new requirement is starting, we create a new list and remember the current
                     #if len(split_name)<1:
@@ -313,8 +314,7 @@ def create_majors_dict():
                 elif split_name[0] == "COR":
                 
                     # if a new requirement is starting, we create a new list and remember the current
-                    if curr_core != split_name[1]:
-                        
+                    if curr_core != split_name[1]:                        
                         
                         number = int(reqs_nums[x])
                         core_courses.append([number, []])
@@ -391,7 +391,6 @@ def create_student_json(file_name):
     # up to the second FormattedAreaPair (level 2), each represents a single student
     students = root.findall("./ns:FormattedAreaPair/ns:FormattedAreaPair/ns:FormattedAreaPair", namespace)
     
-    print("Students:", len(students))
     myReportFile.write("Students:" + str(len(students)) + "\n")
     #print()
     
@@ -434,6 +433,9 @@ def create_student_json(file_name):
         if student.startswith("Mr.") or student.startswith("Ms."):
             student = student[4:]
 
+        if student.startswith("Mrs."):
+            student = student[5:]
+
         # 2 (double-degree), 1 (double-major), or 0 (normal).
         if "/" in major1:
             majors = major1.split("/")
@@ -445,7 +447,7 @@ def create_student_json(file_name):
                 double_degree = 2
             else:
                 double_degree = 0
-        
+                
         #print(double_degree, majors)
         
         #1 if the student has the language waived, 0 if the student does not have the language courses waived
@@ -553,6 +555,10 @@ def create_student_json(file_name):
                         stud_courses.append(new_course)
                                 
         
+        iteration = 0
+        
+        minors = [clean(minor1), clean(minor2)]
+        
         for maj in majors:
 
             #key corresponding to the major of the student under consideration
@@ -572,28 +578,40 @@ def create_student_json(file_name):
                 myReportFile.write(student + " Major not found for " + majors_mapping[maj] + " so assigned Undeclared" + "\n")
             
             #print(f"Major: {maj}, code {major_code}")
+            
+            min1 = ""
+            min2 = ""
+            
+            #print(minors[iteration])
+            
+            if "/" in minors[iteration]:
+                print("Found a double minor")
+                mins = minors[iteration].split("/")
+                min1 = clean(mins[0])
+                min2 = clean(mins[1])
+            else:
+                min1 = clean(minors[iteration])
                     
+            print(f"Minors: {min1} - {min2}")
+
             data = []
             #name, highschool_credits, major, minor1, minor2
                             
+            # name, surname, language, major, minor 1, minor 2, courses_list, double_flag            
             data.append(student) # add student's name
             data.append("") # add student's last name - TO BE REMOVED OR ADJUSTED FOR SPECIAL CASES
             data.append(language_waived) # for now, fixed to 1
-            data.append(major_code) # for now, fixed to 0. WE SHOULD GET THE ID FROM JSON
-            data.append(minor1) # Minor 1 - NOT IMPLEMENTED YET - For now, only the name
-            data.append(minor2) # Minor 2 - NOT IMPLEMENTED YET - For now, only the name
+            data.append(major_code) # major-code, taken from json
+            data.append(min1) # Minor 1 - For now, only the name
+            data.append(min2) # Minor 2 - For now, only the name
             data.append(stud_courses)
             
             data.append(double_degree) # whether double degree (2), double major (1), or normal (0)
             
             data_list.append(data)
             
-            # name, surname, language, major, minor 1, minor 2, courses_list, double_flag
+            iteration += 1
             
-            # get major ID from json (only works for single majors) 
-            # if double major/degree, create two distinct data structures - TODO
-            # add minor names - OK but we need to split them (here or later). If here, we need to 
-            # double-degree flag - OK but we need to split the majors
         
     # print(data_list)
     
@@ -609,8 +627,8 @@ def create_student_json(file_name):
 """""""""""""""""""""""""""
 CALLING FUNCTIONS
 """""""""""""""""""""""""""            
-'''
-create_majors_names_mapping()        
-create_courses_list()    
-create_majors_dict()
-'''
+
+#create_majors_names_mapping()        
+#create_courses_list()    
+#create_majors_dict()
+create_student_json("students.xml")
