@@ -72,25 +72,26 @@ def set_borders():
             worksheet.write(row_index, column_index, "", normal_noborder)
 
 def print_fields_names(maxlen):
-    worksheet.write(0, 0, "Name", name_title)
-    worksheet.write(0, 1, "Semester", name_title)
-    worksheet.write(0, 2, "Course", course_title)
+    worksheet.write(0, 0, "Allowed", name_title)    
+    worksheet.write(0, 1, "Name", name_title)
+    worksheet.write(0, 2, "Semester", name_title)
+    worksheet.write(0, 3, "Course", course_title)
     last_column = 0
     for index in range(0, maxlen):
         requirement_type = f"Type {index+1}"
         requirement_info = f"Missing requirement {index+1}"
         requirement_reason = f"Reason {index+1}"
-        last_column = 5 + 3*index
+        last_column = 6 + 3*index
         
         if index%2!=0:
-            worksheet.write(0, 3 + 3*index, requirement_type, green_left)
-            worksheet.write(0, 4 + 3*index, requirement_info, green_center)
-            worksheet.write(0, 5 + 3*index, requirement_reason, green_right)    
+            worksheet.write(0, 4 + 3*index, requirement_type, green_left)
+            worksheet.write(0, 5 + 3*index, requirement_info, green_center)
+            worksheet.write(0, 6 + 3*index, requirement_reason, green_right)    
         
         else:
-            worksheet.write(0, 3 + 3*index, requirement_type, blue_left)
-            worksheet.write(0, 4 + 3*index, requirement_info, blue_center)
-            worksheet.write(0, 5 + 3*index, requirement_reason, blue_right)
+            worksheet.write(0, 4 + 3*index, requirement_type, blue_left)
+            worksheet.write(0, 5 + 3*index, requirement_info, blue_center)
+            worksheet.write(0, 6 + 3*index, requirement_reason, blue_right)
                 
     return last_column
             

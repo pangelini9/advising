@@ -9,10 +9,11 @@ Created on Wed Jun  7 13:09:38 2023
 
 import json
 import xlsxwriter
+from Update_data import read_requirements_allowed
 from execution_files.courses import Course, Course_taken
 from execution_files.students import Student, create_student_list #, close_file
 from execution_files.majors import Major, create_major_list
-from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj, create_remaining_list
+from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj#, create_remaining_list
 import execution_files.prerequisites_formats as prerequisites_formats
 import execution_files.retake_formats as retake_formats
 
@@ -36,7 +37,7 @@ letter_to_number = {
     "NP" : 0.2,
     "W" : 0.3,
     "current" : 0.4,
-    "TR" : 0.5, # PA: added this entry, for Transfer credits,
+    "TR" : 4.5, # PA: added this entry, for Transfer credits,
     "AU" : 0.01}
 
 number_to_letter = {
@@ -57,7 +58,7 @@ number_to_letter = {
     0.2 : "NP",
     0.3 : "W",
     0.4 : "current",
-    0.5 : "TR", # PA: added this entry, for Transfer credits
+    4.5 : "TR", # PA: added this entry, for Transfer credits
     0.01 : "AU"}
 
 def check_prerequisites():
@@ -93,6 +94,12 @@ def check_prerequisites():
     """""""""""""""""""""""""""""""""""""""""""""""""""
     courses_list = create_course_obj()
     
+    
+    """""""""""""""""""""""""""""""""""""""""""""""""""""
+    IMPORT THE LIST OF MISSING PRE-REQS THAT HAVE BEEN ALLOWED
+    """""""""""""""""""""""""""""""""""""""""""""""""""    
+    allow_list = read_requirements_allowed()
+    
     #myReportFile = open("prereq_students.txt", "w")
     #report_2 = open("students_gpa.txt", "w")
     """"""""""""""""""""""
@@ -115,7 +122,7 @@ def check_prerequisites():
     
     #for the prerequisites
     row_max_len = 0
-    prev_row_lenght = 1 #counter so that stuff does  not override eachoter   
+    prev_row_len = 1 #counter so that stuff does  not override eachoter   
     recall_num = 0
     
     #for the retake
@@ -231,6 +238,7 @@ def check_prerequisites():
         #curr_student.leave_chosen_curr(current_Semester)
         missing_courses = []
         missing_courses = curr_student.check_requirements()
+                
         #report_2.write(f"\n{curr_student.get_name()} has {curr_student.return_gpa()} GPA, {curr_student.return_creds_done()} credits. {curr_student.return_courses_information()}\n")
         #if len(missing_courses)!= 0:
             #report_2.write(f"\n{curr_student.get_name()} has {len(missing_courses)} missing prerequisites\n")
@@ -258,12 +266,14 @@ def check_prerequisites():
             for row_content in range(0, len(missing_courses)): 
                 
                 #print(f"{curr_student.get_name()} loop num {row_content}")
-                row_index = row_content + prev_row_lenght
+                row_index = row_content + prev_row_len
                 
                 
                 req_type = ["prerequisite", "corequisite"]
                 requirements = missing_courses[row_content][1] # {'prerequisite': [[[{'code': 'EN', 'lower bound': 103.0, 'upper bound': 103.0, 'grade': 'C'}, {'code': 'EN', 'lower bound': 105.0, 'upper bound': 105.0, 'grade': 'C'}], 'Missing']], 'corequisite': []}
                 current_course = missing_courses[row_content][0]
+                
+                
 
                 #print(f"\n{current_course}: {requirements}")
                 
@@ -278,13 +288,19 @@ def check_prerequisites():
                         missing_num = len(curr_requirement)
                                           
                     "INFO STUDENT"
-                    name = f"{curr_student.get_name()} {curr_student.get_surname()}"
+                    name = f"{curr_student.get_name()} {curr_student.get_surname()}".strip()
                     course_name = current_course.course.get_code()
                     course_num = current_course.course.get_number()
                     course_semester = current_course.get_term()
                     
                     honor_part = current_course.get_course_type2()
-                    course_info = f"{course_name} {course_num} {honor_part}"
+                    course_info = f"{course_name} {course_num} {honor_part}".strip()
+                    
+                    allowed = ""
+                    if [name, course_info] in allow_list:
+                        allowed = "X"
+                    
+                    # print(f"{course_info.strip()} is missing for {name}")
                     
                     special_requirement = False
                     
@@ -318,38 +334,38 @@ def check_prerequisites():
                     if special_requirement == True:
                         loop_lenght = 0
                         #row index should be okay ??
-                        
-                        worksheet.write(row_index, 0, name, normal_noborder) #prints student's name
-                        worksheet.write(row_index, 1, course_semester, normal_noborder) 
-                        worksheet.write(row_index, 2, course_info, normal_border) #prints name of the course
+                        worksheet.write(row_index, 0, allowed, normal_noborder) #prints student's name
+                        worksheet.write(row_index, 1, name, normal_noborder) #prints student's name
+                        worksheet.write(row_index, 2, course_semester, normal_noborder) 
+                        worksheet.write(row_index, 3, course_info, normal_border) #prints name of the course
                         
                         if current_course.return_honor()==1:
                             if curr_student.return_gpa() < 3.50:
                                 #prima parte da far apparire è i missing honor, poi i coris
                                 honor_content = f"Missing GPA ({curr_student.return_gpa()})"
-                                worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
-                                worksheet.write(row_index, 4, "Honors", normal_noborder)
-                                worksheet.write(row_index, 5, honor_content, normal_border)
+                                worksheet.write(row_index, 4, j, normal_noborder) #prints the type of the unfilled requirements
+                                worksheet.write(row_index, 5, "Honors", normal_noborder)
+                                worksheet.write(row_index, 6, honor_content, normal_border)
                              
                                 #now print the actual prerequisite missing
-                                worksheet.write(row_index, 6, j, normal_noborder) #prints the type of the unfilled requirements
+                                worksheet.write(row_index, 7, j, normal_noborder) #prints the type of the unfilled requirements
                                 
                                 cell_content = f"One {r_code} course" 
-                                worksheet.write(row_index, 7, cell_content, normal_noborder) #prints requirements one by one
+                                worksheet.write(row_index, 8, cell_content, normal_noborder) #prints requirements one by one
                                 
                                 r_motivation = "Missing"
-                                worksheet.write(row_index, 8, r_motivation, normal_border) #prints the reasoning
+                                worksheet.write(row_index, 9, r_motivation, normal_border) #prints the reasoning
                                 break
                             
                             
                             #il corso è honor ma lo studente ha il GPA giusto
                             else:
-                                worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
+                                worksheet.write(row_index, 4, j, normal_noborder) #prints the type of the unfilled requirements
                                 
                                 cell_content = f"One {r_code} course" 
                                 requirement_reason = curr_requirement[0][1]
                                 
-                                worksheet.write(row_index, 4, cell_content, normal_noborder) #prints requirements one by one
+                                worksheet.write(row_index, 5, cell_content, normal_noborder) #prints requirements one by one
                                 
                                 r_motivation = ""
                                 if len(requirement_reason) == 1:
@@ -365,18 +381,18 @@ def check_prerequisites():
                                     if r_motivation == "":
                                         r_motivation = "Missing"
                      
-                                worksheet.write(row_index, 5, r_motivation, normal_border) #prints the reasoning
+                                worksheet.write(row_index, 6, r_motivation, normal_border) #prints the reasoning
                                 break
                         
                         
                         #se il corso non è honor        
                         else:
-                            worksheet.write(row_index, 3, j, normal_noborder) #prints the type of the unfilled requirements
+                            worksheet.write(row_index, 4, j, normal_noborder) #prints the type of the unfilled requirements
                             
                             cell_content = f"One {r_code} course" 
                             requirement_reason = curr_requirement[0][1]
                             
-                            worksheet.write(row_index, 4, cell_content, normal_noborder) #prints requirements one by one
+                            worksheet.write(row_index, 5, cell_content, normal_noborder) #prints requirements one by one
                             
                             r_motivation = ""
                             if len(requirement_reason) == 1:
@@ -392,7 +408,7 @@ def check_prerequisites():
                                 if r_motivation == "":
                                     r_motivation = "Missing"
                  
-                            worksheet.write(row_index, 5, r_motivation, normal_border) #prints the reasoning
+                            worksheet.write(row_index, 6, r_motivation, normal_border) #prints the reasoning
                             break
                        
                     #i corsi che non hanno bisogno di requirement strani    
@@ -413,10 +429,11 @@ def check_prerequisites():
                             r_upperbound =  0
                                                         
                             #version to concatenate strings
-                            worksheet.write(row_index, 0, name, normal_noborder) #prints student's name
-                            worksheet.write(row_index, 1, course_semester, normal_noborder) #prints student's name
-                            worksheet.write(row_index, 2, course_info, normal_border) #prints name of the course
-                            worksheet.write(row_index, 3 + 3*index_requirement, j, normal_noborder) #prints the type of the unfilled requirements
+                            worksheet.write(row_index, 0, allowed, normal_noborder) #print whether allowed or not
+                            worksheet.write(row_index, 1, name, normal_noborder) #prints student's name
+                            worksheet.write(row_index, 2, course_semester, normal_noborder) #prints student's name
+                            worksheet.write(row_index, 3, course_info, normal_border) #prints name of the course
+                            worksheet.write(row_index, 4 + 3*index_requirement, j, normal_noborder) #prints the type of the unfilled requirements
                                      
                             #goes over all the alternatives for a requirement so control rows
                             for list_index in range(0, len(alternatives_list)): 
@@ -504,7 +521,7 @@ def check_prerequisites():
                                     
                                 #print(f"\n{cell_content} in row={row_index} column={3 + 3*index_requirement}")
                                                 
-                            worksheet.write(row_index, 4 + 3*index_requirement, cell_content, normal_noborder) #prints requirements one by one
+                            worksheet.write(row_index, 5 + 3*index_requirement, cell_content, normal_noborder) #prints requirements one by one
                             
                             """""""""""""""""""""""""""""
                             PRINT THE REASONING
@@ -526,8 +543,8 @@ def check_prerequisites():
                                 if r_motivation == "":
                                     r_motivation = "Missing"                                
             
-                            worksheet.write(row_index, 5 + 3*index_requirement, r_motivation, normal_border) #prints the reasoning
-            prev_row_lenght += len(missing_courses)                    
+                            worksheet.write(row_index, 6 + 3*index_requirement, r_motivation, normal_border) #prints the reasoning
+            prev_row_len += len(missing_courses)                    
     
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         TO FIX THE FORMATS THAT APPLY FOR MORE CELLS THAN ACTUALLY USED

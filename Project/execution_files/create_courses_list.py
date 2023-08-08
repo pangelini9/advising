@@ -129,7 +129,7 @@ def create_remaining_list_special(courses_list, remaining_list, major):
             message = ""
             
             if n[0] == "exception":
-                print("found exceprtion")
+                print("found exception")
                 message = n[3]
                 if message == "":
                     message  = "exception"

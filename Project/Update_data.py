@@ -23,6 +23,28 @@ def clean(myString):
         
     return output
 
+
+# Reads from the Excel file of the pre-reqs whether some of them have been allowed (placement, petition, ot other)
+def read_requirements_allowed():
+    #name of the excel file that contains the mapping of the names
+    filename = 'prerequisites_report.xlsx'
+    
+    df = pd.read_excel(filename)
+    
+    allowed = df["Allowed"]
+    names = df["Name"]
+    courses = df["Course"]
+
+    allow_list = []
+    
+    for x in range(0,len(names)):
+        if type(allowed[x]) is str and allowed[x].upper() == "X":
+            allow_list.append([names[x].strip(), courses[x].strip()])
+            print(f"Student {allow_list[-1][0]} is allowed to take {allow_list[-1][1]}")
+        
+    return allow_list
+
+
 #CREATES THE MAPPING FROM BLACKBAUD ABBREVATIONS TO FULL NAME OF MAJORS
 def create_majors_names_mapping():
     #name of the excel file that contains the mapping of the names
@@ -461,6 +483,8 @@ def create_student_json(file_name):
  
         terms = sect.findall("./ns:FormattedReportObjects/ns:FormattedReportObject/ns:FormattedAreaPair/ns:FormattedAreaPair", namespace)
         
+        gpa_file = ""
+        
         for t in terms:
             
             current_term = t.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject/ns:Value", namespace).text
@@ -488,6 +512,13 @@ def create_student_json(file_name):
                 if curr_course != None:
                     current_course = curr_course.text
                     #print(current_course)
+                    
+                    if current_course.startswith("Cumulative"):
+                    
+                        gpa_file_xml = x.find("./ns:FormattedArea/ns:FormattedSections/ns:FormattedSection/ns:FormattedReportObjects/ns:FormattedReportObject[@FieldName = '{EA.StringColumn3}']/ns:Value", namespace)
+                    
+                        if gpa_file_xml.text != None:
+                            gpa_file = gpa_file_xml.text
                     
                     if not current_course.startswith("ENLUS") and not current_course.startswith("ADMIN") and not current_course.startswith("Semester")  and not current_course.startswith("Cumulative"):
                         
@@ -585,15 +616,12 @@ def create_student_json(file_name):
             #print(minors[iteration])
             
             if "/" in minors[iteration]:
-                print("Found a double minor")
                 mins = minors[iteration].split("/")
                 min1 = clean(mins[0])
                 min2 = clean(mins[1])
             else:
                 min1 = clean(minors[iteration])
                     
-            print(f"Minors: {min1} - {min2}")
-
             data = []
             #name, highschool_credits, major, minor1, minor2
                             
@@ -607,6 +635,10 @@ def create_student_json(file_name):
             data.append(stud_courses)
             
             data.append(double_degree) # whether double degree (2), double major (1), or normal (0)
+            
+            print(f"GPA is {gpa_file}")
+
+            data.append(gpa_file)
             
             data_list.append(data)
             

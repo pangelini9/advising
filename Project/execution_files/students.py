@@ -70,7 +70,7 @@ number_to_letter = {
 
 class Student:
      
-    def __init__(self, name, surname, language_waived, major, minor1, minor2, double_degree):
+    def __init__(self, name, surname, language_waived, major, minor1, minor2, double_degree, gpaFile):
         self.name = name
         self.surname = surname
         self.language_waived = language_waived #=1 if yes
@@ -96,6 +96,7 @@ class Student:
         self.credits_missing_tentative = 120
         self.credits_missing_actual = 120
         self.gpa = 0
+        self.gpaFile = gpaFile
         self.curr_standing = ""
         self.nx_standing = ""
         
@@ -204,7 +205,21 @@ class Student:
             self.gpa = round(weighted_total / creds, 2) # rounding to 2 decimal digits
         else:
             self.gpa = 0
+        
+        if self.gpaFile == "":
+            self.gpaFile = 0
+        
+        if float(self.gpa) == float(self.gpaFile):
+            # print("SAME GPA")
+            None
+        else:
+            # print(f"Different GPA: {self.gpa} and {self.gpaFile}")
+            report_name = "information_not_found.txt"
+            with open(report_name, "a") as myReportFile:
+                myReportFile.write(f"Different GPA for {self.name}: {self.gpa} computed and {self.gpaFile} in xml\n")
 
+        # making sure that the gpa printed in the planner is the one from the xml
+        self.gpa = self.gpaFile
     
     def compute_credits_earned(self):
         self.credits_earned = 0
@@ -585,7 +600,7 @@ class Student:
                 for z in courses_list: #z is an object course
                 
                     if element[1] > element[2]  or element[1] < element[2]:
-                        print("found range")
+                        #print("found range")
                         message = element[3]
                         if message == "":
                             message  = "exception"
@@ -598,7 +613,7 @@ class Student:
                     
                     else:
                         if element[0]==z.get_code() and element[1]==z.get_number():
-                            print(f"Found {z.get_name()} {z.get_code()} {z.get_number()}")
+                            #print(f"Found {z.get_name()} {z.get_code()} {z.get_number()}")
                             old_name = z.get_name()
                             new_name = "OR " + old_name #str(old_name)
                             new_Course = Course(new_name, z.get_code(), z.get_number(), z.get_credits(), z.get_requirements_dictionary(), -3, "", "", "")
@@ -917,7 +932,7 @@ class Student:
                    #i[1].remove(i[1][0])
                    #core_courses.remove(i)
                    requ_copy = i[1][:]
-                   print(requ_copy)
+                   #print(requ_copy)
                    for index in range(1, len(requ_copy)): 
                        
                        m = requ_copy[index]
@@ -1818,9 +1833,9 @@ class Student:
             
             prereq_code = prerequisite["code"]
             prereq_grade = prerequisite["grade"]
-            
-            #if prereq_grade is float:
-                #prereq_grade = "D-"
+                        
+            if prereq_grade is None or prereq_grade == "":
+                prereq_grade = "D-"
                     
             lower_bound = prerequisite["lower bound"]
             upper_bound = prerequisite["upper bound"]
@@ -2027,7 +2042,7 @@ class Student:
 
             reasons = []
             if m.return_honor() == 1:
-                if self.gpa < 3.50:
+                if float(self.gpa) < 3.50:
                     req_reason = f"Missing GPA ({self.gpa})"
                     reasons.append(req_reason)
                     
@@ -2123,7 +2138,7 @@ def create_student_list(students_list):
     for i in range(0, len(students_list)): 
         curr_student = students_list[i]
         #                       name,            surname,   language_waived,      major,            minor1,          minor2     double_degree/major..
-        student = Student(curr_student[0], curr_student[1], curr_student[2], curr_student[3], curr_student[4], curr_student[5], curr_student[7]) 
+        student = Student(curr_student[0], curr_student[1], curr_student[2], curr_student[3], curr_student[4], curr_student[5], curr_student[7], curr_student[8]) 
         courses_t = curr_student[6]
         for course in courses_t:
             #print(course)
