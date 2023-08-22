@@ -7,7 +7,6 @@ Created on Thu Jul 13 16:22:06 2023
 #create_student_json
 
 import json
-import xlsxwriter
 
 #When you'll have the program that functions as interface
 from execution_files.courses import Course, Course_taken
@@ -16,50 +15,7 @@ from execution_files.majors import Major, create_major_list
 from execution_files.create_courses_list import create_course_obj, create_coursetaken_obj
 from execution_files.planner_structures import additional_courses, core_courses, core_tracks, electives_tracks
 from execution_files.banners import banner_list
-
-
-letter_to_number = {
-    "A" : 4,
-    "A-" : 3.67,
-    "B+" : 3.33,
-    "B" : 3,
-    "B-" : 2.67,
-    "C+" : 2.33,
-    "C" : 2,
-    "C-" : 1.67,
-    "D+" : 1.33,
-    "D" : 1,
-    "D-" : 0.67, 
-    "F" : 0,
-    "INC" : 0.1,
-    "P" : 5,
-    "NP" : 0.2,
-    "W" : 0.3,
-    "current" : 0.4,
-    "TR" : 4.5, # PA: added this entry, for Transfer credits,
-    "AU" : 0.01}
-
-number_to_letter = {
-    4 : "A",
-    3.67 :"A-",
-    3.33 :"B+",
-    3 : "B",
-    2.67 : "B-",
-    2.33 : "C+",
-    2 : "C",
-    1.67 : "C-",
-    1.33 : "D+",
-    1 : "D",
-    0.67: "D-", 
-    0 : "F",
-    0.1 : "INC", #incomplete
-    5 : "P",
-    0.2 : "NP",
-    0.3 : "W",
-    0.4 : "current",
-    4.5 : "TR", # PA: added this entry, for Transfer credits
-    0.01 : "AU"}
-
+# from execution_files.Utilities import letter_to_number, number_to_letter
 
 def create_dplanners():   
     """
@@ -96,7 +52,7 @@ def create_dplanners():
         for j in range(0, len(majors_list)):
             curr_major = majors_list[j]
             if curr_student.get_major() == curr_major.get_major_key():
-                print(curr_major.get_name())
+                #print(curr_major.get_name())
                 curr_student.change_major(curr_major)
                 break
         
@@ -109,7 +65,7 @@ def create_dplanners():
         #curr_student.change_credits_total() #sets the total amounts of credis equal to 150 id the student has a double degree
         #curr_student.add_transfer_credits() #if the student has done more than 60 credits out of residency, then it add them to the total amount of credits
         
-        #to remove the credits from the courses taken and withdrawed from
+        #to remove the credits from the courses taken and withdrawn from
         curr_student.change_withdraw_creds()
         
         

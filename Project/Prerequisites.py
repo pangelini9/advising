@@ -10,11 +10,6 @@ Created on Mon Jun 26 14:40:01 2023
 file_name = "students.xml"
 
 
-
-
-
-
-
 "IMPORT FUNCTIONS"
 from Update_data import create_courses_list, create_student_json #converts the data of students stored in xml format into a json file
 from execution_files.main_prerequisite import check_prerequisites #does the check on fullfilled prerequisites

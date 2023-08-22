@@ -55,12 +55,14 @@ def print_fields_informations(row, index, information_list):
 
 def set_column_width():
     #columns = []
-    worksheet.set_column(4, 4, 20)
-    worksheet.set_column(5, 5, 70)
-    for index in range(8, 44, 3):
-        worksheet.set_column(index-1, index-1, 20)
-        worksheet.set_column(index, index, 20)
-
+    worksheet.set_column(0, 0, 7) # allowed
+    worksheet.set_column(1, 1, 20) # name
+    worksheet.set_column(3, 3, 11) # course
+    for index in range(4, 45, 3):
+        worksheet.set_column(index, index, 11) # type
+        worksheet.set_column(5, 5, 25) # missing requirement
+        worksheet.set_column(6, 6, 50) # reason
+    
 def set_contour_border():
     for column_index in range(2, 44, 3):
         for row_index in range(0,2000):

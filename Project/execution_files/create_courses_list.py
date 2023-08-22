@@ -125,40 +125,40 @@ def create_remaining_list_special(courses_list, remaining_list, major):
             #rem_courses_list = [["CS", 110, 110], ["CS", 160, 160]]
             #n = ["CS", 110, 110]
             found = False
-            print(f"\nAnalyzing {n}")
+            #print(f"\nAnalyzing {n}")
             message = ""
             
             if n[0] == "exception":
-                print("found exception")
+                #print("found exception")
                 message = n[3]
                 if message == "":
                     message  = "exception"
                 new_Course = Course(message, "", "", "", [], -3, "", "", "")
-                appoggio = [new_Course, "", message]
+                appoggio = [new_Course, 10, message]
                 obj_remaining_list.append(appoggio)
                 found = True
                 break
                 
             elif n[1] > n[2]  or n[1] < n[2]:
-                print("found range")
+                #print("found range")
                 message = n[3]
                 if message == "":
                     message  = "exception"
                 new_Course = Course(message, "", "", "", [], -3, "", "", "")
-                appoggio = [new_Course, "", message]
+                appoggio = [new_Course, 10, message]
                 obj_remaining_list.append(appoggio)
                 found = True
                 break
              
             else:
                 if counter==0:
-                    print(f"iteration 1 actual {counter}")
+                    #print(f"iteration 1 actual {counter}")
                     for m in courses_list: #m is an object course
                         if n[0]==m.get_code() and n[1]==m.get_number():
                             #print(f"Found {m.get_name()} {m.get_code()} {m.get_number()}")
                             if message == "":
                                 message = m.get_name()
-                            appoggio = [m, "", message]
+                            appoggio = [m, 10, message]
                             obj_remaining_list.append(appoggio)
                             counter += 1
                             prevname = m.get_name()
@@ -166,11 +166,11 @@ def create_remaining_list_special(courses_list, remaining_list, major):
                             break
                         
                 elif counter!=0:
-                    print(f"iteration 2 actual {counter}")
+                    #print(f"iteration 2 actual {counter}")
                     for z in courses_list: #m is an object course
                         
                         if n[0]==z.get_code() and n[1]==z.get_number(): #and prevname!=z.get_name():
-                            print(f"Found {z.get_name()} {z.get_code()} {z.get_number()}")
+                            #print(f"Found {z.get_name()} {z.get_code()} {z.get_number()}")
                             old_name = z.get_name()
                             new_name = "OR " + old_name #str(old_name)
                             new_Course = Course(new_name, z.get_code(), z.get_number(), z.get_credits(), z.get_requirements_dictionary(), -3, "", "", "")

@@ -2,8 +2,9 @@ import pandas as pd
 import json
 import numpy as np
 import xml.etree.ElementTree as ET
+import xlsxwriter
 
-#trim
+import random
 
 def clean(myString):
     
@@ -43,6 +44,28 @@ def read_requirements_allowed():
             print(f"Student {allow_list[-1][0]} is allowed to take {allow_list[-1][1]}")
         
     return allow_list
+
+# Reads from the Excel file of the pre-reqs whether some of them have been allowed (placement, petition, ot other)
+def read_language_waived():
+    #name of the excel file that contains the mapping of the names
+    filename = 'excel_source\language_waived.xlsx'
+    
+    df = pd.read_excel(filename)
+    
+    students = df["STUDENT"]
+    waived = df["LANGUAGE WAIVED"]
+    notes = df["NOTES"]
+
+    waived_list = []
+    
+    for x in range(0,len(students)):
+        s = students[x].strip()
+        w = waived[x].strip().upper() if type(waived[x]) is str else ""
+        n = notes[x] if type(notes[x]) is str else ""
+        
+        waived_list.append([s, w, n])
+        
+    return waived_list
 
 
 #CREATES THE MAPPING FROM BLACKBAUD ABBREVATIONS TO FULL NAME OF MAJORS
@@ -370,10 +393,123 @@ def create_majors_dict():
     with open("execution_files\json\majors_list.json", "w") as myFile:
         json.dump(majors_dict, myFile, indent=2)        
         
+#CREATES THE JSON FILE WITH MINORS INFORMATION       
+def create_minors_dict():
+    #name of the excel file that contains the data of the courses done by the student
+    filename = 'excel_source\minors_list.xlsx'
+    
+    df = pd.read_excel(filename, "Minors")
+    
+    minors_dict = {} # the general dictionary with all minors
+    minor = {} # the dict for each single minor
+    name = "" # the name of the minor, which will be used as key for the general dictionary
+
+    # the list that will be used in the dictionary of each minor to describe the requirements
+    reqs = []
+
+    # the current variable to handle the OR
+    curr = ""
+
+    names_old = df["Minor Name"] # Minor name or type of entry (REQ)
+    nums_old = df["Amount"] # The number of courses for each requirement (0 for minors)
+    desc_codes_old = df["Description"] # Elective descriptions or code
+    keys_lower_old = df["Minor Key"] # Key of the minor or lower bound
+    upper_old = df["next id"] # upper bound (0 for minor)
+
+    names = []
+    nums = []
+    desc_codes = []
+    keys_lower = []
+    upper = []
+    
+    for x in range(0,len(names_old)):          
+        names.append(clean(names_old[x]))
+        nums.append(clean(nums_old[x]))
+        desc_codes.append(clean(desc_codes_old[x]))
+        keys_lower.append(clean(keys_lower_old[x]))
+        upper.append(clean(upper_old[x]))
+        
+    for x in range(0,len(names)):
+    
+        # to skip empty lines
+        if names[x] != "":
+            
+            split_name = names[x].split()
+
+            if split_name[0] != "REQ":
+    
+                # in this case, we are starting a new minor
+                
+                # I first store the previous one, if any, into the main dictonary
+                if name != "":
+                    # add the three lists to the minor
+                    minor["requirements"] = reqs
+                    
+                    # add the minor to the dict of minors
+                    minors_dict[name] = minor
+
+                    # I also need to reset the current and the list                   
+                    reqs = []
+                    curr = ""
+                    
+                # store the values into appropriate variables
+                name = names[x]
+                description = desc_codes[x]
+                key = int(keys_lower[x])
+                
+                minor = {
+                    "description" : description,
+                    "minor key" : key
+                    }
+                                
+            else:
+                # this is one of the requirements, so we store the values into variables
+                
+                code = ""
+                if desc_codes[x] != "":
+                    code = str(desc_codes[x])
+
+                if type(keys_lower[x]) is int:
+                    lower_bound = int(keys_lower[x])
+                else:
+                    lower_bound = -1
+
+                if type(upper[x]) is int:
+                    upper_bound = int(upper[x])
+                else:
+                    upper_bound = -1
+                    
+                #desc = descriptions[x]                      
+                
+                if curr != split_name[1]:
+                    number = int(nums[x])
+                    reqs.append([number, []])
+                    curr = split_name[1]
+                    
+                # we now add the current requirement to the list of additional requirements
+                #reqs[-1][1].append([code, lower_bound, upper_bound, desc])
+                reqs[-1][1].append([code, lower_bound, upper_bound])
+                        
+        
+    # add the last minor
+    if name != "":
+        minor["requirements"] = reqs
+        
+        # add the major to the dict of majors
+        minors_dict[name] = minor
+    
+    #print(majors_dict)
+    
+    with open("execution_files\json\minors_list.json", "w") as myFile:
+        json.dump(minors_dict, myFile, indent=2)        
 
 #CREATES IN JSON THE LIST OF STUDENTS ENROLLED (FROM THE XML EXPORT)        
 def create_student_json(file_name):
-        
+    
+    # list of all students, to create the excel for language waive
+    studs_for_waive = []
+    waived_list = read_language_waived()
+    
     # XML file to read the transcripts from
     #xml_file = "students.xml"
     xml_file = file_name
@@ -399,7 +535,7 @@ def create_student_json(file_name):
     with open(json_file_mapping) as myFile:
         majors_mapping = json.load(myFile)
 
-    data_list = [] # to store the list of students
+    data_list = [] # to store the list of student info
     
     # Parse the XML file
     tree = ET.parse(xml_file)
@@ -457,7 +593,25 @@ def create_student_json(file_name):
 
         if student.startswith("Mrs."):
             student = student[5:]
-
+            
+        student = student.strip()
+        
+        notes = ""
+        waived = ""
+        language_waived = 0
+        
+        for x in waived_list[:]:
+            if x[0] == student:
+                #1 if the student has the language waived, 0 if the student does not have the language courses waived
+                waived = x[1]
+                notes = x[2]
+                waived_list.remove(x)
+        
+                if x[1].upper() == "X":
+                    language_waived = 1
+        
+        studs_for_waive.append([student, waived, notes])
+        
         # 2 (double-degree), 1 (double-major), or 0 (normal).
         if "/" in major1:
             majors = major1.split("/")
@@ -471,10 +625,7 @@ def create_student_json(file_name):
                 double_degree = 0
                 
         #print(double_degree, majors)
-        
-        #1 if the student has the language waived, 0 if the student does not have the language courses waived
-        language_waived = 0 # For now, fixed to 0 for everybody - we cannot know it
-        
+
         # To contain the list of courses for the current student
         stud_courses = []
                  
@@ -649,6 +800,37 @@ def create_student_json(file_name):
     
     # myReportFile.write(str(data_list))
     
+    workbook = xlsxwriter.Workbook('excel_source\language_waived.xlsx', {"nan_inf_to_errors": True})
+    worksheet = workbook.add_worksheet()
+    
+    name_title = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'bold': True, 'border': 5})
+    normal_border = workbook.add_format({'font_size': 11, 'font_name': 'calibri light', 'border': 1, 'bottom': 3})
+
+    worksheet.set_column(0, 0, 40) # student name
+    worksheet.set_column(1, 1, 20) # waived (X or empty)
+    worksheet.set_column(2, 2, 50) # notes
+    
+    worksheet.write(0,0,"STUDENT", name_title)
+    worksheet.write(0,1,"LANGUAGE WAIVED", name_title)
+    worksheet.write(0,2,"NOTES", name_title)
+        
+    row = 1
+    
+    # add to the new Excel the students who were in the old Excel but not in the xml
+    for w in waived_list:
+        studs_for_waive.append(w)
+    
+    for s in studs_for_waive:
+        
+        worksheet.write(row, 0, s[0], normal_border)
+        worksheet.write(row, 1, s[1] if type(s[1]) is str else "", normal_border)
+        worksheet.write(row, 2, s[2] if type(s[2]) is str else "", normal_border)
+        row += 1
+    
+    workbook.close()
+        
+
+    
     with open("execution_files\json\students_list.json", "w") as myFile:
         json.dump(data_list, myFile, indent=2)
         
@@ -661,5 +843,6 @@ CALLING FUNCTIONS
 """""""""""""""""""""""""""            
 create_majors_names_mapping()        
 create_courses_list()    
+create_minors_dict()
 create_majors_dict()
 #create_student_json("students.xml")

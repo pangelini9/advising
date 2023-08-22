@@ -7,29 +7,9 @@ Created on Fri Nov  4 18:14:26 2022
 
 
 import json
-from execution_files.courses import Course, Course_taken 
+from execution_files.courses import Course, Course_taken
+from execution_files.Utilities import check_code, letter_to_number
 #import execution_files.planner_formats as planner_formats
-
-letter_to_number = {
-    "A" : 4,
-    "A-" : 3.67,
-    "B+" : 3.33,
-    "B" : 3,
-    "B-" : 2.67,
-    "C+" : 2.33,
-    "C" : 2,
-    "C-" : 1.67,
-    "D+" : 1.33,
-    "D" : 1,
-    "D-" : 0.67, 
-    "F" : 0,
-    "INC" : 0.1,
-    "P" : 5,
-    "NP" : 0.2,
-    "W" : 0.3,
-    "current" : 0.4,
-    "TR" : 4.5, # PA: added this entry, for Transfer credits,
-    "AU" : 0.01} 
 
 class Major:
     
@@ -103,9 +83,8 @@ class Communications(Major):
         #tries to take a CMS course with a grade ==current or above C-
         for taken_course in curr_student.reduced_courses_list:
             iteration_counter += 1
-            if taken_course.used_flag<2 and (taken_course.course.get_code().startswith("CMS") or taken_course.course.get_code().endswith("CMS")) and found == False:
-                 
-                if taken_course.get_grade() >= letter_to_number.get("current") or taken_course.get_grade() == letter_to_number.get("INC"):
+            if taken_course.used_flag<2 and check_code(taken_course.course.get_code(), ["CMS"]) and taken_course.course.get_number() >= 300 and found == False:
+                if taken_course.get_grade() == letter_to_number.get("current") or taken_course.get_grade() == letter_to_number.get("INC"):
                     curr_student.m_core["courses done"].append([taken_course,2,message])
                     taken_course.used_flag=2
                     found = True
@@ -116,11 +95,23 @@ class Communications(Major):
                     taken_course.used_flag=2
                     found = True
                     break
-            
+                
+        # if not succesfull, tries to take a CMS course with a grade above D-
+        if found == False:
+            for taken_course in curr_student.reduced_courses_list:
+                iteration_counter += 1
+                if taken_course.used_flag<2 and check_code(taken_course.course.get_code(), ["CMS"]) and taken_course.course.get_number() >= 300 and found == False:
+                    if taken_course.get_grade() >= letter_to_number.get("D-"):
+                        curr_student.m_core["courses done"].append([taken_course,3,message])
+                        taken_course.used_flag=2
+                        found = True
+                        break            
+        
+        # if not successful yet, adds an empty course
         if found == False:
             fake_course = Course(message, "", "", "", [], "", "", "", -1)
             fcourse_taken =  Course_taken(fake_course, curr_student, "", "", "", "", 2)
-            curr_student.m_core["courses done"].append([fcourse_taken,1,message])
+            curr_student.m_core["courses done"].append([fcourse_taken,10,message])
 
                             
     #needed to handle major electives
@@ -138,71 +129,65 @@ class Communications(Major):
         djrn_counter = 0
                 
         for taken_course in curr_student.reduced_courses_list:
-            curr_grade = taken_course.get_grade()
-            format_num = 0
-            message = "Course from concentration"
+            
+            if taken_course.used_flag < 2:
+                curr_grade = taken_course.get_grade()
+                format_num = 0
+                message = "Course from concentration"
+                            
+                if check_code(taken_course.course.get_code(), ["CMS"]) and cms_counter<3:
+                    #decide the grade format
+                    if curr_grade==letter_to_number.get("current") or curr_grade==letter_to_number.get("INC"):
+                        cms_counter += 1    
+                        cms_conc.append([taken_course, 2, message])
                         
-            if (taken_course.course.get_code().startswith("CMS") or taken_course.course.get_code().endswith("CMS")) and cms_counter<3:
-                #decide the grade format
-                if curr_grade==letter_to_number.get("current"):
-                    format_num = 2                    
-                    cms_counter += 1    
-                    cms_conc.append([taken_course, format_num, message])
+                    elif curr_grade>=letter_to_number.get("D-"):
+                        cms_counter += 1    
+                        cms_conc.append([taken_course, 1, message])
                     
-                elif curr_grade>=letter_to_number.get("D-"):
-                    format_num = 1
-                    cms_counter += 1    
-                    cms_conc.append([taken_course, format_num, message])
-                
-            elif taken_course.course.get_code().startswith("DMA") or taken_course.course.get_code().endswith("DMA") and dma_counter<3:
-                #decide the grade format
-                if curr_grade==letter_to_number.get("current"):
-                    format_num = 2
-                    dma_counter += 1
-                    dma_conc.append([taken_course, format_num, message])
-                    
-                elif curr_grade>=letter_to_number.get("D-"):
-                    format_num = 1
-                    dma_counter += 1
-                    dma_conc.append([taken_course, format_num, message])
-        
-            elif taken_course.course.get_code().startswith("DJRN") or taken_course.course.get_code().endswith("DJRN") and djrn_counter<3:
-                #decide the grade format
-                if curr_grade==letter_to_number.get("current"):
-                    format_num = 2
-                    djrn_counter += 1
-                    djrn_conc.append([taken_course, format_num, message])
-                    
-                elif curr_grade>=letter_to_number.get("D-"):
-                    format_num = 1
-                    djrn_counter += 1
-                    djrn_conc.append([taken_course, format_num, message])
-                    
-               
+                elif check_code(taken_course.course.get_code(), ["DMA"]) and dma_counter<3:
+                    #decide the grade format
+                    if curr_grade==letter_to_number.get("current")  or curr_grade==letter_to_number.get("INC"):
+                        dma_counter += 1
+                        dma_conc.append([taken_course, 2, message])
+                        
+                    elif curr_grade>=letter_to_number.get("D-"):
+                        dma_counter += 1
+                        dma_conc.append([taken_course, 1, message])
+            
+                elif check_code(taken_course.course.get_code(), ["DJRN"]) and djrn_counter<3:
+                    #decide the grade format
+                    if curr_grade==letter_to_number.get("current") or curr_grade==letter_to_number.get("INC"):
+                        djrn_counter += 1
+                        djrn_conc.append([taken_course, 2, message])
+                        
+                    elif curr_grade>=letter_to_number.get("D-"):
+                        djrn_counter += 1
+                        djrn_conc.append([taken_course, 1, message])
         
         concentrations = [[cms_counter,cms_conc], [dma_counter,dma_conc], [djrn_counter,djrn_conc]]
         #concentration = 0
 
-        for index1 in range(0,len(concentrations)-1):
-            element1 = concentrations[index1]
-            for index2 in range(1,len(concentrations)):
-                element2 = concentrations[index2]
-                
-                if element1[0]>=element2[0]:
-                    self.passing_list = element1[1]
-                else:
-                    self.passing_list = element2[1]
-                    
+        self.passing_list = []
+        
+        # set the largest list as passing concentration
+        for element in concentrations:
+            if len(element[1]) > len(self.passing_list):
+                self.passing_list = element[1]
+                                    
+        # add empty courses to fill possible gaps
         if len(self.passing_list) != 3:
             for times in range(0, 3-len(self.passing_list)):
-                self.passing_list.append(["", 1, message])
-        
+                self.passing_list.append(["", 10, message])
+
+        # passing list is now a list of [course, format, message] elements
         for element in self.passing_list:
+            # if the course is not empty
             if element[0]!="":
                 for taken_course in curr_student.reduced_courses_list:
-                    if taken_course.course.get_code()==element[0].course.get_code() and taken_course.course.get_number()==element[0].course.get_number():
-                        curr_student.m_majorelectives["courses done"].append([taken_course, format_num, message])
-                        taken_course.used_flag=2   
+                    if taken_course.course.get_code()==element[0].course.get_code() and taken_course.course.get_number()==element[0].course.get_number() and taken_course.used_flag < 2:
+                        curr_student.m_majorelectives["courses done"].append(element)
+                        taken_course.used_flag=2
                         curr_student.m_majorelectives["courses missing"] -= 1
                         curr_student.m_majorelectives["num_remaining"] -= 1
                         curr_student.m_majorelectives["next_num"] += 1
@@ -210,12 +195,10 @@ class Communications(Major):
             else:
                 fake_course = Course(message, "", "", "", [], "", "", "", -1)
                 fcourse_taken =  Course_taken(fake_course, curr_student, "", "", "", "", 2)
-                curr_student.m_majorelectives["courses done"].append([fcourse_taken,1,message])
+                curr_student.m_majorelectives["courses done"].append([fcourse_taken,10,message])
                 curr_student.m_majorelectives["num_remaining"] -= 1
                 curr_student.m_majorelectives["next_num"] += 1
-
-
-        
+                
     def major_electives_banner(self, row_number, worksheet, merge_format1, merge_format2):
         row = row_number
         #position = (("A" + str(row)) + (":") + ("M" + str(row)))
@@ -322,8 +305,8 @@ class Psychology(Major):
               #   print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
              
              #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
-             if tcourse.used_flag<2 and counter<2 and len(concentrations_list)!=0 and tcourse.course.get_code() == "PS" and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("D-") or tcourse.get_grade() == letter_to_number.get("INC")):
-                 print("course with concentrations")
+             if tcourse.used_flag<2 and counter<2 and len(concentrations_list)!=0 and tcourse.course.get_code() == "PS" and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("D-") or tcourse.get_grade() == letter_to_number.get("current") or tcourse.get_grade() == letter_to_number.get("INC")): 
+                 #print("course with concentrations")
                  if len(possible_courses[concentrations_list[0]]) == 0:
                      possible_courses[concentrations_list[0]].append(tcourse)
                      counter += 1
@@ -390,7 +373,7 @@ class IntAffairs_asfa22(Major):
 
     def course_found(self, curr_student, tcourse, counter):
         if tcourse.used_flag <2:     
-            if tcourse.get_grade() == letter_to_number.get("current"):
+            if tcourse.get_grade() == letter_to_number.get("current") or tcourse.get_grade() == letter_to_number.get("INC"):
                 message = tcourse.course.get_name()
                 curr_student.m_majorelectives["courses done"].append([tcourse,2,message])
                 tcourse.used_flag = 2
@@ -436,14 +419,13 @@ class IntAffairs_asfa22(Major):
             if counter>0:
             
                 #first look for 300+
-                if tcourse.used_flag <2 and (tcourse.course.get_number()>=300 and tcourse.course.get_number()<=1000):
+                if tcourse.used_flag <2 and tcourse.course.get_number()>=300:
                    
                     #first look for "safe codes"
                     for code in codes_priority:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
-        
         
         #loop over the list of courses that the student has done
         for tcourse in curr_student.reduced_courses_list:        
@@ -451,11 +433,11 @@ class IntAffairs_asfa22(Major):
             if counter>0:
             
                 #first look for 300+
-                if tcourse.used_flag <2 and (tcourse.course.get_number()>=300 and tcourse.course.get_number()<=1000) and self.counter_substitutes>0:
+                if tcourse.used_flag <2 and tcourse.course.get_number()>=300 and self.counter_substitutes>0:
                    
                     #first look for "EC" and "HS"
                     for code in codes_other:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
 
@@ -466,7 +448,7 @@ class IntAffairs_asfa22(Major):
                     
                     #first look for "safe codes"
                     for code in codes_priority:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), code) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
         
@@ -480,7 +462,7 @@ class IntAffairs_asfa22(Major):
                 if tcourse.used_flag <2 and (tcourse.course.get_number()>=200 and tcourse.course.get_number()<300) and self.counter_low>0 and self.counter_substitutes>0:
                     #looks for "EC" and "HS"
                     for code in codes_other:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
         
@@ -495,7 +477,7 @@ class IntAffairs_priorfa22(Major):
 
     def course_found(self, curr_student, tcourse, counter):
         #print(f"found course {tcourse.course.get_name()}")
-        if tcourse.get_grade() == letter_to_number.get("current"):
+        if tcourse.get_grade() == letter_to_number.get("current") or tcourse.get_grade() == letter_to_number.get("INC"):
             message = tcourse.course.get_name()
             curr_student.m_majorelectives["courses done"].append([tcourse,2,message])
             tcourse.used_flag = 2
@@ -518,6 +500,7 @@ class IntAffairs_priorfa22(Major):
             if tcourse.course.get_number()>199 and tcourse.course.get_number()<300:
                 self.counter_low -= 1
             
+            # TODO: Maybe use function check_code, but then be careful with counters (should be EC, or HS, but not one of the good codes)
             if tcourse.course.get_code()=="EC" or tcourse.course.get_code()=="HS":
                 self.counter_substitutes -= 1
 
@@ -543,51 +526,48 @@ class IntAffairs_priorfa22(Major):
             if counter>0:
             
                 #first look for 300+
-                if tcourse.used_flag <2 and (tcourse.course.get_number()>=300 and tcourse.course.get_number()<=1000):
+                if tcourse.used_flag <2 and tcourse.course.get_number()>=300:
                    
                     #first look for "safe codes"
                     for code in codes_priority:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
         
-        
-        #loop over the list of courses that the student has done
+        #loop again over the list of courses that the student has done
         for tcourse in curr_student.reduced_courses_list:        
             #we still need to find courses
             if counter>0:
             
-                #first look for 300+
-                if tcourse.used_flag <2 and (tcourse.course.get_number()>=300 and tcourse.course.get_number()<=1000) and self.counter_substitutes>0:
+                # if it is 300+..
+                if tcourse.used_flag <2 and tcourse.course.get_number()>=300 and self.counter_substitutes>0:
                    
-                    #first look for "EC" and "HS"
+                    # .. we can use a bad code: "EC" or "HS"
                     for code in codes_other:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
 
-                #then look for 200+
+                # if it is 200+
                 if tcourse.used_flag <2 and (tcourse.course.get_number()>=200 and tcourse.course.get_number()<300) and self.counter_low>0:                    
-                    #first look for "safe codes"
+                    # we have to use a "safe code": PL or LAW
                     for code in codes_priority:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), code) and tcourse.used_flag <2:
                             #course was found
-                            counter = self.course_found(curr_student, tcourse, counter)
+                            counter = self.course_found(curr_student, tcourse, counter)        
         
-        
-        #loop over the list of courses that the student has done
+        #loop once more over the list of courses that the student has done
         for tcourse in curr_student.reduced_courses_list:        
             #we still need to find courses
             if counter>0:    
                 
-                #then look for 200+
+                # we can now allow 200+ with a bad code
                 if tcourse.used_flag <2 and (tcourse.course.get_number()>=200 and tcourse.course.get_number()<300) and self.counter_low>0 and self.counter_substitutes>0:
-                    #looks for "EC" and "HS"
+
                     for code in codes_other:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)        
-        
             
 class PolScience_asfa22(Major):     
     
@@ -600,7 +580,7 @@ class PolScience_asfa22(Major):
 
     def course_found(self, curr_student, tcourse, counter):
         #print(f"found course {tcourse.course.get_name()}")
-        if tcourse.get_grade() == letter_to_number.get("current"):
+        if tcourse.get_grade() == letter_to_number.get("current") or tcourse.get_grade() == letter_to_number.get("INC"):
             message = tcourse.course.get_name()
             curr_student.m_majorelectives["courses done"].append([tcourse,2,message])
             tcourse.used_flag = 2
@@ -611,9 +591,11 @@ class PolScience_asfa22(Major):
             if tcourse.course.get_number()>199 and tcourse.course.get_number()<300:
                 self.counter_low -= 1
             
+            # TODO: Can we use the function? What about cross-listing?
             if tcourse.course.get_code()=="HS":
                 self.counter_HS -= 1
                 
+            # TODO: Can we use the function? What about cross-listing?
             if tcourse.course.get_code()=="SOSC":
                 self.counter_SOSC -= 1
                 
@@ -629,9 +611,11 @@ class PolScience_asfa22(Major):
             if tcourse.course.get_number()>199 and tcourse.course.get_number()<300:
                 self.counter_low -= 1
             
+            # TODO: Can we use the function? What about cross-listing?
             if tcourse.course.get_code()=="HS":
                 self.counter_HS -= 1
                 
+            # TODO: Can we use the function? What about cross-listing?
             if tcourse.course.get_code()=="SOSC":
                 self.counter_SOSC -= 1
 
@@ -639,7 +623,7 @@ class PolScience_asfa22(Major):
 
 
     def exception_one(self, i, curr_student, reduced_courses_list):
-        print("entered exception political sciences")
+        #print("entered exception political sciences")
         counter = i[0]
         #print(f"courses missing number {i[0]}")
         curr_student.m_majorelectives["courses missing"] = i[0]
@@ -658,11 +642,11 @@ class PolScience_asfa22(Major):
             if counter>0:
             
                 #first look for 300+
-                if tcourse.used_flag <2 and (tcourse.course.get_number()>=300 and tcourse.course.get_number()<=1000):
+                if tcourse.used_flag <2 and tcourse.course.get_number()>=300:
                    
                     #first look for "safe codes"
                     for code in codes_priority:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
         
@@ -673,15 +657,15 @@ class PolScience_asfa22(Major):
             if counter>0:
             
                 #first look for 300+
-                if tcourse.used_flag <2 and (tcourse.course.get_number()>=300 and tcourse.course.get_number()<=1000): #and self.counter_substitutes>0:
-                   #look for HS and SOSC separed because a student can take courses with either
+                if tcourse.used_flag <2 and tcourse.course.get_number()>=300: #and self.counter_substitutes>0:
+                   #look for HS and SOSC separated because a student can take courses with either
                     if self.counter_HS>0:
-                       if (tcourse.course.get_code().startswith("HS") or tcourse.course.get_code().endswith("HS")) and tcourse.used_flag <2:
+                       if check_code(tcourse.course.get_code(), ["HS"]) and tcourse.used_flag <2:
                            #course was found
                            counter = self.course_found(curr_student, tcourse, counter)
 
                     if self.counter_SOSC>0:                  
-                       if (tcourse.course.get_code().startswith("SOSC") or tcourse.course.get_code().endswith("SOSC")) and tcourse.used_flag <2:                            
+                       if check_code(tcourse.course.get_code(), ["SOSC"]) and tcourse.used_flag <2:                            
                            #course was found
                            counter = self.course_found(curr_student, tcourse, counter)
                            
@@ -690,7 +674,7 @@ class PolScience_asfa22(Major):
                 if tcourse.used_flag <2 and (tcourse.course.get_number()>=200 and tcourse.course.get_number()<300) and self.counter_low>0:                    
                     #first look for "safe codes"
                     for code in codes_priority:
-                        if (tcourse.course.get_code().startswith(code) or tcourse.course.get_code().endswith(code)) and tcourse.used_flag <2:
+                        if check_code(tcourse.course.get_code(), [code]) and tcourse.used_flag <2:
                             #course was found
                             counter = self.course_found(curr_student, tcourse, counter)
         
@@ -703,12 +687,12 @@ class PolScience_asfa22(Major):
                 #then look for 200+
                 if tcourse.used_flag <2 and (tcourse.course.get_number()>=200 and tcourse.course.get_number()<300): #and self.counter_low>0 and self.counter_substitutes>0:
                     if self.counter_HS>0:
-                       if (tcourse.course.get_code().startswith("HS") or tcourse.course.get_code().endswith("HS")) and tcourse.used_flag <2:
+                       if check_code(tcourse.course.get_code(), ["HS"]) and tcourse.used_flag <2:
                            #course was found
                            counter = self.course_found(curr_student, tcourse, counter)
 
                     if self.counter_SOSC>0:                  
-                       if (tcourse.course.get_code().startswith("SOSC") or tcourse.course.get_code().endswith("SOSC")) and tcourse.used_flag <2:                            
+                       if check_code(tcourse.course.get_code(), ["SOSC"]) and tcourse.used_flag <2:                            
                            #course was found
                            counter = self.course_found(curr_student, tcourse, counter)
 
@@ -721,6 +705,8 @@ class ClassicalStudies_asfa20(Major):
 
         self.latin = ""
         self.greek = ""
+        
+        # TODO: To be implemented
 
     """
     def course_found(self, curr_student, tcourse, counter):
@@ -809,7 +795,8 @@ class History(Major):
         curr_student.m_core["courses done"].append(["", 1, message])
         
         ["Ancient History (before c. 500 C.E.)", "Medieval History (c. 500-1500 C.E.)", "Early Modern History (c. 1500-1800 C.E.)", "Modern History (c. 1800-2000 C.E.)"]
-
+        
+        # TODO: TO be implemented
 
 class ArtHistory_asfa22(Major):
     
@@ -839,7 +826,7 @@ class ArtHistory_asfa22(Major):
             #if len(concentrations_list)!= 0:
                 #print(f"{tcourse.course.get_name()} has {concentrations_list}")
             #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
-            if tcourse.used_flag<2 and counter<3 and len(concentrations_list)!=0 and (tcourse.course.get_code().startswith("AH") or tcourse.course.get_code().endswith("AH") or tcourse.course.get_code().startswith("ARCH") or tcourse.course.get_code().endswith("ARCH")) and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("C-") or tcourse.get_grade() == letter_to_number.get("current")):
+            if tcourse.used_flag<2 and counter<3 and len(concentrations_list)!=0 and check_code(tcourse.course.get_code(), ["AH", "ARCH"]) and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("C-") or tcourse.get_grade() == letter_to_number.get("current")  or tcourse.get_grade() == letter_to_number.get("INC")):
                 #print("course with concentrations")
                 if len(possible_courses[concentrations_list[0]]) == 0:
                     possible_courses[concentrations_list[0]].append(tcourse)
@@ -874,7 +861,7 @@ class ArtHistory_asfa22(Major):
               #   print(f"\nanalyzing {tcourse.course.get_name()} with {concentrations_list}")
              
              #if the course was not previously used in II part of planner, less than two courses were found, and the course can saisfy at least one concentration
-             if tcourse.used_flag<2 and counter<3 and len(concentrations_list)!=0 and (tcourse.course.get_code().startswith("AH") or tcourse.course.get_code().endswith("AH") or tcourse.course.get_code().startswith("ARCH") or tcourse.course.get_code().endswith("ARCH")) and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("D-") or tcourse.get_grade() == letter_to_number.get("INC")):
+             if tcourse.used_flag<2 and counter<3 and len(concentrations_list)!=0 and check_code(tcourse.course.get_code(), ["AH", "ARCH"]) and (concentrations_list[0] in possible_courses.keys()) and (tcourse.get_grade() >= letter_to_number.get("D-") or tcourse.get_grade() == letter_to_number.get("INC") or tcourse.get_grade() == letter_to_number.get("current")):
                  #print("course with concentrations")
                  if len(possible_courses[concentrations_list[0]]) == 0:
                      possible_courses[concentrations_list[0]].append(tcourse)
@@ -953,9 +940,9 @@ class ArtHistory_asfa22(Major):
         
         for tcourse in curr_student.reduced_courses_list:
 
-            if tcourse.used_flag<2 and (tcourse.course.get_code().startswith("AH") or tcourse.course.get_code().endswith("AH")) and tcourse.course.get_number()>=200:
+            if tcourse.used_flag<2 and check_code(tcourse.course.get_code(), ["AH"]) and tcourse.course.get_number()>=200:
                     
-                if on_site_flag == True or  tcourse.course.get_on_site()!= "":
+                if on_site_flag == True or tcourse.course.get_on_site()!= "":
 
                     if tcourse.get_grade() == letter_to_number.get("current") or tcourse.get_grade() == letter_to_number.get("INC"):
                         message = tcourse.course.get_name()

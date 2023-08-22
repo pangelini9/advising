@@ -5,27 +5,8 @@ Created on Tue Oct  4 09:39:11 2022
 @author: ilda1
 """
 #from students import Student
-letter_to_number = {
-    "A" : 4,
-    "A-" : 3.67,
-    "B+" : 3.33,
-    "B" : 3,
-    "B-" : 2.67,
-    "C+" : 2.33,
-    "C" : 2,
-    "C-" : 1.67,
-    "D+" : 1.33,
-    "D" : 1,
-    "D-" : 0.67, 
-    "F" : 0,
-    "INC" : 0.1,
-    "P" : 5,
-    "NP" : 0.2,
-    "W" : 0.3,
-    "current" : 0.4,
-    "TR" : 4.5, # PA: added this entry, for Transfer credits,
-    "AU" : 0.01}
 
+from execution_files.Utilities import letter_to_number
 
 class Course:
     
