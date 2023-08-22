@@ -214,7 +214,6 @@ class Student:
                     self.credits_residence_nxsem += course_credits
 
     
-    # TODO: replace 120 by 150, if double degree
     def compute_credits_missing(self):
         #self.credits_missing = 120 - self.credits_nxsem 
         
@@ -358,12 +357,12 @@ class Student:
     
 
     def change_major(self, majorobj):
-        "changes the major key (passed by the json file of the student into the major object"
+        """changes the major key (passed by the json file of the student into the major object"""
         self.major = majorobj
         
 
     def change_courses(self, courses_taken_obj):
-        "change list of courses into the list of objects of the class Courses_taken"
+        """change list of courses into the list of objects of the class Courses_taken"""
         self.courses_done = courses_taken_obj
         
    #IS IT REALLY NECESSARY? 
@@ -376,7 +375,7 @@ class Student:
     
     
     def change_withdraw_creds(self):
-        "Changes the credits of the courses taken that the student has withdrawed from in 0 so that it prints it on the planner"
+        "Changes the credits of the courses taken that the student has withdrawn from to 0 so that it prints it on the planner"
         for course_taken in self.reduced_courses_list:
             if course_taken.get_grade() == letter_to_number.get("W"):
                 course_taken.creds = 0
@@ -413,78 +412,64 @@ class Student:
         #non deve togliere i duplicates dei corsi fatti non in residence
         special_courses = [0, 281, 299, 381, 399, 499]
         self.text = ""
+        # read the list of courses starting from the most recent
         for i in range(len(self.courses_done)-1, -1, -1):
-            current_course = self.courses_done[i] #latest before getting appended  and becoming h, so h is the actual latest
-            #print(f"{current_course.course.get_name()} in {current_course.get_term()}")
-            to_insert = True #è da inserire in reduced
+            current_course = self.courses_done[i]
             
-            for h in self.reduced_courses_list[:]: #secon d time done the course
-                in_residence = h.return_in_residence()
-                
-                #se la seconda volta era come Auditor la prima rimane perchè AU non conta ne sui crediti ne sui voti
-                if h.get_grade() == letter_to_number.get("AU"):
-                    to_insert = False # non è da inserire
-                    break
-                    #found_retake = True
+            # variable to control whether this course has to be inserted in the reduced list or not
+            to_insert = True
+            
+            # If the grade in the transcript already has an R, the course does not have to be inserted
+            if pd.isnull(current_course.get_grade()) == True:
+                to_insert = False
+            
+            # otherwise, I compare the course against the courses that have been already inserted
+            else:
+                for h in self.reduced_courses_list[:]:
                     
-                #se nel transcript è già presente la R allora il corso viene rimosso   
-                elif pd.isnull(current_course.get_grade()) == True:
-                    to_insert = False
-                    #found_retake = True
-                    break
-                
-                #finds the same course in the list                
-                elif current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code() and (current_course.course.get_number()!=388 and current_course.course.get_code()!="RAS") and (current_course.course.get_number()!=383 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=373 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=372 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=367 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=283 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=272 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=267 and current_course.course.get_code()!="AH") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=315 and current_course.course.get_code()!="EN/HS") and (current_course.course.get_number()!=346 and current_course.course.get_code()!="EN") and (current_course.course.get_number()!=306 and current_course.course.get_code()!="EN") and ((current_course.course.get_number() not in special_courses) or (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
-                    #to_insert = False # non è da inserire
-                    
-                    if h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("current") or in_residence == 0:
-                        'You are either retaking the class in a future semester, not got the grade yet, or this second time you got INC, or W, or retaken the course abroad'
-                        'then does not have to be dropped nor added to the retake'
-                        #print(f"not dropped because second time {h.get_grade()}")
-                        #if h.get_grade()==letter_to_number.get("INC"):
-                        current_course.used_flag = 15
-                        if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("NP"): #and current_course.get_grade()!=letter_to_number.get("P")
-                            print(f"student has a non official repeat {current_course.course.get_name()} {h.course.get_name()}")    
-                            """
-                            Out of all the courses that a student has repeated, only the ones in which the student has
-                            not taken W, P, NP must be reported
-                            This is a check on the grade of the course taken the first time, not the second
-                            """
-                            retaken_pair = {"old_course" : current_course,
-                                            "new_course" : h
-                                            }
-                            self.retaken_classes.append(retaken_pair)
-                         
-                        else:
+                    # If the same course is already in the list: h is more recent than current!                
+                    if current_course.course.get_number() == h.course.get_number() and current_course.course.get_code() == h.course.get_code():
+                        
+                        # if it is one of the courses that can be repeated, it should be inserted
+                        if current_course.course.get_code()=="RAS" or (current_course.course.get_number()==383 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==373 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==372 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==367 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==283 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==272 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==267 and current_course.course.get_code()=="AH") or (current_course.course.get_number()==315 and current_course.course.get_code()=="EN") or (current_course.course.get_number()==315 and current_course.course.get_code()=="EN/HS") or (current_course.course.get_number()==346 and current_course.course.get_code()=="EN") or (current_course.course.get_number()==306 and current_course.course.get_code()=="EN") or (current_course.course.get_number() in special_courses and not (current_course.course.get_number()==299 and current_course.course.get_code()=="MA")):
+                            to_insert = True # not needed, just to fill the gap
+                        
+                        # else, if the new course does not have a grade yet, the old is inserted, but should be ignored for requirements
+                        elif h.get_grade()==letter_to_number.get("INC") or h.get_grade()==letter_to_number.get("current"):
+                            #print(f"not dropped because second time {h.get_grade()}")
+                            current_course.used_flag = 15 # TODO: update the rest of the code to use this (IF NEEDED!)
+                            to_insert = True # not needed, just for completeness
+                            
+                            # Also, if the old course had a valid grade, it should be reported as a retake
+                            if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("P") and current_course.get_grade()!=letter_to_number.get("NP")  and current_course.get_grade()!=letter_to_number.get("AU"):
+                                """
+                                Out of all the courses that a student has repeated, only the ones in which the student has
+                                not taken W, P, NP, AU must be reported
+                                This is a check on the grade of the course taken the first time, not the second
+                                """
+                                retaken_pair = {"old_course" : current_course,
+                                                "new_course" : h
+                                                }
+                                self.retaken_classes.append(retaken_pair)
+                                #self.retaken_classes.append(current_course)
+                                self.text += f"{current_course.course.get_name()} done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}, {current_course.get_credits()} creds) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())}, {h.get_credits()} creds)"
+                            
+                        # else, if the new course is a Withdraw or Audit, the old is inserted, while the new is not inserted
+                        elif h.get_grade()==letter_to_number.get("W") or h.get_grade()==letter_to_number.get("AU"):
+                            #print(f"not dropped because second time {h.get_grade()}")
+                            self.reduced_courses_list.remove(h)
+                            to_insert = True # not needed, just for completeness
+    
+                        # else, if the new course has NOT been taken at JCU, the old is inserted, but should be ignored for requirements
+                        elif h.return_in_residence() == 0:
+                            #print(f"not dropped because second time not in residence")
+                            current_course.used_flag = 15 # TODO: update the rest of the code to use this (IF NEEDED!)
+                            to_insert = True # not needed, just for completeness
+    
+                        else: # the new course has an actual grade and has been taken at JCU, so we do not need to insert
+    
                             to_insert = False
-                        break
-                    
-                    elif current_course.get_grade()==letter_to_number.get("W"):
-                        self.reduced_courses_list.remove(h) #se la nuova versione è W non dovrebbe essere nel planner but double check
-                        break
 
-                    elif h.get_grade()!=letter_to_number.get("INC") and h.get_grade()!=letter_to_number.get("W") and h.get_grade()!=letter_to_number.get("current") and in_residence == 1:
-                        'you took a class twice, but the second time the grade was acceptable and you took it again at JCU'
-                        to_insert = False # non è da inserire
-                        
-                        if current_course.get_grade()!=letter_to_number.get("W") and current_course.get_grade()!=letter_to_number.get("P") and current_course.get_grade()!=letter_to_number.get("NP"):
-                            """
-                            Out of all the courses that a student has repeated, only the ones in which the student has
-                            not taken W, P, NP must be reported
-                            This is a check on the grade of the course taken the first time, not the second
-                            """
-                            retaken_pair = {"old_course" : current_course,
-                                            "new_course" : h
-                                            }
-                            self.retaken_classes.append(retaken_pair)
-                            #self.retaken_classes.append(current_course)
-                            self.text += f"{current_course.course.get_name()} done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}, {current_course.get_credits()} creds) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())}, {h.get_credits()} creds)"
-                        #Report2.write(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
-                        #print(f"\nDropping {current_course.course.get_name()} because done in {current_course.get_term()} ({number_to_letter.get(current_course.get_grade())}) and again in {h.get_term()} ({number_to_letter.get(h.get_grade())})")
-
-                        #found_retake = True
-                        #print(f"\ndropping {current_course.course.get_name()} because done in {current_course.get_term()} and again in {h.get_term()} with ")
-                        
             if to_insert:
                 self.reduced_courses_list.insert(0, current_course)
                 self.general_distr_list.insert(0, current_course)
@@ -1828,195 +1813,201 @@ class Student:
         
         #goes through all courses done
         for c_taken in courses_taken[:]:
-            #specific for each course to mantain the structure
-            #appoggio = {"course": [], "reason": []}
             
-            taken_code = c_taken.course.get_code() #letter part of code the student has taken
-            taken_num = c_taken.course.get_number() #number part of code the student has taken
-            taken_grade = c_taken.get_grade()    
-            
-            prereq_code = prerequisite["code"]
-            prereq_grade = prerequisite["grade"]
-                        
-            if prereq_grade is None or prereq_grade == "":
-                prereq_grade = "D-"
-                    
-            lower_bound = prerequisite["lower bound"]
-            upper_bound = prerequisite["upper bound"]
-            
-            taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
-            
-            if found == False: #and taken_semester != "TR":
-                #se il prerequisito è lo standing
-                if prereq_code == "S":
-                    creds = self.count_specific_creds(current_semester, course_name, course_num)
-                    if creds>=lower_bound:
-                        found = True
-                        break
-                    else:
-                        single_reason = f"Missing ({creds} credits)"
-                        found = False
-                            #break
-                    
-                #elif course_name==taken_code or course_num==taken_num:
-                    #print(f"{self.get_name()} same course")
-                #to exclude the same course
-                #elif course_name!=taken_code or course_num!=taken_num: #
-                    #se il prerequisito è un qualunque corso o range di corsi
-                #elif course_name==taken_code and course_num==taken_num 
-                else:
-                    if (int(lower_bound)==int(upper_bound) and int(taken_num)==int(lower_bound) and taken_code == prereq_code) or (int(lower_bound)!=int(upper_bound) and check_code(taken_code, [prereq_code]) and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or int(taken_num)==int(lower_bound) or int(taken_num)==int(upper_bound))):
- 
-                         if req_type == "prerequisite":
-                             #taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
-                             result = 0
-                             if taken_semester != "TR":
-                                 result = compare(current_semester, taken_semester) 
-                             else:
-                                 result = 1
-                                 
-                             #se il grade requirement è satisfied    
-                             if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("P"):
-                                 found = True
-                                 #myReportFile.write(f"\nokay {current_course.course.get_name()}: found {prerequisite} because {c_taken.course.get_name()} with {number_to_letter.get(taken_grade)}")
-                                 #break
-                             
-                            #se il corso è senza voto ma preso un semestre prima
-                             elif taken_grade==letter_to_number.get("current") and result==1: #and result==1:
-                                 found = True
-                                 #myReportFile.write(f"\nfound: {prerequisite} because {c_taken.course.get_name()} is current")
-                                 #break
-                             else:
-                                 #se il corso ha un prerequisito strano
-                                 if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306) or (course_name=="AS" and course_num==330) or (course_name=="AS" and course_num==332) or (course_name=="AS" and course_num==342) or (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349) or (course_name=="IT" and course_num==349) or (course_name=="IT" and course_num==399):
-                                    if single_reason == "":
-                                        single_reason = "Missing"
-                                    else:
-                                        single_reason += ", missing"
-                                    #myReportFile.write("\nstrange")
-                                 
-                                 elif taken_grade==letter_to_number.get("W"):   
-                                     if counter_alts == 1:
-                                         if single_reason == "":
-                                             single_reason = f"Withdrawn in {taken_semester}"  
-                                         else:
-                                             single_reason += f", withdrawn in {taken_semester}"
-
-                                     else:
-                                         if single_reason == "":
-                                             single_reason = f"Withdrawn from {taken_code} {taken_num} in {taken_semester}"  
-                                         else:
-                                            single_reason += f", withdrawn from {taken_code} {taken_num} in {taken_semester}"
-                                                                     #se il corso è stato proprio fallito   
-                                 elif taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("F"):
-                                     if counter_alts == 1:
-                                         if single_reason == "":
-                                             single_reason = f"Withdrawn from in {taken_semester}"  
-                                         else:
-                                             single_reason += f", failed in {taken_semester}"
-
-                                     else:
-                                         if single_reason == "":
-                                             single_reason = f"Failed {taken_code} {taken_num} in {taken_semester}"  
-                                         else:
-                                            single_reason += f", failed {taken_code} {taken_num} in {taken_semester}"
-                                 
-                                 #se il corso è incomplete    
-                                 elif taken_grade==letter_to_number.get("INC"):
-                                     if counter_alts == 1:
-                                         if single_reason == "":
-                                             single_reason = f"Incomplete in {taken_semester}"
-                                         else: 
-                                             single_reason += f", incomplete in {taken_semester}"
-                                         #self.prerequisite_reason.append(single_reason)
-                                     else:
-                                         if single_reason == "":
-                                             single_reason = f"Incomplete in {taken_code} {taken_num} in {taken_semester}"
-                                         else:
-                                             single_reason += f", incomplete in {taken_code} {taken_num} in {taken_semester}"
-                                         #self.prerequisite_reason.append(single_reason)
+            if c_taken.used_flag == 15: # this course has been superseded by another course (current or not in residence)
+                print(f"Not using: {c_taken.course.get_code()} {c_taken.course.get_number()} from {c_taken.get_term()}")
                 
-                                #rimosso failed, aggiunto prima
-                                         
-                                 elif taken_grade<letter_to_number.get(prereq_grade):
-
-                                    if counter_alts == 1:
-                                        grade = number_to_letter.get(taken_grade)
-                                        if taken_grade == letter_to_number.get("current"):
-                                            if not (taken_code==course_name and taken_num==course_num):
+            else:
+            
+                #specific for each course to mantain the structure
+                #appoggio = {"course": [], "reason": []}
+                
+                taken_code = c_taken.course.get_code() #letter part of code the student has taken
+                taken_num = c_taken.course.get_number() #number part of code the student has taken
+                taken_grade = c_taken.get_grade()    
+                
+                prereq_code = prerequisite["code"]
+                prereq_grade = prerequisite["grade"]
+                            
+                if prereq_grade is None or prereq_grade == "":
+                    prereq_grade = "D-"
+                        
+                lower_bound = prerequisite["lower bound"]
+                upper_bound = prerequisite["upper bound"]
+                
+                taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
+                
+                if found == False: #and taken_semester != "TR":
+                    #se il prerequisito è lo standing
+                    if prereq_code == "S":
+                        creds = self.count_specific_creds(current_semester, course_name, course_num)
+                        if creds>=lower_bound:
+                            found = True
+                            break
+                        else:
+                            single_reason = f"Missing ({creds} credits)"
+                            found = False
+                                #break
+                        
+                    #elif course_name==taken_code or course_num==taken_num:
+                        #print(f"{self.get_name()} same course")
+                    #to exclude the same course
+                    #elif course_name!=taken_code or course_num!=taken_num: #
+                        #se il prerequisito è un qualunque corso o range di corsi
+                    #elif course_name==taken_code and course_num==taken_num 
+                    else:
+                        if (int(lower_bound)==int(upper_bound) and int(taken_num)==int(lower_bound) and taken_code == prereq_code) or (int(lower_bound)!=int(upper_bound) and check_code(taken_code, [prereq_code]) and ((int(taken_num)>int(lower_bound) and int(taken_num)<int(upper_bound)) or int(taken_num)==int(lower_bound) or int(taken_num)==int(upper_bound))):
+     
+                             if req_type == "prerequisite":
+                                 #taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
+                                 result = 0
+                                 if taken_semester != "TR":
+                                     result = compare(current_semester, taken_semester) 
+                                 else:
+                                     result = 1
+                                     
+                                 #se il grade requirement è satisfied    
+                                 if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("P"):
+                                     found = True
+                                     #myReportFile.write(f"\nokay {current_course.course.get_name()}: found {prerequisite} because {c_taken.course.get_name()} with {number_to_letter.get(taken_grade)}")
+                                     #break
+                                 
+                                #se il corso è senza voto ma preso un semestre prima
+                                 elif taken_grade==letter_to_number.get("current") and result==1: #and result==1:
+                                     found = True
+                                     #myReportFile.write(f"\nfound: {prerequisite} because {c_taken.course.get_name()} is current")
+                                     #break
+                                 else:
+                                     #se il corso ha un prerequisito strano
+                                     if (course_name=="AS" and course_num==304) or (course_name=="AS" and course_num==306) or (course_name=="AS" and course_num==330) or (course_name=="AS" and course_num==332) or (course_name=="AS" and course_num==342) or (course_name=="AS" and course_num==345) or (course_name=="AS" and course_num==349) or (course_name=="IT" and course_num==349) or (course_name=="IT" and course_num==399):
+                                        if single_reason == "":
+                                            single_reason = "Missing"
+                                        else:
+                                            single_reason += ", missing"
+                                        #myReportFile.write("\nstrange")
+                                     
+                                     elif taken_grade==letter_to_number.get("W"):   
+                                         if counter_alts == 1:
+                                             if single_reason == "":
+                                                 single_reason = f"Withdrawn in {taken_semester}"  
+                                             else:
+                                                 single_reason += f", withdrawn in {taken_semester}"
+    
+                                         else:
+                                             if single_reason == "":
+                                                 single_reason = f"Withdrawn from {taken_code} {taken_num} in {taken_semester}"  
+                                             else:
+                                                single_reason += f", withdrawn from {taken_code} {taken_num} in {taken_semester}"
+                                                                         #se il corso è stato proprio fallito   
+                                     elif taken_grade==letter_to_number.get("NP") or taken_grade==letter_to_number.get("F"):
+                                         if counter_alts == 1:
+                                             if single_reason == "":
+                                                 single_reason = f"Withdrawn from in {taken_semester}"  
+                                             else:
+                                                 single_reason += f", failed in {taken_semester}"
+    
+                                         else:
+                                             if single_reason == "":
+                                                 single_reason = f"Failed {taken_code} {taken_num} in {taken_semester}"  
+                                             else:
+                                                single_reason += f", failed {taken_code} {taken_num} in {taken_semester}"
+                                     
+                                     #se il corso è incomplete    
+                                     elif taken_grade==letter_to_number.get("INC"):
+                                         if counter_alts == 1:
+                                             if single_reason == "":
+                                                 single_reason = f"Incomplete in {taken_semester}"
+                                             else: 
+                                                 single_reason += f", incomplete in {taken_semester}"
+                                             #self.prerequisite_reason.append(single_reason)
+                                         else:
+                                             if single_reason == "":
+                                                 single_reason = f"Incomplete in {taken_code} {taken_num} in {taken_semester}"
+                                             else:
+                                                 single_reason += f", incomplete in {taken_code} {taken_num} in {taken_semester}"
+                                             #self.prerequisite_reason.append(single_reason)
+                    
+                                    #rimosso failed, aggiunto prima
+                                             
+                                     elif taken_grade<letter_to_number.get(prereq_grade):
+    
+                                        if counter_alts == 1:
+                                            grade = number_to_letter.get(taken_grade)
+                                            if taken_grade == letter_to_number.get("current"):
+                                                if not (taken_code==course_name and taken_num==course_num):
+                                                    if single_reason == "":
+                                                        single_reason = f"Grade req ({grade} in {taken_semester})"
+                                                    else:
+                                                        single_reason += f", grade req ({grade} in {taken_semester})"
+                                            else:
                                                 if single_reason == "":
                                                     single_reason = f"Grade req ({grade} in {taken_semester})"
                                                 else:
                                                     single_reason += f", grade req ({grade} in {taken_semester})"
+                                            #self.prerequisite_reason.append(single_reason)
                                         else:
-                                            if single_reason == "":
-                                                single_reason = f"Grade req ({grade} in {taken_semester})"
+                                            
+                                            grade = number_to_letter.get(taken_grade)
+                                            if taken_grade == letter_to_number.get("current"):
+                                                if not (taken_code==course_name and taken_num==course_num):
+                                                    if single_reason == "":
+                                                        single_reason = f"Grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
+                                                    else:
+                                                        single_reason += f", grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
                                             else:
-                                                single_reason += f", grade req ({grade} in {taken_semester})"
-                                        #self.prerequisite_reason.append(single_reason)
-                                    else:
-                                        
-                                        grade = number_to_letter.get(taken_grade)
-                                        if taken_grade == letter_to_number.get("current"):
-                                            if not (taken_code==course_name and taken_num==course_num):
                                                 if single_reason == "":
-                                                    single_reason = f"Grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
+                                                    single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"
                                                 else:
-                                                    single_reason += f", grade req ({grade} in {taken_code} {taken_num} in {taken_semester})"
+                                                    single_reason += f", grade req ({grade} in {taken_code} {taken_num})"
+                                            #self.prerequisite_reason.append(single_reason)
+                                         
+                                     else:
+                                        #myReportFile.write("\nmissing")
+                                        if counter_alts == 1:
+                                            if single_reason == "":
+                                                single_reason = "Missing" 
+                                            else:
+                                                single_reason += ", missing"
+                                           #self.prerequisite_reason.append(single_reason)
+                                           #print("append 1")
                                         else:
                                             if single_reason == "":
-                                                single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"
+                                                single_reason = f"Missing {taken_code} {taken_num} "
                                             else:
-                                                single_reason += f", grade req ({grade} in {taken_code} {taken_num})"
-                                        #self.prerequisite_reason.append(single_reason)
-                                     
-                                 else:
-                                    #myReportFile.write("\nmissing")
-                                    if counter_alts == 1:
-                                        if single_reason == "":
-                                            single_reason = "Missing" 
-                                        else:
-                                            single_reason += ", missing"
-                                       #self.prerequisite_reason.append(single_reason)
-                                       #print("append 1")
-                                    else:
-                                        if single_reason == "":
-                                            single_reason = f"Missing {taken_code} {taken_num} "
-                                        else:
-                                            single_reason += f", missing {taken_code} {taken_num}"
-                                       #self.prerequisite_reason.append(single_reason)
-                                       #print("append 2")   
-
-                             #if found == False:
-                                 #myReportFile.write(f"\nNOT FOUND {prerequisite}")
-                        
-                         #corequisiti dovrebbero avere anche current ammissibile come voto
-                         elif req_type == "corequisite":
-                            taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
-                            if taken_semester != "TR":
-                                 result = compare(current_semester, taken_semester) 
-                            else:
-                                 result = 1 
-                            if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("P"):
-                                found = True
-                                #myReportFile.write(f"\nfound corequisite: {prerequisite} because {c_taken.course.get_name()} with {number_to_letter.get(taken_grade)}")
+                                                single_reason += f", missing {taken_code} {taken_num}"
+                                           #self.prerequisite_reason.append(single_reason)
+                                           #print("append 2")   
+    
+                                 #if found == False:
+                                     #myReportFile.write(f"\nNOT FOUND {prerequisite}")
                             
-                            elif taken_grade == letter_to_number.get("current") and (result==1 or result==0):
-                                found = True
-                                #myReportFile.write(f"\nfound corequisite: {prerequisite} because {c_taken.course.get_name()} is current")
-                            
-                            else:
-                                 if counter_alts == 1:
-                                    grade = number_to_letter.get(taken_grade)
-                                    single_reason = f"Grade req ({grade})"
-                                    #myReportFile.write("\ncorequisite grade insufficient")
-                                 else:
-                                    grade = number_to_letter.get(taken_grade)
-                                    single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"            
-                                    #myReportFile.write("\ncorequisite grade insufficient")
-
-                            #if found == False:
-                                 #myReportFile.write(f"\ncorequisite NOT FOUND {prerequisite}")
+                             #corequisiti dovrebbero avere anche current ammissibile come voto
+                             elif req_type == "corequisite":
+                                taken_semester = c_taken.get_term() #the semester in which the student has taken the course that satisfies the requirement
+                                if taken_semester != "TR":
+                                     result = compare(current_semester, taken_semester) 
+                                else:
+                                     result = 1 
+                                if taken_grade>=letter_to_number.get(prereq_grade) or taken_grade==letter_to_number.get("P"):
+                                    found = True
+                                    #myReportFile.write(f"\nfound corequisite: {prerequisite} because {c_taken.course.get_name()} with {number_to_letter.get(taken_grade)}")
+                                
+                                elif taken_grade == letter_to_number.get("current") and (result==1 or result==0):
+                                    found = True
+                                    #myReportFile.write(f"\nfound corequisite: {prerequisite} because {c_taken.course.get_name()} is current")
+                                
+                                else:
+                                     if counter_alts == 1:
+                                        grade = number_to_letter.get(taken_grade)
+                                        single_reason = f"Grade req ({grade})"
+                                        #myReportFile.write("\ncorequisite grade insufficient")
+                                     else:
+                                        grade = number_to_letter.get(taken_grade)
+                                        single_reason = f"Grade req ({grade} in {taken_code} {taken_num})"            
+                                        #myReportFile.write("\ncorequisite grade insufficient")
+    
+                                #if found == False:
+                                     #myReportFile.write(f"\ncorequisite NOT FOUND {prerequisite}")
 
         requirement_pair.append(found)
         requirement_pair.append(single_reason)    

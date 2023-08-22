@@ -17,10 +17,10 @@ from execution_files.main_prerequisite import check_prerequisites #does the chec
 
 "START THE ANALYSIS"
 print("Importing courses' data...")
-#create_courses_list()
+create_courses_list()
 
 print("\nConverting students' data...")#
-#create_student_json(file_name)
+create_student_json(file_name)
 
 print("\nStarting the check on prerequisites and retakes...")
 check_prerequisites()
